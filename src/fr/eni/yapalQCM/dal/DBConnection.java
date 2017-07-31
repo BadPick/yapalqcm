@@ -13,7 +13,7 @@ import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 
 import fr.eni.yapalQCM.properties.Settings;
 
-/**
+/**https://github.com/BadPick/yapalqcm/invitations
  * Classe en charge de gérer la connexion à une base de données de type SQL
  * Server
  * 
