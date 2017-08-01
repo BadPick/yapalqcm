@@ -79,6 +79,9 @@ public class ResultatDAL implements IDAL<Resultat> {
 	}
 
 	/* (non-Javadoc)
+	 *  Méthode permettant de construire un objet Resultat à partir d'un 
+	 * ResultSet. Les objets Test, Session, et Utilisateur sont sont créés avec au 
+	 * minimum leur id (clé primaire de la base de donnée).
 	 * {@inheritDoc}
 	 * @see fr.eni.yapalQCM.dal.IDAL#itemBuilder(java.sql.ResultSet)
 	 */
