@@ -5,6 +5,9 @@
  */
 package fr.eni.yapalQCM.dal;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,9 +18,10 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import fr.eni.yapalQCM.bo.Inscription;
-import fr.eni.yapalQCM.bo.Resultat;
+import fr.eni.yapalQCM.bo.Role;
 import fr.eni.yapalQCM.bo.Session;
 import fr.eni.yapalQCM.bo.Utilisateur;
 
@@ -30,20 +34,39 @@ public class InscriptionDALTEST implements ITEST {
 	
 	public static Inscription inscription;
 	public static Inscription i;
-	public static List<Inscription> resultats = new ArrayList<Inscription>();
+	public static List<Inscription> inscriptions = new ArrayList<Inscription>();
 	public static List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
 	public static List<Session> sessions = new ArrayList<Session>();
-	public static InscriptionDAL rd;
+	public static InscriptionDAL id;
 	public static UtilisateurDAL ud;
 	public static SessionDAL sd;
-
+	
 	/**
 	 * Méthode en charge d'initialiser les variables de notre classe de test
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-
+		id = new InscriptionDAL();
+		ud = new UtilisateurDAL();
+		sd = new SessionDAL();
+		
+		inscription = new Inscription();
+		
+		i = new Inscription();
+		Utilisateur u = new Utilisateur();
+		u.setId(2);
+		u.setNom("nom");
+		u.setPrenom("prenom");
+		u.setEmail("mail@mail.com");
+		u.setPassword("password");
+		u.setRole(new Role());
+		i.setCandidat(u);
+		Session s = new Session();
+		s.setId(2);
+		s.setNbPlaces(25);
+		s.setTests(new ArrayList<fr.eni.yapalQCM.bo.Test>());
+		i.setSession(s);
 	}
 
 	/**
@@ -55,23 +78,72 @@ public class InscriptionDALTEST implements ITEST {
 	}
 
 	/**
-	 * Méthode en charge d'avoir 2 inscriptions dans la table INSCRIPTIONS avant chaque test
-	 * et
-	 * de créer 1 session et 2 TestSession
+	 * Méthode en charge d'avoir 2 tests dans la table INSCRIPTIONS
+	 * 2 tests dans la table UTILISATEURS
+	 * 2 tests dans la table SESSIONS
+	 * avant chaque test
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-
+		for(int i = 0 ; i<2 ; i++){
+			Utilisateur u = new Utilisateur();
+			u.setNom("nom");
+			u.setPrenom("prenom");
+			u.setEmail("mail@mail.com");
+			u.setPassword("password");
+			u.setRole(new Role());
+			inscription.setCandidat(u);
+			Session s = new Session();
+			s.setNbPlaces(25);
+			s.setTests(new ArrayList<fr.eni.yapalQCM.bo.Test>());
+			inscription.setSession(s);
+			ud.add(u);
+			sd.add(s);
+			id.add(inscription);
+		}
 	}
 
 	/**
-	 * Méthode en charge de vider la table INSCRIPTIONS et de réinitiliser les identifiants après chaque test.
+	 * Méthode en charge de vider toutes les tables et de réinitiliser les identifiants après chaque test.
 	 * @throws java.lang.Exception
 	 */
 	@After
 	public void tearDown() throws Exception {
-
+		inscriptions = id.getAll();
+		for(Inscription inscription : inscriptions)
+		{
+			id.delete(inscription);
+		}
+		utilisateurs = ud.getAll();
+		for(Utilisateur utilisateur : utilisateurs)
+		{
+			ud.delete(utilisateur);
+		}
+		sessions = sd.getAll();
+		for(Session session : sessions)
+		{
+			sd.delete(session);
+		}
+		
+		try(Connection cnx = DBConnection.getConnection()) {
+			Statement cmd = cnx.createStatement();
+			cmd.execute("DBCC CHECKIDENT ('QUESTIONS', RESEED, 0)");
+		} catch (SQLException e) {
+			System.out.println("Problème de réinitialisation de l'auto-incrément de la table INSCRIPTIONS");
+		}
+		try(Connection cnx = DBConnection.getConnection()) {
+			Statement cmd = cnx.createStatement();
+			cmd.execute("DBCC CHECKIDENT ('UTILISATEURS', RESEED, 0)");
+		} catch (SQLException e) {
+			System.out.println("Problème de réinitialisation de l'auto-incrément de la table UTILISATEURS");
+		}
+		try(Connection cnx = DBConnection.getConnection()) {
+			Statement cmd = cnx.createStatement();
+			cmd.execute("DBCC CHECKIDENT ('SESSIONS', RESEED, 0)");
+		} catch (SQLException e) {
+			System.out.println("Problème de réinitialisation de l'auto-incrément de la table SESSIONS");
+		}
 	}
 
 	
@@ -80,9 +152,10 @@ public class InscriptionDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testGetLength()
 	 */
 	@Override
+	@Test
 	public void testGetLength() {
-		// TODO Auto-generated method stub
-
+		int result = id.getLength();
+		assertEquals(2, result);
 	}
 
 	/* (non-Javadoc)
@@ -90,9 +163,13 @@ public class InscriptionDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testGetOne()
 	 */
 	@Override
+	@Test
 	public void testGetOne() {
-		// TODO Auto-generated method stub
-
+		int result = id.getOne(i).getCandidat().getId();
+		if(result!=2){
+			fail("L'élément ciblé n'a pas été récupéré");
+		}
+		assertEquals(2, result);
 	}
 
 	/* (non-Javadoc)
@@ -100,9 +177,16 @@ public class InscriptionDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testGetAll()
 	 */
 	@Override
+	@Test
 	public void testGetAll() {
-		// TODO Auto-generated method stub
-
+		List<Inscription> listGA = new ArrayList<Inscription>();
+		listGA = id.getAll();
+		if(listGA.size()!=2){
+			fail("La requête n'a pas récupéré tous les éléments de la table");
+		}
+		else{
+			assertEquals(2, listGA.size());
+		}
 	}
 
 	/* (non-Javadoc)
@@ -110,9 +194,13 @@ public class InscriptionDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testAdd()
 	 */
 	@Override
+	@Test
 	public void testAdd() {
-		// TODO Auto-generated method stub
-
+		if(id.add(inscription)==false){
+			fail("l'insertion a retourné false");			
+		}
+		
+		assertEquals(3, id.getAll().size());
 	}
 
 	/* (non-Javadoc)
@@ -120,9 +208,19 @@ public class InscriptionDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testUpdate()
 	 */
 	@Override
+	@Test
 	public void testUpdate() {
-		// TODO Auto-generated method stub
-
+		if(id.update(i)==false){
+			fail("l'update a retourné false");			
+		}
+		
+		i.getCandidat().setId(3);
+		
+		if(id.update(inscription)==true){
+			fail("l'udpate est réussi sur un mauvais identifiant");
+		}
+		
+		assertEquals(2, id.getAll().size());
 	}
 
 	/* (non-Javadoc)
@@ -130,9 +228,29 @@ public class InscriptionDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testDelete()
 	 */
 	@Override
-	public void testDelete() {
-		// TODO Auto-generated method stub
-
+	@Test
+	public void testDelete() {	
+		if(id.delete(i)==true){
+			fail("La suppression a réussi sur un mauvais identifiant");
+		}
+		
+		i.getCandidat().setId(2);
+		
+		if(id.delete(i)==false){
+			fail("La suppression a retourné false");
+		}
+		
+		if(id.delete(i)==true) {
+			if(id.getLength()<1){
+				fail("La suppression a supprimé plus d'un élément");
+			}
+			else if(id.getLength()>1){
+				fail("La suppression n'a pas été effectuée malgré qu'elle retourne true");
+			}
+			else{
+				assertEquals(1, id.getLength());				
+			}
+		}
 	}
 
 }

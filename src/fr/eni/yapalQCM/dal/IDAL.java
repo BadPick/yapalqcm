@@ -14,58 +14,52 @@ import java.util.List;
  * @date 31 juil. 2017
  * @version yapalqcm V1.0
  */
-public interface IDAL<Type> {
+public interface IDAL<Type1> {
 	/**
 	 * Méthode en charge de compter le nombre d'éléments d'une table en base de données
-	 * @param procedureStockee
 	 * @return
 	 */
 	public int getLength();
 	
 	/**
 	 * Méthode en charge de sélectionner un élément en base de données par son identifiant (int)
-	 * @param procedureStockee
-	 * @param id
+	 * @param t
 	 * @return
 	 */
-	public Type getOne(Type t);
+	public Type1 getOne(Type1 t);
 	
 	/**
 	 * Méthode en charge de sélectionner tous les éléments d'une table
-	 * @param procedureStockee
 	 * @return
 	 */
-	public List<Type> getAll();
+	public List<Type1> getAll();
 
 	/**
 	 * Méthode en charge d'insérer un objet en base de données
-	 * @param procedureStockee
 	 * @param t
 	 * @return
 	 */
-	public boolean add(Type t);
+	public boolean add(Type1 t);
 	
 	/**
 	 * Méthode en charge de mettre un jour un élément en base de données
-	 * @param procedureStockee
 	 * @param t
 	 * @return
 	 */
-	public boolean update(Type t);
+	public boolean update(Type1 t);
 	
 	/**
 	 * Méthode en charge de supprimer un élément en base de données par son identifiant (int)
-	 * @param procedureStockee
-	 * @param id
+	 * @param t
 	 * @return
 	 */
-	public boolean delete(Type t);
+	public boolean delete(Type1 t);
 	
 	/**
 	 * Méthode en charge de créer un objet via un ResultSet
 	 * @param rs
 	 * @return
 	 */
-	public Type itemBuilder(ResultSet rs) throws SQLException;
+	public Type1 itemBuilder(ResultSet rs) throws SQLException;
 
 }

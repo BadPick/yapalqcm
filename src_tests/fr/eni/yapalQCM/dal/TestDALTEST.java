@@ -54,8 +54,6 @@ public class TestDALTEST implements ITEST{
 
 	/**
 	 * Méthode en charge d'avoir 2 tests dans la table TESTS avant chaque test
-	 * et
-	 * de créer 1 session et 2 TestSession
 	 * @throws java.lang.Exception
 	 */
 	@Before
@@ -80,9 +78,9 @@ public class TestDALTEST implements ITEST{
 		
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement cmd = cnx.createStatement();
-			cmd.execute("DBCC CHECKIDENT ('TEST', RESEED, 0)");
+			cmd.execute("DBCC CHECKIDENT ('TESTS', RESEED, 0)");
 		} catch (SQLException e) {
-			System.out.println("Problème de réinitialisation de l'auto-incrément de la table TEST");;
+			System.out.println("Problème de réinitialisation de l'auto-incrément de la table TESTS");
 		}
 	}
 
@@ -91,6 +89,7 @@ public class TestDALTEST implements ITEST{
 	 * @see fr.eni.yapalQCM.dal.test.ITEST#testGetLength()
 	 */
 	@Override
+	@Test
 	public void testGetLength() {
 		int result = td.getLength();
 		assertEquals(2, result);

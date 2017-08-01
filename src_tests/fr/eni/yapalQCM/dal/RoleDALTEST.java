@@ -52,9 +52,7 @@ public class RoleDALTEST implements ITEST {
 	}
 
 	/**
-	 * Méthode en charge d'avoir 2 tests dans la table TESTS avant chaque test
-	 * et
-	 * de créer 1 session et 2 TestSession
+	 * Méthode en charge d'avoir 2 tests dans la table ROLES avant chaque test
 	 * @throws java.lang.Exception
 	 */
 	@Before
@@ -66,7 +64,7 @@ public class RoleDALTEST implements ITEST {
 	}
 
 	/**
-	 * Méthode en charge de vider la table TESTS et de réinitiliser les identifiants après chaque test.
+	 * Méthode en charge de vider la table ROLES et de réinitiliser les identifiants après chaque test.
 	 * @throws java.lang.Exception
 	 */
 	@After
@@ -79,9 +77,9 @@ public class RoleDALTEST implements ITEST {
 		
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement cmd = cnx.createStatement();
-			cmd.execute("DBCC CHECKIDENT ('ROLE', RESEED, 0)");
+			cmd.execute("DBCC CHECKIDENT ('ROLES', RESEED, 0)");
 		} catch (SQLException e) {
-			System.out.println("Problème de réinitialisation de l'auto-incrément de la table ROLE");;
+			System.out.println("Problème de réinitialisation de l'auto-incrément de la table ROLES");
 		}
 	}
 

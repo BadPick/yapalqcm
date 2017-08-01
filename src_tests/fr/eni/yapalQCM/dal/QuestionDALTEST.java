@@ -52,8 +52,6 @@ public class QuestionDALTEST implements ITEST {
 
 	/**
 	 * Méthode en charge d'avoir 2 questions dans la table QUESTIONS avant chaque test
-	 * et
-	 * de créer 1 session et 2 TestSession
 	 * @throws java.lang.Exception
 	 */
 	@Before
@@ -78,9 +76,9 @@ public class QuestionDALTEST implements ITEST {
 		
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement cmd = cnx.createStatement();
-			cmd.execute("DBCC CHECKIDENT ('QUESTION', RESEED, 0)");
+			cmd.execute("DBCC CHECKIDENT ('QUESTIONS', RESEED, 0)");
 		} catch (SQLException e) {
-			System.out.println("Problème de réinitialisation de l'auto-incrément de la table QUESTION");;
+			System.out.println("Problème de réinitialisation de l'auto-incrément de la table QUESTIONS");
 		}
 	}
 

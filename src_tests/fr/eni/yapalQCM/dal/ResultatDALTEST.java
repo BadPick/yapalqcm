@@ -154,27 +154,27 @@ public class ResultatDALTEST implements ITEST {
 		
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement cmd = cnx.createStatement();
-			cmd.execute("DBCC CHECKIDENT ('QUESTION', RESEED, 0)");
+			cmd.execute("DBCC CHECKIDENT ('QUESTIONS', RESEED, 0)");
 		} catch (SQLException e) {
-			System.out.println("Problème de réinitialisation de l'auto-incrément de la table QUESTION");;
+			System.out.println("Problème de réinitialisation de l'auto-incrément de la table QUESTIONS");
 		}
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement cmd = cnx.createStatement();
-			cmd.execute("DBCC CHECKIDENT ('UTILISATEUR', RESEED, 0)");
+			cmd.execute("DBCC CHECKIDENT ('UTILISATEURS', RESEED, 0)");
 		} catch (SQLException e) {
-			System.out.println("Problème de réinitialisation de l'auto-incrément de la table UTILISATEUR");;
+			System.out.println("Problème de réinitialisation de l'auto-incrément de la table UTILISATEURS");
 		}
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement cmd = cnx.createStatement();
-			cmd.execute("DBCC CHECKIDENT ('SESSION', RESEED, 0)");
+			cmd.execute("DBCC CHECKIDENT ('SESSIONS', RESEED, 0)");
 		} catch (SQLException e) {
-			System.out.println("Problème de réinitialisation de l'auto-incrément de la table SESSION");;
+			System.out.println("Problème de réinitialisation de l'auto-incrément de la table SESSIONS");
 		}
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement cmd = cnx.createStatement();
-			cmd.execute("DBCC CHECKIDENT ('TEST', RESEED, 0)");
+			cmd.execute("DBCC CHECKIDENT ('TESTS', RESEED, 0)");
 		} catch (SQLException e) {
-			System.out.println("Problème de réinitialisation de l'auto-incrément de la table TEST");;
+			System.out.println("Problème de réinitialisation de l'auto-incrément de la table TESTS");
 		}
 	}
 
