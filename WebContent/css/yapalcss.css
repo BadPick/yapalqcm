@@ -1,1 +1,18 @@
 @CHARSET "ISO-8859-1";
+
+easy-tree li {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px 5px 0;
+    position: relative;
+}
+
+easy-tree {
+    min-height: 20px;
+    margin-bottom: 20px;
+    background-color: #e56155;
+    color: #fff;
+    border: 0;
+    border-top: 0;
+    padding-bottom: 15px;
+}
