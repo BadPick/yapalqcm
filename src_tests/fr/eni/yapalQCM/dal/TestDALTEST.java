@@ -37,6 +37,7 @@ public class TestDALTEST implements ITEST{
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		td = new TestDAL();
+		test = new fr.eni.yapalQCM.bo.Test();
 	}
 
 	/**
@@ -129,7 +130,6 @@ public class TestDALTEST implements ITEST{
 		else{
 			assertEquals(2, listGA.size());
 		}
-		
 	}
 
 	/* (non-Javadoc)
@@ -146,31 +146,6 @@ public class TestDALTEST implements ITEST{
 		
 		if(td.add(test)==false){
 			fail("l'insertion a retourné false");			
-		}
-		
-		test.setSeuilAcquis(-14);
-		
-		if(td.add(test)==true){
-			fail("l'insertion est réussi avec un seuil négatif");			
-		}
-		
-		test.setSeuilAcquis(14);
-		test.setSeuilEnCoursDacquisition(15);
-		if(td.add(test)==true){
-			fail("l'insertion est réussi avec un seuil en cours d'acquisition supérieur au seuil d'acquisition");			
-		}
-		
-		test.setDuree(-3600);
-		
-		if(td.add(test)==true){
-			fail("l'insertion est réussi avec une durée négative");			
-		}
-		
-		test.setDuree(3600);
-		test.setNom("    ");
-		
-		if(td.add(test)==true){
-			fail("l'insertion est réussi avec un nom vide (que des espaces)");			
 		}
 		
 		assertEquals(3, td.getAll().size());
@@ -191,32 +166,6 @@ public class TestDALTEST implements ITEST{
 		
 		if(td.update(test)==false){
 			fail("l'update a retourné false");			
-		}
-		
-		test.setSeuilAcquis(-14);
-		
-		if(td.update(test)==true){
-			fail("l'update est réussi avec un seuil négatif");			
-		}
-		
-		test.setSeuilAcquis(14);
-		test.setSeuilEnCoursDacquisition(15);
-		
-		if(td.update(test)==true){
-			fail("l'update est réussi avec un seuil en cours d'acquisition supérieur au seuil d'acquisition");			
-		}
-		
-		test.setDuree(-3600);
-		
-		if(td.update(test)==true){
-			fail("l'update est réussi avec une durée négative");			
-		}
-		
-		test.setDuree(3600);
-		test.setNom("    ");
-		
-		if(td.update(test)==true){
-			fail("l'update est réussi avec un nom vide (que des espaces)");			
 		}
 		
 		test.setId(3);
@@ -254,8 +203,5 @@ public class TestDALTEST implements ITEST{
 				assertEquals(1, td.getLength());				
 			}
 		}
-		
-		
 	}
-
 }
