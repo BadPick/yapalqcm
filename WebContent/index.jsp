@@ -9,6 +9,6 @@
 <link rel="stylesheet" type="text/css" href="./css/yapalcss.css">
 </head>
 <body>
-INDEX
+INDEX BLA BLA
 </body>
 </html>
