@@ -33,7 +33,7 @@ public class ThemeDAL implements IDAL<Theme> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#getOne(int)
 	 */
 	@Override
-	public Theme getOne(int id) {
+	public Theme getOne(Theme t) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -73,7 +73,7 @@ public class ThemeDAL implements IDAL<Theme> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#delete(int)
 	 */
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Theme t) {
 		// TODO Auto-generated method stub
 		return false;
 	}

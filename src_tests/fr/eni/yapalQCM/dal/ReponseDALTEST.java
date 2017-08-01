@@ -18,6 +18,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import fr.eni.yapalQCM.bo.Reponse;
 
@@ -40,6 +41,8 @@ public class ReponseDALTEST implements ITEST {
 	public static void setUpBeforeClass() throws Exception {
 		rd = new ReponseDAL();
 		reponse = new Reponse();
+		reponse.setEnonce("mareponse");
+		reponse.setCorrect(true);
 	}
 
 	/**
@@ -51,7 +54,7 @@ public class ReponseDALTEST implements ITEST {
 	}
 
 	/**
-	 * Méthode en charge d'avoir 2 tests dans la table TESTS avant chaque test
+	 * Méthode en charge d'avoir 2 reponses dans la table REPONSES avant chaque test
 	 * et
 	 * de créer 1 session et 2 TestSession
 	 * @throws java.lang.Exception
@@ -59,14 +62,12 @@ public class ReponseDALTEST implements ITEST {
 	@Before
 	public void setUp() throws Exception {
 		for(int i = 0 ; i<2 ; i++){
-			reponse.setEnonce("mareponse");
-			reponse.setCorrect(true);
 			rd.add(reponse);
 		}
 	}
 
 	/**
-	 * Méthode en charge de vider la table TESTS et de réinitiliser les identifiants après chaque test.
+	 * Méthode en charge de vider la table REPONSES et de réinitiliser les identifiants après chaque test.
 	 * @throws java.lang.Exception
 	 */
 	@After
@@ -74,7 +75,7 @@ public class ReponseDALTEST implements ITEST {
 		reponses = rd.getAll();
 		for(Reponse reponse : reponses)
 		{
-			rd.delete(reponse.getId());
+			rd.delete(reponse);
 		}
 		
 		try(Connection cnx = DBConnection.getConnection()) {
@@ -91,6 +92,7 @@ public class ReponseDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testGetLength()
 	 */
 	@Override
+	@Test
 	public void testGetLength() {
 		int result = rd.getLength();
 		assertEquals(2, result);
@@ -101,13 +103,16 @@ public class ReponseDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testGetOne()
 	 */
 	@Override
+	@Test
 	public void testGetOne() {
-		int result = rd.getOne(3).getId();
+		reponse.setId(3);
+		int result = rd.getOne(reponse).getId();
 		if(result>0){
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
 		
-		result = rd.getOne(2).getId();
+		reponse.setId(2);
+		result = rd.getOne(reponse).getId();
 		if(result!=2){
 			fail("L'élément ciblé n'a pas été récupéré");
 		}
@@ -119,6 +124,7 @@ public class ReponseDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testGetAll()
 	 */
 	@Override
+	@Test
 	public void testGetAll() {
 		List<Reponse> listGA = new ArrayList<Reponse>();
 		listGA = rd.getAll();
@@ -135,9 +141,8 @@ public class ReponseDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testAdd()
 	 */
 	@Override
+	@Test
 	public void testAdd() {
-		reponse.setEnonce("mareponse");
-		
 		if(rd.add(reponse)==false){
 			fail("l'insertion a retourné false");			
 		}
@@ -150,9 +155,9 @@ public class ReponseDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testUpdate()
 	 */
 	@Override
+	@Test
 	public void testUpdate() {
-		reponse.setId(1);
-		reponse.setEnonce("mareponse");
+		reponse.setId(2);
 
 		if(rd.update(reponse)==false){
 			fail("l'update a retourné false");			
@@ -172,16 +177,21 @@ public class ReponseDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testDelete()
 	 */
 	@Override
+	@Test
 	public void testDelete() {
-		if(rd.delete(3)==true){
+		reponse.setId(3);
+		
+		if(rd.delete(reponse)==true){
 			fail("La suppression a réussi sur un mauvais identifiant");
 		}
 		
-		if(rd.delete(1)==false){
+		reponse.setId(2);
+		
+		if(rd.delete(reponse)==false){
 			fail("La suppression a retourné false");
 		}
 		
-		if(rd.delete(1)==true) {
+		if(rd.delete(reponse)==true) {
 			if(rd.getLength()<1){
 				fail("La suppression a supprimé plus d'un élément");
 			}

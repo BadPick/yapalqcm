@@ -33,7 +33,7 @@ public class InscriptionDAL implements IDAL<Inscription> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#getOne(int)
 	 */
 	@Override
-	public Inscription getOne(int id) {
+	public Inscription getOne(Inscription i) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -63,7 +63,7 @@ public class InscriptionDAL implements IDAL<Inscription> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#update(java.lang.Object)
 	 */
 	@Override
-	public boolean update(Inscription t) {
+	public boolean update(Inscription i) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -73,7 +73,7 @@ public class InscriptionDAL implements IDAL<Inscription> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#delete(int)
 	 */
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Inscription i) {
 		// TODO Auto-generated method stub
 		return false;
 	}

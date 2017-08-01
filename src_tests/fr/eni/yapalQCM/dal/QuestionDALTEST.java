@@ -18,9 +18,9 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import fr.eni.yapalQCM.bo.Question;
-import fr.eni.yapalQCM.bo.Reponse;
 
 /**
  * @author wvignoles2017
@@ -29,7 +29,6 @@ import fr.eni.yapalQCM.bo.Reponse;
  */
 public class QuestionDALTEST implements ITEST {
 	public static Question question;
-	public static Reponse reponse;
 	public static List<Question> questions = new ArrayList<Question>();
 	public static QuestionDAL qd;
 	
@@ -41,7 +40,6 @@ public class QuestionDALTEST implements ITEST {
 	public static void setUpBeforeClass() throws Exception {
 		qd = new QuestionDAL();
 		question = new Question();
-		reponse = new Reponse();
 	}
 
 	/**
@@ -53,7 +51,7 @@ public class QuestionDALTEST implements ITEST {
 	}
 
 	/**
-	 * Méthode en charge d'avoir 2 tests dans la table TESTS avant chaque test
+	 * Méthode en charge d'avoir 2 questions dans la table QUESTIONS avant chaque test
 	 * et
 	 * de créer 1 session et 2 TestSession
 	 * @throws java.lang.Exception
@@ -62,18 +60,12 @@ public class QuestionDALTEST implements ITEST {
 	public void setUp() throws Exception {
 		for(int i = 0 ; i<2 ; i++){
 			question.setEnonce("maquestion");
-			for(int j = 0 ; j<2 ; j++){
-				Reponse r = new Reponse();
-				r.setEnonce("mareponse");
-				r.setCorrect(true);
-				question.getReponses().add(r);
-			}
 			qd.add(question);
 		}
 	}
 
 	/**
-	 * Méthode en charge de vider la table TESTS et de réinitiliser les identifiants après chaque test.
+	 * Méthode en charge de vider la table QUESTIONS et de réinitiliser les identifiants après chaque test.
 	 * @throws java.lang.Exception
 	 */
 	@After
@@ -81,7 +73,7 @@ public class QuestionDALTEST implements ITEST {
 		questions = qd.getAll();
 		for(Question question : questions)
 		{
-			qd.delete(question.getId());
+			qd.delete(question);
 		}
 		
 		try(Connection cnx = DBConnection.getConnection()) {
@@ -89,12 +81,6 @@ public class QuestionDALTEST implements ITEST {
 			cmd.execute("DBCC CHECKIDENT ('QUESTION', RESEED, 0)");
 		} catch (SQLException e) {
 			System.out.println("Problème de réinitialisation de l'auto-incrément de la table QUESTION");;
-		}
-		try(Connection cnx = DBConnection.getConnection()) {
-			Statement cmd = cnx.createStatement();
-			cmd.execute("DBCC CHECKIDENT ('REPONSE', RESEED, 0)");
-		} catch (SQLException e) {
-			System.out.println("Problème de réinitialisation de l'auto-incrément de la table REPONSE");;
 		}
 	}
 
@@ -104,6 +90,7 @@ public class QuestionDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testGetLength()
 	 */
 	@Override
+	@Test
 	public void testGetLength() {
 		int result = qd.getLength();
 		assertEquals(2, result);
@@ -114,13 +101,16 @@ public class QuestionDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testGetOne()
 	 */
 	@Override
+	@Test
 	public void testGetOne() {
-		int result = qd.getOne(3).getId();
+		Question q = new Question();
+		q.setId(1);
+		int result = qd.getOne(q).getId();
 		if(result>0){
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
 		
-		result = qd.getOne(2).getId();
+		result = qd.getOne(q).getId();
 		if(result!=2){
 			fail("L'élément ciblé n'a pas été récupéré");
 		}
@@ -132,6 +122,7 @@ public class QuestionDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testGetAll()
 	 */
 	@Override
+	@Test
 	public void testGetAll() {
 		List<Question> listGA = new ArrayList<Question>();
 		listGA = qd.getAll();
@@ -148,14 +139,9 @@ public class QuestionDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testAdd()
 	 */
 	@Override
+	@Test
 	public void testAdd() {
 		question.setEnonce("maquestion");
-		for(int j = 0 ; j<2 ; j++){
-			Reponse r = new Reponse();
-			r.setEnonce("mareponse");
-			r.setCorrect(true);
-			question.getReponses().add(r);
-		}
 		
 		if(qd.add(question)==false){
 			fail("l'insertion a retourné false");			
@@ -169,23 +155,19 @@ public class QuestionDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testUpdate()
 	 */
 	@Override
+	@Test
 	public void testUpdate() {
-		question.setId(1);
-		question.setEnonce("maquestion");
-		for(int j = 0 ; j<2 ; j++){
-			Reponse r = new Reponse();
-			r.setEnonce("mareponse");
-			r.setCorrect(true);
-			question.getReponses().add(r);
-		}
+		Question q = new Question();
+		q.setId(1);
+		q.setEnonce("maquestion");
 		
-		if(qd.update(question)==false){
+		if(qd.update(q)==false){
 			fail("l'update a retourné false");			
 		}
 		
-		question.setId(3);
+		q.setId(3);
 		
-		if(qd.update(question)==true){
+		if(qd.update(q)==true){
 			fail("l'udpate est réussi sur un mauvais identifiant");
 		}
 		
@@ -197,16 +179,19 @@ public class QuestionDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testDelete()
 	 */
 	@Override
+	@Test
 	public void testDelete() {
-		if(qd.delete(3)==true){
+		Question q = new Question();
+		q.setId(1);
+		if(qd.delete(q)==true){
 			fail("La suppression a réussi sur un mauvais identifiant");
 		}
 		
-		if(qd.delete(1)==false){
+		if(qd.delete(q)==false){
 			fail("La suppression a retourné false");
 		}
 		
-		if(qd.delete(1)==true) {
+		if(qd.delete(q)==true) {
 			if(qd.getLength()<1){
 				fail("La suppression a supprimé plus d'un élément");
 			}

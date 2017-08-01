@@ -33,7 +33,7 @@ public class TestDAL implements IDAL<Test> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#getOne(int, java.lang.String)
 	 */
 	@Override
-	public Test getOne(int id) {
+	public Test getOne(Test t) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -73,7 +73,7 @@ public class TestDAL implements IDAL<Test> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#delete(int, java.lang.String)
 	 */
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Test t) {
 		// TODO Auto-generated method stub
 		return false;
 	}

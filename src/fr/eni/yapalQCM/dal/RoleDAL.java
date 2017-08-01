@@ -33,7 +33,7 @@ public class RoleDAL implements IDAL<Role> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#getOne(int)
 	 */
 	@Override
-	public Role getOne(int id) {
+	public Role getOne(Role r) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -53,7 +53,7 @@ public class RoleDAL implements IDAL<Role> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#add(java.lang.Object)
 	 */
 	@Override
-	public boolean add(Role t) {
+	public boolean add(Role r) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -63,7 +63,7 @@ public class RoleDAL implements IDAL<Role> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#update(java.lang.Object)
 	 */
 	@Override
-	public boolean update(Role t) {
+	public boolean update(Role r) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -73,7 +73,7 @@ public class RoleDAL implements IDAL<Role> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#delete(int)
 	 */
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Role r) {
 		// TODO Auto-generated method stub
 		return false;
 	}

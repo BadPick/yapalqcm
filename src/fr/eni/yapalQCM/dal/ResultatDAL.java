@@ -33,7 +33,7 @@ public class ResultatDAL implements IDAL<Resultat> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#getOne(int)
 	 */
 	@Override
-	public Resultat getOne(int id) {
+	public Resultat getOne(Resultat r) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -53,7 +53,7 @@ public class ResultatDAL implements IDAL<Resultat> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#add(java.lang.Object)
 	 */
 	@Override
-	public boolean add(Resultat t) {
+	public boolean add(Resultat r) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -63,7 +63,7 @@ public class ResultatDAL implements IDAL<Resultat> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#update(java.lang.Object)
 	 */
 	@Override
-	public boolean update(Resultat t) {
+	public boolean update(Resultat r) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -73,7 +73,7 @@ public class ResultatDAL implements IDAL<Resultat> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#delete(int)
 	 */
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Resultat r) {
 		// TODO Auto-generated method stub
 		return false;
 	}

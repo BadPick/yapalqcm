@@ -28,7 +28,7 @@ public interface IDAL<Type> {
 	 * @param id
 	 * @return
 	 */
-	public Type getOne(int id);
+	public Type getOne(Type t);
 	
 	/**
 	 * Méthode en charge de sélectionner tous les éléments d'une table
@@ -59,7 +59,7 @@ public interface IDAL<Type> {
 	 * @param id
 	 * @return
 	 */
-	public boolean delete(int id);
+	public boolean delete(Type t);
 	
 	/**
 	 * Méthode en charge de créer un objet via un ResultSet

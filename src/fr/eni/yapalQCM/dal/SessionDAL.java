@@ -33,7 +33,7 @@ public class SessionDAL implements IDAL<Session> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#getOne(int)
 	 */
 	@Override
-	public Session getOne(int id) {
+	public Session getOne(Session s) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -53,7 +53,7 @@ public class SessionDAL implements IDAL<Session> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#add(java.lang.Object)
 	 */
 	@Override
-	public boolean add(Session t) {
+	public boolean add(Session s) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -63,7 +63,7 @@ public class SessionDAL implements IDAL<Session> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#update(java.lang.Object)
 	 */
 	@Override
-	public boolean update(Session t) {
+	public boolean update(Session s) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -73,7 +73,7 @@ public class SessionDAL implements IDAL<Session> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#delete(int)
 	 */
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Session s) {
 		// TODO Auto-generated method stub
 		return false;
 	}

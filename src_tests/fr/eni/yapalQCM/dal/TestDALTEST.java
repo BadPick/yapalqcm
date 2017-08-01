@@ -38,6 +38,10 @@ public class TestDALTEST implements ITEST{
 	public static void setUpBeforeClass() throws Exception {
 		td = new TestDAL();
 		test = new fr.eni.yapalQCM.bo.Test();
+		test.setNom("montest");
+		test.setSeuilAcquis(14);
+		test.setSeuilEnCoursDacquisition(10);
+		test.setDuree(3600);
 	}
 
 	/**
@@ -58,10 +62,6 @@ public class TestDALTEST implements ITEST{
 	public void setUp() throws Exception {
 	
 		for(int i = 0 ; i<2 ; i++){
-			test.setNom("montest");
-			test.setSeuilAcquis(14);
-			test.setSeuilEnCoursDacquisition(10);
-			test.setDuree(3600);
 			td.add(test);
 		}
 	}
@@ -75,7 +75,7 @@ public class TestDALTEST implements ITEST{
 		tests = td.getAll();
 		for(fr.eni.yapalQCM.bo.Test test : tests)
 		{
-			td.delete(test.getId());
+			td.delete(test);
 		}
 		
 		try(Connection cnx = DBConnection.getConnection()) {
@@ -103,12 +103,14 @@ public class TestDALTEST implements ITEST{
 	@Override
 	@Test
 	public void testGetOne() {
-		int result = td.getOne(3).getId();
+		test.setId(3);
+		int result = td.getOne(test).getId();
 		if(result>0){
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
 		
-		result = td.getOne(2).getId();
+		test.setId(2);
+		result = td.getOne(test).getId();
 		if(result!=2){
 			fail("L'élément ciblé n'a pas été récupéré");
 		}
@@ -139,11 +141,6 @@ public class TestDALTEST implements ITEST{
 	@Override
 	@Test
 	public void testAdd() {
-		test.setNom("montest");
-		test.setSeuilAcquis(14);
-		test.setSeuilEnCoursDacquisition(10);
-		test.setDuree(3600);
-		
 		if(td.add(test)==false){
 			fail("l'insertion a retourné false");			
 		}
@@ -158,12 +155,8 @@ public class TestDALTEST implements ITEST{
 	@Override
 	@Test
 	public void testUpdate() {
-		test.setId(1);
-		test.setNom("montest");
-		test.setSeuilAcquis(14);
-		test.setSeuilEnCoursDacquisition(10);
-		test.setDuree(3600);
-		
+		test.setId(2);
+
 		if(td.update(test)==false){
 			fail("l'update a retourné false");			
 		}
@@ -184,15 +177,17 @@ public class TestDALTEST implements ITEST{
 	@Override
 	@Test
 	public void testDelete() {
-		if(td.delete(3)==true){
+		test.setId(3);
+		if(td.delete(test)==true){
 			fail("La suppression a réussi sur un mauvais identifiant");
 		}
 		
-		if(td.delete(1)==false){
+		test.setId(2);
+		if(td.delete(test)==false){
 			fail("La suppression a retourné false");
 		}
 		
-		if(td.delete(1)==true) {
+		if(td.delete(test)==true) {
 			if(td.getLength()<1){
 				fail("La suppression a supprimé plus d'un élément");
 			}

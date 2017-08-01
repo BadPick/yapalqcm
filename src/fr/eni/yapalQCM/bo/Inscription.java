@@ -4,7 +4,6 @@ public class Inscription {
 
 	private Utilisateur candidat;
 	private Session session;
-	private Test test;
 	
 	
 	/**
@@ -36,22 +35,6 @@ public class Inscription {
 	 */
 	public void setSession(Session session) {
 		this.session = session;
-	}
-
-
-	/**
-	 * @return the test
-	 */
-	public Test getTest() {
-		return test;
-	}
-
-
-	/**
-	 * @param test the test to set
-	 */
-	public void setTest(Test test) {
-		this.test = test;
 	}
 
 

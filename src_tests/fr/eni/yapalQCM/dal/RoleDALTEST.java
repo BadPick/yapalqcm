@@ -18,6 +18,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import fr.eni.yapalQCM.bo.Role;
 
@@ -73,7 +74,7 @@ public class RoleDALTEST implements ITEST {
 		roles = rd.getAll();
 		for(Role role : roles)
 		{
-			rd.delete(role.getId());
+			rd.delete(role);
 		}
 		
 		try(Connection cnx = DBConnection.getConnection()) {
@@ -90,6 +91,7 @@ public class RoleDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testGetLength()
 	 */
 	@Override
+	@Test
 	public void testGetLength() {
 		int result = rd.getLength();
 		assertEquals(2, result);
@@ -100,13 +102,16 @@ public class RoleDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testGetOne()
 	 */
 	@Override
+	@Test
 	public void testGetOne() {
-		int result = rd.getOne(3).getId();
+		Role r = new Role();
+		r.setId(3);
+		int result = rd.getOne(r).getId();
 		if(result>0){
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
 		
-		result = rd.getOne(2).getId();
+		result = rd.getOne(r).getId();
 		if(result!=2){
 			fail("L'élément ciblé n'a pas été récupéré");
 		}
@@ -118,6 +123,7 @@ public class RoleDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testGetAll()
 	 */
 	@Override
+	@Test
 	public void testGetAll() {
 		List<Role> listGA = new ArrayList<Role>();
 		listGA = rd.getAll();
@@ -134,6 +140,7 @@ public class RoleDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testAdd()
 	 */
 	@Override
+	@Test
 	public void testAdd() {
 		role.setName("monrole");
 		
@@ -149,17 +156,19 @@ public class RoleDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testUpdate()
 	 */
 	@Override
+	@Test
 	public void testUpdate() {
-		role.setId(1);
-		role.setName("montest");
+		Role r = new Role();
+		r.setId(1);
+		r.setName("montest");
 
-		if(rd.update(role)==false){
+		if(rd.update(r)==false){
 			fail("l'update a retourné false");			
 		}
 		
-		role.setId(3);
+		r.setId(3);
 		
-		if(rd.update(role)==true){
+		if(rd.update(r)==true){
 			fail("l'udpate est réussi sur un mauvais identifiant");
 		}
 		
@@ -171,16 +180,20 @@ public class RoleDALTEST implements ITEST {
 	 * @see fr.eni.yapalQCM.dal.ITEST#testDelete()
 	 */
 	@Override
+	@Test
 	public void testDelete() {
-		if(rd.delete(3)==true){
+		Role r = new Role();
+		r.setId(3);
+		if(rd.delete(r)==true){
 			fail("La suppression a réussi sur un mauvais identifiant");
 		}
 		
-		if(rd.delete(1)==false){
+		r.setId(1);
+		if(rd.delete(r)==false){
 			fail("La suppression a retourné false");
 		}
 		
-		if(rd.delete(1)==true) {
+		if(rd.delete(r)==true) {
 			if(rd.getLength()<1){
 				fail("La suppression a supprimé plus d'un élément");
 			}

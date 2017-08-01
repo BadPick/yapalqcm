@@ -33,7 +33,7 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#getOne(int)
 	 */
 	@Override
-	public Utilisateur getOne(int id) {
+	public Utilisateur getOne(Utilisateur u) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -53,7 +53,7 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#add(java.lang.Object)
 	 */
 	@Override
-	public boolean add(Utilisateur t) {
+	public boolean add(Utilisateur u) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -63,7 +63,7 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#update(java.lang.Object)
 	 */
 	@Override
-	public boolean update(Utilisateur t) {
+	public boolean update(Utilisateur u) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -73,7 +73,7 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#delete(int)
 	 */
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Utilisateur u) {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -33,7 +33,7 @@ public class QuestionDAL implements IDAL<Question> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#getOne(int)
 	 */
 	@Override
-	public Question getOne(int id) {
+	public Question getOne(Question q) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -53,7 +53,7 @@ public class QuestionDAL implements IDAL<Question> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#add(java.lang.Object)
 	 */
 	@Override
-	public boolean add(Question t) {
+	public boolean add(Question q) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -63,7 +63,7 @@ public class QuestionDAL implements IDAL<Question> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#update(java.lang.Object)
 	 */
 	@Override
-	public boolean update(Question t) {
+	public boolean update(Question q) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -73,7 +73,7 @@ public class QuestionDAL implements IDAL<Question> {
 	 * @see fr.eni.yapalQCM.dal.IDAL#delete(int)
 	 */
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Question q) {
 		// TODO Auto-generated method stub
 		return false;
 	}
