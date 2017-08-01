@@ -21,6 +21,7 @@
 			<role-name>formateur</role-name>
 		</auth-constraint>
 	</security-constraint>
+	
 	<login-config>
 		<auth-method>FORM</auth-method>
 		<form-login-config>
@@ -28,6 +29,7 @@
 			<form-error-page>/error.jsp</form-error-page>
 		</form-login-config>
 	</login-config>
+	
 	<security-role>
 		<description />
 		<role-name>candidat</role-name>
