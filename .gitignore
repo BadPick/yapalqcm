@@ -1,6 +1,6 @@
 /build/
 yapalqcm/.settings/org.eclipse.wst.common.component
-
+yapalqcm/.classpath
 # Compiled class file
 *.class
 
