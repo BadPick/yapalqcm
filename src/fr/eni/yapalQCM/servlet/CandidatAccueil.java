@@ -1,6 +1,8 @@
 package fr.eni.yapalQCM.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,20 +14,24 @@ import javax.servlet.http.HttpSession;
 
 import fr.eni.yapalQCM.bll.CandidatManager;
 import fr.eni.yapalQCM.bll.ErrorManager;
+import fr.eni.yapalQCM.bo.Resultat;
+import fr.eni.yapalQCM.bo.Role;
 import fr.eni.yapalQCM.bo.Test;
+import fr.eni.yapalQCM.bo.Utilisateur;
 import fr.eni.yapalQCM.utils.Message;
+import fr.eni.yapalQCM.utils.MessageType;
 
 /**
- * Servlet implementation class CandidatPasserUnTest
+ * Servlet implementation class CandidatAccueil
  */
-@WebServlet("/CandidatPasserUnTest")
-public class CandidatPasserUnTest extends HttpServlet {
+@WebServlet("/CandidatAccueil")
+public class CandidatAccueil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Message message = null;   
+	private Message message = null;  
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CandidatPasserUnTest() {
+    public CandidatAccueil() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -48,23 +54,42 @@ public class CandidatPasserUnTest extends HttpServlet {
 		HttpSession session = request.getSession();
 		RequestDispatcher dispatcher = null;
 		
+		//TESTING (simulation d'un candidat en session)
+		Role role = new Role();
+		role.setId(1);
+		role.setName("candidat");
+		Utilisateur user = new Utilisateur();
+		user.setId(1);
+		user.setNom("Doe");
+		user.setPrenom("Jhon");
+		user.setDateDeNaissance(new Date());
+		user.setEmail("jd@gmail.com");		
+		user.setRole(role);
+		session.setAttribute("user", user);
+		
+		
+		
 		try {
-			//Récupération du test généré
-			if (request.getParameter("idTest")!=null) {
-				Test test = CandidatManager.getTest(request.getParameter("idTest"));
-			}
+			//récupération du user en session
+			Utilisateur candidat = (Utilisateur) session.getAttribute("user");
 			
+			//récupération de la liste de tests dispo pour ce candidat
+			ArrayList<Test> tests = CandidatManager.getTests(candidat);
+			request.setAttribute("testList", tests);
 			
+			//récupération de la liste de résultats dispo pour ce candidat
+			ArrayList<Resultat> resultats = CandidatManager.getResultats(candidat);
+			request.setAttribute("resultList", resultats);			
 			
 			//besoin d'afficher un message
 			//message = ErrorManager.getMessage("le message",MessageType.success);	
-			
-			dispatcher = getServletContext().getRequestDispatcher("******************");
+			dispatcher = getServletContext().getRequestDispatcher("/jsp/candidat/accueilCandidat.jsp");		
 		} catch (Exception e) {
 			//gestion des messages d'erreurs
 			message = ErrorManager.getMessage(e);		
 		}
 		
+		message = ErrorManager.getMessage("test message", MessageType.error);
 		if (message != null) {
 			request.setAttribute("message", message);
 		}

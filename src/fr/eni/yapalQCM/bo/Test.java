@@ -3,6 +3,8 @@
  */
 package fr.eni.yapalQCM.bo;
 
+import java.util.ArrayList;
+
 /**
  * @author mrault2015
  *
@@ -14,6 +16,7 @@ public class Test {
 	private float seuilAcquis;
 	private float seuilEnCoursDacquisition;
 	private long duree;
+	private ArrayList<Section> sections;
 	
 	
 	
@@ -22,6 +25,24 @@ public class Test {
 	 */
 	public int getId() {
 		return id;
+	}
+
+
+
+	/**
+	 * @return the sections
+	 */
+	public ArrayList<Section> getSections() {
+		return sections;
+	}
+
+
+
+	/**
+	 * @param sections the sections to set
+	 */
+	public void setSections(ArrayList<Section> sections) {
+		this.sections = sections;
 	}
 
 
