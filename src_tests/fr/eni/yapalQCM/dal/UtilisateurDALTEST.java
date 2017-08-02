@@ -47,6 +47,7 @@ public class UtilisateurDALTEST implements ITEST {
 		utilisateur.setEmail("util@util.com");
 		utilisateur.setPassword("myutil");
 		role = new Role();
+		role.setId(1);
 		role.setName("role");
 		utilisateur.setRole(role);
 	}

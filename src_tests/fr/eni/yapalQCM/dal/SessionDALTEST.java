@@ -100,7 +100,7 @@ public class SessionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetOne() {
+	public void testGetOne() throws SQLException {
 		Session s = new Session();
 		s.setId(3);
 		int result = sd.getOne(s).getId();
@@ -123,7 +123,7 @@ public class SessionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetAll() {
+	public void testGetAll() throws SQLException {
 		List<Session> listGA = new ArrayList<Session>();
 		listGA = sd.getAll();
 		if(listGA.size()!=2){
@@ -140,7 +140,7 @@ public class SessionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testAdd() {
+	public void testAdd() throws SQLException {
 		if(sd.add(session)==false){
 			fail("l'insertion a retourné false");			
 		}
@@ -154,7 +154,7 @@ public class SessionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testUpdate() {
+	public void testUpdate() throws SQLException {
 		Session s = new Session();
 		s.setNbPlaces(30);
 		s.setId(1);
@@ -178,7 +178,7 @@ public class SessionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testDelete() {
+	public void testDelete() throws SQLException {
 		Session s = new Session();
 		s.setId(3);
 		if(sd.delete(s)==true){

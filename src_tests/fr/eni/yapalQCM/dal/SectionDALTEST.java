@@ -105,7 +105,7 @@ public class SectionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetOne() {
+	public void testGetOne() throws SQLException {
 		Section s = new Section();
 		s.setId(3);
 		int result = sd.getOne(s).getId();
@@ -128,7 +128,7 @@ public class SectionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetAll() {
+	public void testGetAll() throws SQLException {
 		List<Section> listGA = new ArrayList<Section>();
 		listGA = sd.getAll();
 		if(listGA.size()!=2){
@@ -145,7 +145,7 @@ public class SectionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testAdd() {
+	public void testAdd() throws SQLException {
 		if(sd.add(section)==false){
 			fail("l'insertion a retourné false");			
 		}
@@ -159,7 +159,7 @@ public class SectionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testUpdate() {
+	public void testUpdate() throws SQLException {
 		Section s = new Section();
 		s.setNbQuestions(10);
 		s.setTheme(theme);
@@ -184,7 +184,7 @@ public class SectionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testDelete() {
+	public void testDelete() throws SQLException {
 		Section s = new Section();
 		s.setId(3);
 		if(sd.delete(s)==true){
