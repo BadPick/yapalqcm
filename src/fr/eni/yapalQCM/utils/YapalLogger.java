@@ -45,7 +45,7 @@ public class YapalLogger
 		{
 			try 
 			{
-				fh = new FileHandler("GestionParking.log");
+				fh = new FileHandler("YapalQCM.log");
 			}
 			catch (SecurityException e)
 			{

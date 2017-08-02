@@ -100,13 +100,15 @@ public class QuestionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetOne() {
+	public void testGetOne() throws SQLException {
 		Question q = new Question();
-		q.setId(1);
+		q.setId(3);
 		int result = qd.getOne(q).getId();
 		if(result>0){
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
+		
+		q.setId(2);
 		
 		result = qd.getOne(q).getId();
 		if(result!=2){
@@ -121,7 +123,7 @@ public class QuestionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetAll() {
+	public void testGetAll() throws SQLException {
 		List<Question> listGA = new ArrayList<Question>();
 		listGA = qd.getAll();
 		if(listGA.size()!=2){
@@ -138,7 +140,7 @@ public class QuestionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testAdd() {
+	public void testAdd() throws SQLException {
 		question.setEnonce("maquestion");
 		
 		if(qd.add(question)==false){
@@ -154,7 +156,7 @@ public class QuestionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testUpdate() {
+	public void testUpdate() throws SQLException {
 		Question q = new Question();
 		q.setId(1);
 		q.setEnonce("maquestion");
@@ -178,12 +180,14 @@ public class QuestionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testDelete() {
+	public void testDelete() throws SQLException {
 		Question q = new Question();
-		q.setId(1);
+		q.setId(3);
 		if(qd.delete(q)==true){
 			fail("La suppression a réussi sur un mauvais identifiant");
 		}
+		
+		q.setId(1);
 		
 		if(qd.delete(q)==false){
 			fail("La suppression a retourné false");

@@ -138,8 +138,8 @@ public class SectionDALTEST implements ITEST {
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
 		
-		s.getTest().setId(1);
-		s.getTheme().setId(1);
+		s.getTest().setId(2);
+		s.getTheme().setId(2);
 		
 		result = sd.getOne(s).getTest().getId();
 		if(result!=2){

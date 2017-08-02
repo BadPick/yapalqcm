@@ -32,7 +32,7 @@ public class QuestionDAL implements IDAL<Question> {
 	 */
 	@Override
 	public int getLength() {
-logger.entering("QestionDAL", "getLength");
+		logger.entering("QestionDAL", "getLength");
 		
 		int resultat = 0;
 		try(Connection cnx = DBConnection.getConnection()) {
@@ -103,9 +103,21 @@ logger.entering("QestionDAL", "getLength");
 	 * @see fr.eni.yapalQCM.dal.IDAL#add(java.lang.Object)
 	 */
 	@Override
-	public boolean add(Question q) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean add(Question t) throws SQLException {
+		logger.entering("QuestionDAL", "add");
+		
+		boolean resultat = false;
+		try(Connection cnx = DBConnection.getConnection()) {
+			CallableStatement cmd = cnx.prepareCall(QuestionSQL.ADD);
+			cmd.setString(1, t.getEnonce());	
+			resultat = (cmd.executeUpdate()>0);
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}
+		
+		logger.exiting("QuestionDAL", "add");
+		return resultat;
 	}
 
 	/* (non-Javadoc)
@@ -113,9 +125,22 @@ logger.entering("QestionDAL", "getLength");
 	 * @see fr.eni.yapalQCM.dal.IDAL#update(java.lang.Object)
 	 */
 	@Override
-	public boolean update(Question q) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean update(Question q) throws SQLException {
+		logger.entering("QuestionDAL", "update");
+		
+		boolean resultat = false;
+		try(Connection cnx = DBConnection.getConnection()) {
+			CallableStatement cmd = cnx.prepareCall(QuestionSQL.UPDATE);
+			cmd.setString(1, q.getEnonce());
+			cmd.setInt(2, q.getId());
+			resultat = (cmd.executeUpdate()>0);
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}
+		
+		logger.exiting("QuestionDAL", "update");
+		return resultat;
 	}
 
 	/* (non-Javadoc)
@@ -123,19 +148,32 @@ logger.entering("QestionDAL", "getLength");
 	 * @see fr.eni.yapalQCM.dal.IDAL#delete(int)
 	 */
 	@Override
-	public boolean delete(Question q) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean delete(Question q) throws SQLException {
+		logger.entering("QuestionDAL", "delete");
+		
+		boolean resultat = false;
+		try(Connection cnx = DBConnection.getConnection()) {
+			CallableStatement cmd = cnx.prepareCall(QuestionSQL.DELETE);
+			cmd.setInt(1, q.getId());
+			resultat = (cmd.executeUpdate()>0);
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}
+		
+		logger.exiting("QuestionDAL", "delete");
+		return resultat;
 	}
-
+	
 	/* (non-Javadoc)
 	 * {@inheritDoc}
 	 * @see fr.eni.yapalQCM.dal.IDAL#itemBuilder(java.sql.ResultSet)
 	 */
 	@Override
 	public Question itemBuilder(ResultSet rs) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		Question q = new Question();
+		q.setId(rs.getInt("idQuestion"));
+		q.setEnonce(rs.getString("enonce"));
+		return q;
 	}
-
 }

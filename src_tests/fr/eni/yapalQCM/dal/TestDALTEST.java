@@ -101,7 +101,7 @@ public class TestDALTEST implements ITEST{
 	 */
 	@Override
 	@Test
-	public void testGetOne() {
+	public void testGetOne() throws SQLException {
 		test.setId(3);
 		int result = td.getOne(test).getId();
 		if(result>0){
@@ -122,7 +122,7 @@ public class TestDALTEST implements ITEST{
 	 */
 	@Override
 	@Test
-	public void testGetAll() {
+	public void testGetAll() throws SQLException {
 		List<fr.eni.yapalQCM.bo.Test> listGA = new ArrayList<fr.eni.yapalQCM.bo.Test>();
 		listGA = td.getAll();
 		if(listGA.size()!=2){
@@ -139,7 +139,7 @@ public class TestDALTEST implements ITEST{
 	 */
 	@Override
 	@Test
-	public void testAdd() {
+	public void testAdd() throws SQLException {
 		if(td.add(test)==false){
 			fail("l'insertion a retourné false");			
 		}
@@ -153,7 +153,7 @@ public class TestDALTEST implements ITEST{
 	 */
 	@Override
 	@Test
-	public void testUpdate() {
+	public void testUpdate() throws SQLException {
 		test.setId(2);
 
 		if(td.update(test)==false){
@@ -175,7 +175,7 @@ public class TestDALTEST implements ITEST{
 	 */
 	@Override
 	@Test
-	public void testDelete() {
+	public void testDelete() throws SQLException {
 		test.setId(3);
 		if(td.delete(test)==true){
 			fail("La suppression a réussi sur un mauvais identifiant");
