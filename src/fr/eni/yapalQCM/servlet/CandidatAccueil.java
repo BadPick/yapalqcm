@@ -89,7 +89,7 @@ public class CandidatAccueil extends HttpServlet {
 			message = ErrorManager.getMessage(e);		
 		}
 		
-		message = ErrorManager.getMessage("test message", MessageType.error);
+		message = ErrorManager.getMessage("test message jyhgjkhfkjfgjk", MessageType.information);
 		if (message != null) {
 			request.setAttribute("message", message);
 		}

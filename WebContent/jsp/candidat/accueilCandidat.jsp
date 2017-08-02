@@ -7,8 +7,8 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/css/yapalcss.css">
+<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="./css/yapalcss.css">
 </head>
 <body>
 <c:set var="testList" value="${requestScope['testList']}" scope="page" />
@@ -44,8 +44,8 @@
 		</div>
 </div>
 
-<script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="./js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.1/packaged/jquery.noty.packaged.min.js"></script>
-<script type="text/javascript" src="/js/gestionMessages.js"></script>
+<script type="text/javascript" src="./js/gestionMessages.js"></script>
 </body>
 </html>
