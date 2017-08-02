@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import fr.eni.yapalQCM.bo.Section;
+import fr.eni.yapalQCM.bo.Test;
 import fr.eni.yapalQCM.bo.Theme;
 import fr.eni.yapalQCM.utils.YapalLogger;
 
@@ -61,7 +62,7 @@ public class SectionDAL implements IDAL<Section> {
 		Section section = null;
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?)}");
-			cmd.setInt(1, s.getId());
+			cmd.setInt(1, s.getTest().getId());
 			cmd.setInt(2, s.getTheme().getId());
 			ResultSet rs = cmd.executeQuery();		
 			if(rs.next()){
@@ -111,7 +112,7 @@ public class SectionDAL implements IDAL<Section> {
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?,?)}");
-			cmd.setInt(1, s.getId());
+			cmd.setInt(1, s.getTest().getId());
 			cmd.setInt(2, s.getTheme().getId());
 			cmd.setInt(3, s.getNbQuestions());
 			resultat = (cmd.executeUpdate()>0);
@@ -135,7 +136,7 @@ public class SectionDAL implements IDAL<Section> {
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?,?)}");
-			cmd.setInt(1, s.getId());
+			cmd.setInt(1, s.getTest().getId());
 			cmd.setInt(2, s.getTheme().getId());
 			cmd.setInt(3, s.getNbQuestions());
 			resultat = (cmd.executeUpdate()>0);
@@ -159,7 +160,7 @@ public class SectionDAL implements IDAL<Section> {
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?)}");
-			cmd.setInt(1, s.getId());
+			cmd.setInt(1, s.getTest().getId());
 			cmd.setInt(2, s.getTheme().getId());
 			resultat = (cmd.executeUpdate()>0);
 		} catch (SQLException e) {
@@ -178,7 +179,8 @@ public class SectionDAL implements IDAL<Section> {
 	@Override
 	public Section itemBuilder(ResultSet rs) throws SQLException {
 		Section s = new Section();
-		s.setId(rs.getInt("idTest"));
+		Test test = new Test();
+		test.setId(rs.getInt("idTest"));
 		Theme t = new Theme();
 		t.setId(rs.getInt("idTheme"));
 		s.setNbQuestions(rs.getInt("nombreQuestions"));

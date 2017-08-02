@@ -12,9 +12,29 @@ public class Reponse {
 	private int id;
 	private String enonce;
 	private boolean isCorrect;
+	private Question question;
 	
 	
-	
+	/**
+	 * Getter pour question.
+	 * @return the question
+	 */
+	public Question getQuestion() {
+		return question;
+	}
+
+
+
+	/**
+	 * Getter pour question.
+	 * @param question the question to set
+	 */
+	public void setQuestion(Question question) {
+		this.question = question;
+	}
+
+
+
 	/**
 	 * @return the id
 	 */

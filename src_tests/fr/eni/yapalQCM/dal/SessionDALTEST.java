@@ -57,7 +57,7 @@ public class SessionDALTEST implements ITEST {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		for(int i = 0 ; i<2 ; i++){
+		for(int i = 1 ; i<3 ; i++){
 			sd.add(session);
 		}
 	}

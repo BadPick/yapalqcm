@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import fr.eni.yapalQCM.bo.Question;
 import fr.eni.yapalQCM.bo.Reponse;
 
 /**
@@ -32,6 +33,9 @@ public class ReponseDALTEST implements ITEST {
 	public static Reponse reponse;
 	public static ReponseDAL rd;
 	public static List<Reponse> reponses = new ArrayList<Reponse>();
+	public static Question question;
+	public static QuestionDAL qd;
+	public static List<Question> questions = new ArrayList<Question>();
 	
 	/**
 	 * Méthode en charge d'initialiser les variables de notre classe de test
@@ -41,8 +45,7 @@ public class ReponseDALTEST implements ITEST {
 	public static void setUpBeforeClass() throws Exception {
 		rd = new ReponseDAL();
 		reponse = new Reponse();
-		reponse.setEnonce("mareponse");
-		reponse.setCorrect(true);
+		
 	}
 
 	/**
@@ -60,6 +63,12 @@ public class ReponseDALTEST implements ITEST {
 	@Before
 	public void setUp() throws Exception {
 		for(int i = 0 ; i<2 ; i++){
+			reponse.setEnonce("mareponse");
+			reponse.setCorrect(true);
+			question = new Question();
+			question.setId(i);
+			reponse.setQuestion(question);
+			qd.add(question);
 			rd.add(reponse);
 		}
 	}
@@ -75,12 +84,23 @@ public class ReponseDALTEST implements ITEST {
 		{
 			rd.delete(reponse);
 		}
+		questions = qd.getAll();
+		for(Question question : questions)
+		{
+			qd.delete(question);
+		}
 		
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement cmd = cnx.createStatement();
 			cmd.execute("DBCC CHECKIDENT ('REPONSES', RESEED, 0)");
 		} catch (SQLException e) {
 			System.out.println("Problème de réinitialisation de l'auto-incrément de la table REPONSES");
+		}
+		try(Connection cnx = DBConnection.getConnection()) {
+			Statement cmd = cnx.createStatement();
+			cmd.execute("DBCC CHECKIDENT ('QUESTIONS', RESEED, 0)");
+		} catch (SQLException e) {
+			System.out.println("Problème de réinitialisation de l'auto-incrément de la table QUESTIONS");
 		}
 	}
 

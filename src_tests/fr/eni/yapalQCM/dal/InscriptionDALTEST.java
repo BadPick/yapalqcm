@@ -40,6 +40,7 @@ public class InscriptionDALTEST implements ITEST {
 	public static InscriptionDAL id;
 	public static UtilisateurDAL ud;
 	public static SessionDAL sd;
+	public static RoleDAL rd;
 	
 	/**
 	 * Méthode en charge d'initialiser les variables de notre classe de test
@@ -50,6 +51,7 @@ public class InscriptionDALTEST implements ITEST {
 		id = new InscriptionDAL();
 		ud = new UtilisateurDAL();
 		sd = new SessionDAL();
+		rd = new RoleDAL();
 		
 		inscription = new Inscription();
 		
@@ -60,7 +62,9 @@ public class InscriptionDALTEST implements ITEST {
 		u.setPrenom("prenom");
 		u.setEmail("mail@mail.com");
 		u.setPassword("password");
-		u.setRole(new Role());
+		Role r = new Role();
+		r.setId(1);
+		u.setRole(r);
 		i.setCandidat(u);
 		Session s = new Session();
 		s.setId(2);
@@ -86,18 +90,24 @@ public class InscriptionDALTEST implements ITEST {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		for(int i = 0 ; i<2 ; i++){
+		for(int i = 1 ; i<3 ; i++){
 			Utilisateur u = new Utilisateur();
+			u.setId(i);
 			u.setNom("nom");
 			u.setPrenom("prenom");
 			u.setEmail("mail@mail.com");
 			u.setPassword("password");
-			u.setRole(new Role());
+			Role r = new Role();
+			r.setId(i);
+			r.setName("monrole");
+			u.setRole(r);
 			inscription.setCandidat(u);
 			Session s = new Session();
+			s.setId(i);
 			s.setNbPlaces(25);
 			s.setTests(new ArrayList<fr.eni.yapalQCM.bo.Test>());
 			inscription.setSession(s);
+			rd.add(r);
 			ud.add(u);
 			sd.add(s);
 			id.add(inscription);

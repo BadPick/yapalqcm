@@ -9,12 +9,32 @@ package fr.eni.yapalQCM.bo;
  */
 public class Section {
 
-	private int id;
+	private Test test;
 	private Theme theme;
 	private int nbQuestions;
 	
 	
 	
+	/**
+	 * Getter pour test.
+	 * @return the test
+	 */
+	public Test getTest() {
+		return test;
+	}
+
+
+
+	/**
+	 * Getter pour test.
+	 * @param test the test to set
+	 */
+	public void setTest(Test test) {
+		this.test = test;
+	}
+
+
+
 	/**
 	 * @return the theme
 	 */
@@ -29,18 +49,6 @@ public class Section {
 	 */
 	public void setTheme(Theme theme) {
 		this.theme = theme;
-	}
-
-
-
-	public int getId() {
-		return id;
-	}
-
-
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 

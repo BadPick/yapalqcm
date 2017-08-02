@@ -57,6 +57,11 @@ public class ReponseDAL implements IDAL<Reponse> {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public boolean add(Reponse r, int idQuestion) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	/* (non-Javadoc)
 	 * {@inheritDoc}

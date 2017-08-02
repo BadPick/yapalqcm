@@ -41,6 +41,7 @@ public class ResultatDALTEST implements ITEST {
 	public static UtilisateurDAL ud;
 	public static SessionDAL sd;
 	public static TestDAL td;
+	public static RoleDAL roledal;
 	
 	/**
 	 * Méthode en charge d'initialiser les variables de notre classe de test
@@ -52,6 +53,7 @@ public class ResultatDALTEST implements ITEST {
 		ud = new UtilisateurDAL();
 		sd = new SessionDAL();
 		td = new TestDAL();
+		roledal = new RoleDAL();
 		
 		resultat = new Resultat();
 		
@@ -98,7 +100,7 @@ public class ResultatDALTEST implements ITEST {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		for(int i = 0 ; i<2 ; i++){
+		for(int i = 1 ; i<3 ; i++){
 			resultat.setTempsEcoule(1500);
 			resultat.setSeuilObtenu(10.52f);
 			Utilisateur u = new Utilisateur();
@@ -106,18 +108,24 @@ public class ResultatDALTEST implements ITEST {
 			u.setPrenom("prenom");
 			u.setEmail("mail@mail.com");
 			u.setPassword("password");
-			u.setRole(new Role());
+			Role role = new Role();
+			role.setId(i);
+			role.setName("monrole");
+			u.setRole(role);
 			resultat.setCandidat(u);
 			Session s = new Session();
+			s.setId(i);
 			s.setNbPlaces(25);
 			s.setTests(new ArrayList<fr.eni.yapalQCM.bo.Test>());
 			resultat.setSession(s);
 			fr.eni.yapalQCM.bo.Test t = new fr.eni.yapalQCM.bo.Test();
+			t.setId(i);
 			t.setDuree(3600);
 			t.setNom("test");
 			t.setSeuilAcquis(14);
 			t.setSeuilEnCoursDacquisition(10);
 			resultat.setTest(t);
+			roledal.add(role);
 			ud.add(u);
 			sd.add(s);
 			td.add(t);
@@ -228,11 +236,7 @@ public class ResultatDALTEST implements ITEST {
 	@Override
 	@Test
 	public void testAdd() {
-		Resultat res = new Resultat();
-		res.setTempsEcoule(1500);
-		res.setSeuilObtenu(10.52f);
-		
-		if(rd.add(res)==false){
+		if(rd.add(resultat)==false){
 			fail("l'insertion a retourné false");			
 		}
 		

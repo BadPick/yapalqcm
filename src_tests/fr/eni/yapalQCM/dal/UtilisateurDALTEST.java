@@ -33,6 +33,7 @@ public class UtilisateurDALTEST implements ITEST {
 	public static List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
 	public static UtilisateurDAL ud;
 	public static Role role;
+	public static RoleDAL rd;
 	
 	/**
 	 * Méthode en charge d'initialiser les variables de notre classe de test
@@ -41,15 +42,9 @@ public class UtilisateurDALTEST implements ITEST {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		ud = new UtilisateurDAL();
+		rd = new RoleDAL();
 		utilisateur = new Utilisateur();
-		utilisateur.setNom("util");
-		utilisateur.setPrenom("isateur");
-		utilisateur.setEmail("util@util.com");
-		utilisateur.setPassword("myutil");
-		role = new Role();
-		role.setId(1);
-		role.setName("role");
-		utilisateur.setRole(role);
+		
 	}
 
 	/**
@@ -66,7 +61,16 @@ public class UtilisateurDALTEST implements ITEST {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		for(int i = 0 ; i<2 ; i++){
+		for(int i = 1 ; i<3 ; i++){
+			utilisateur.setNom("util");
+			utilisateur.setPrenom("isateur");
+			utilisateur.setEmail("util@util.com");
+			utilisateur.setPassword("myutil");
+			role = new Role();
+			role.setId(i);
+			role.setName("role");
+			utilisateur.setRole(role);
+			rd.add(role);
 			ud.add(utilisateur);
 		}
 	}

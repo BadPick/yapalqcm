@@ -33,6 +33,9 @@ public class SectionDALTEST implements ITEST {
 	public static List<Section> sections = new ArrayList<Section>();
 	public static SectionDAL sd;
 	public static Theme theme;
+	public static fr.eni.yapalQCM.bo.Test test;
+	public static TestDAL td;
+	public static List<fr.eni.yapalQCM.bo.Test> tests = new ArrayList<fr.eni.yapalQCM.bo.Test>();
 	
 	/**
 	 * Méthode en charge d'initialiser les variables de notre classe de test
@@ -41,9 +44,8 @@ public class SectionDALTEST implements ITEST {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		sd = new SectionDAL();
+		td = new TestDAL();
 		section = new Section();
-		theme = new Theme();
-		theme.setNom("theme");
 	}
 
 	/**
@@ -60,9 +62,18 @@ public class SectionDALTEST implements ITEST {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		for(int i = 0 ; i<2 ; i++){
+		for(int i = 1 ; i<3 ; i++){
+			test = new fr.eni.yapalQCM.bo.Test();
+			test.setId(1);
+			theme = new Theme();
+			theme.setId(i);
+			theme.setNom("theme");
+			test = new fr.eni.yapalQCM.bo.Test();
+			test.setId(i);
 			section.setNbQuestions(15);
 			section.setTheme(theme);
+			section.setTest(test);
+			td.add(test);
 			sd.add(section);
 		}
 	}
@@ -78,12 +89,23 @@ public class SectionDALTEST implements ITEST {
 		{
 			sd.delete(section);
 		}
+		tests = td.getAll();
+		for(fr.eni.yapalQCM.bo.Test test : tests)
+		{
+			td.delete(test);
+		}
 		
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement cmd = cnx.createStatement();
 			cmd.execute("DBCC CHECKIDENT ('SECTIONS', RESEED, 0)");
 		} catch (SQLException e) {
 			System.out.println("Problème de réinitialisation de l'auto-incrément de la table SECTIONS");
+		}
+		try(Connection cnx = DBConnection.getConnection()) {
+			Statement cmd = cnx.createStatement();
+			cmd.execute("DBCC CHECKIDENT ('TESTS', RESEED, 0)");
+		} catch (SQLException e) {
+			System.out.println("Problème de réinitialisation de l'auto-incrément de la table TESTS");
 		}
 	}
 
@@ -107,15 +129,19 @@ public class SectionDALTEST implements ITEST {
 	@Test
 	public void testGetOne() throws SQLException {
 		Section s = new Section();
-		s.setId(3);
-		int result = sd.getOne(s).getId();
+		s.setTest(new fr.eni.yapalQCM.bo.Test());
+		s.getTest().setId(3);
+		s.setTheme(new Theme());
+		s.getTheme().setId(3);
+		int result = sd.getOne(s).getTest().getId();
 		if(result>0){
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
 		
-		s.setId(2);
+		s.getTest().setId(1);
+		s.getTheme().setId(1);
 		
-		result = sd.getOne(s).getId();
+		result = sd.getOne(s).getTest().getId();
 		if(result!=2){
 			fail("L'élément ciblé n'a pas été récupéré");
 		}
@@ -163,13 +189,13 @@ public class SectionDALTEST implements ITEST {
 		Section s = new Section();
 		s.setNbQuestions(10);
 		s.setTheme(theme);
-		s.setId(1);
+		s.setTest(test);
 		
 		if(sd.update(s)==false){
 			fail("l'update a retourné false");			
 		}
 		
-		s.setId(3);
+		s.getTest().setId(3);
 		
 		if(sd.update(s)==true){
 			fail("l'udpate est réussi sur un mauvais identifiant");
@@ -186,12 +212,12 @@ public class SectionDALTEST implements ITEST {
 	@Test
 	public void testDelete() throws SQLException {
 		Section s = new Section();
-		s.setId(3);
+		s.getTest().setId(3);
 		if(sd.delete(s)==true){
 			fail("La suppression a réussi sur un mauvais identifiant");
 		}
 		
-		s.setId(2);
+		s.getTest().setId(1);
 		
 		if(sd.delete(s)==false){
 			fail("La suppression a retourné false");
