@@ -6,8 +6,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Login</title>
-<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="./css/yapalcss.css">
+<link rel="stylesheet" type="text/css" href="yapalQCM/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="yapalQCM/css/yapalcss.css">
 </head>
 <body>
 	<form action="ConnexionUtilisateur" method="POST">
@@ -20,11 +20,11 @@
 		<input type="password" name="j_password" id="pwd" class="form-control"> 
 		</div>
 		<div class="form-group">
-		<label for="pwd">Se souvenir de moi</label>
 		<input type="checkbox" name="RemenberMe" value="remember-me"> 
+		<label for="pwd">Se souvenir de moi</label>
 		</div>
 		<input type="submit" value="Login" class="btn form-control">
 	</form>
 </body>
-<script src="./js/jquery-3.2.1.min.js"></script>
+<script src="yapalQCM/js/jquery-3.2.1.min.js"></script>
 </html>

@@ -13,16 +13,18 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import fr.eni.yapalQCM.bo.Utilisateur;
+
 /**
- * Servlet Filter implementation class ConnexionFiltre
+ * Servlet Filter implementation class FormateurFiltre
  */
-@WebFilter("/*")
-public class ConnexionFiltre implements Filter {
+@WebFilter("/Formateur/*")
+public class FormateurFiltre implements Filter {
 
     /**
      * Default constructor. 
      */
-    public ConnexionFiltre() {
+    public FormateurFiltre() {
         // TODO Auto-generated constructor stub
     }
 
@@ -40,8 +42,9 @@ public class ConnexionFiltre implements Filter {
 		HttpSession session;
 		session = ((HttpServletRequest)request).getSession();
 		RequestDispatcher rd;
-		if (session.getAttribute("user")==null) {
-			rd=((HttpServletRequest)request).getRequestDispatcher("/login.jsp");
+		Utilisateur util = (Utilisateur) session.getAttribute("user");
+		if (util.getRole().getName()!="Formateur") {
+			rd=((HttpServletRequest)request).getRequestDispatcher(((HttpServletRequest)request).getContextPath()+"/error.jsp");
 			rd.forward(request, response);
 		} 
 		chain.doFilter(request, response);
