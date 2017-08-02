@@ -39,7 +39,7 @@ public class InscriptionDAL implements IDAL<Inscription> {
 		int resultat = 0;
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement requete = cnx.createStatement();
-			ResultSet rs = requete.executeQuery("SELECT COUNT(*) AS Total FROM INSCRIPTIONS");
+			ResultSet rs = requete.executeQuery(InscriptionSQL.GET_LENGTH);
 			if(rs.next()){
 				resultat = rs.getInt("Total");
 			}
@@ -61,7 +61,7 @@ public class InscriptionDAL implements IDAL<Inscription> {
 		
 		Inscription inscription = null;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?)}");
+			CallableStatement cmd = cnx.prepareCall(InscriptionSQL.GET_ONE);
 			cmd.setInt(1, i.getCandidat().getId());
 			cmd.setInt(2, i.getSession().getId());
 			ResultSet rs = cmd.executeQuery();		
@@ -87,7 +87,7 @@ public class InscriptionDAL implements IDAL<Inscription> {
 		
 		ArrayList<Inscription> listeInscriptions = new ArrayList<Inscription>();
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********}");
+			CallableStatement cmd = cnx.prepareCall(InscriptionSQL.GET_ALL);
 			ResultSet rs = cmd.executeQuery();		
 			while(rs.next()){
 				listeInscriptions.add(itemBuilder(rs));
@@ -111,7 +111,7 @@ public class InscriptionDAL implements IDAL<Inscription> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?)}");
+			CallableStatement cmd = cnx.prepareCall(InscriptionSQL.ADD);
 			cmd.setInt(1, i.getCandidat().getId());
 			cmd.setInt(2, i.getSession().getId());
 			resultat = (cmd.executeUpdate()>0);
@@ -134,7 +134,7 @@ public class InscriptionDAL implements IDAL<Inscription> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?)}");
+			CallableStatement cmd = cnx.prepareCall(InscriptionSQL.UPDATE);
 			cmd.setInt(1, i.getCandidat().getId());
 			cmd.setInt(2, i.getSession().getId());
 			resultat = (cmd.executeUpdate()>0);
@@ -157,7 +157,7 @@ public class InscriptionDAL implements IDAL<Inscription> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?)}");
+			CallableStatement cmd = cnx.prepareCall(InscriptionSQL.DELETE);
 			cmd.setInt(1, i.getCandidat().getId());
 			cmd.setInt(2, i.getSession().getId());
 			resultat = (cmd.executeUpdate()>0);
