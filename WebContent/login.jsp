@@ -10,14 +10,18 @@
 <link rel="stylesheet" type="text/css" href="./css/yapalcss.css">
 </head>
 <body>
-	<form action="j_security_check" method="POST">
-	<div class="form-group">
+	<form action="ConnexionUtilisateur" method="POST">
+		<div class="form-group">
 		<label for="name">Username:</label> 
 		<input type="text" name="j_username" id="name" class="form-control">
 		</div>
 		<div class="form-group">
 		<label for="pwd">Password:</label>
 		<input type="password" name="j_password" id="pwd" class="form-control"> 
+		</div>
+		<div class="form-group">
+		<label for="pwd">Se souvenir de moi</label>
+		<input type="checkbox" name="RemenberMe" value="remember-me"> 
 		</div>
 		<input type="submit" value="Login" class="btn form-control">
 	</form>

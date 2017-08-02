@@ -7,4 +7,5 @@ public abstract class UtilisateurSQL {
 	public static String ADD="INSERT INTO UTILISATEURS (idRole,password,nom,prenom,dateNaissance,adresseEmail) VALUES (?,?,?,?,?,?);";
 	public static String UPDATE="UPDATE UTILISATEURS SET idRole=?,password=?,nom=?,prenom=?,dateNaissance=?,adresseEmail=? WHERE idUser=?;";
 	public static String DELETE="DELETE FROM UTILISATEURS WHERE idUser=?;";
+	public static String GET_CONNEXION="SELECT * FROM UTILISATEURS WHERE adresseEmail=? AND password=?;";
 }

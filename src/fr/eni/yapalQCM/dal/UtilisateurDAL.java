@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import fr.eni.yapalQCM.bo.Role;
 import fr.eni.yapalQCM.bo.Utilisateur;
+import fr.eni.yapalQCM.utils.ToolUtilisateur;
 import fr.eni.yapalQCM.utils.YapalLogger;
 
 /**
@@ -112,7 +113,7 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall(UtilisateurSQL.ADD);
 			cmd.setInt(1, u.getRole().getId());
-			cmd.setString(2, u.getPassword());
+			cmd.setString(2, ToolUtilisateur.encryptPassword(u.getPassword()));
 			cmd.setString(3, u.getNom());
 			cmd.setString(4, u.getPrenom());		
 			cmd.setDate(5, (Date) u.getDateDeNaissance());
@@ -177,6 +178,34 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 		return resultat;
 	}
 
+	/**
+	 * Méthode permettant de récupérer un objet Utilisateur.
+	 * @param login
+	 * @param password
+	 * @return Utilisateur
+	 * @throws SQLException 
+	 */
+	public Utilisateur getConnexion(String login,String password) throws SQLException {
+		logger.entering("UtilisateurDAL", "getConnexion");
+		Utilisateur util=new Utilisateur();
+		String encryptPassword = ToolUtilisateur.encryptPassword(password);		
+		try(Connection cnx = DBConnection.getConnection()) {
+			CallableStatement cmd = cnx.prepareCall(UtilisateurSQL.GET_CONNEXION);
+			cmd.setString(1, login);
+			cmd.setString(2, encryptPassword);
+			ResultSet rs = cmd.executeQuery();		
+			if(rs.next()){
+				util = itemBuilder(rs);
+			}
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}		
+		logger.exiting("UtilisateurDAL", "getConnexion");	
+		return util;
+	}
+	
+	
 	/* (non-Javadoc)
 	 * {@inheritDoc}
 	 * @see fr.eni.yapalQCM.dal.IDAL#itemBuilder(java.sql.ResultSet)
@@ -194,5 +223,7 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 		role.setId(rs.getInt("idRole"));
 		return u;
 	}
+	
+	
 
 }
