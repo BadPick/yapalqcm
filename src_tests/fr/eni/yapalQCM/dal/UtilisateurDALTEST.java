@@ -108,7 +108,7 @@ public class UtilisateurDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetOne() {
+	public void testGetOne() throws SQLException {
 		Utilisateur u = new Utilisateur();
 		u.setId(3);
 		int result = ud.getOne(u).getId();
@@ -131,7 +131,7 @@ public class UtilisateurDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetAll() {
+	public void testGetAll() throws SQLException {
 		List<Utilisateur> listGA = new ArrayList<Utilisateur>();
 		listGA = ud.getAll();
 		if(listGA.size()!=2){
@@ -148,7 +148,7 @@ public class UtilisateurDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testAdd() {
+	public void testAdd() throws SQLException {
 		if(ud.add(utilisateur)==false){
 			fail("l'insertion a retourné false");			
 		}
@@ -162,7 +162,7 @@ public class UtilisateurDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testUpdate() {
+	public void testUpdate() throws SQLException {
 		Utilisateur u = new Utilisateur();
 		u = new Utilisateur();
 		u.setNom("util");
@@ -193,7 +193,7 @@ public class UtilisateurDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testDelete() {
+	public void testDelete() throws SQLException {
 		Utilisateur u = new Utilisateur();
 		u.setId(3);
 		if(ud.delete(u)==true){

@@ -164,7 +164,7 @@ public class InscriptionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetOne() {
+	public void testGetOne() throws SQLException {
 		int result = id.getOne(i).getCandidat().getId();
 		if(result!=2){
 			fail("L'élément ciblé n'a pas été récupéré");
@@ -178,7 +178,7 @@ public class InscriptionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetAll() {
+	public void testGetAll() throws SQLException {
 		List<Inscription> listGA = new ArrayList<Inscription>();
 		listGA = id.getAll();
 		if(listGA.size()!=2){
@@ -195,7 +195,7 @@ public class InscriptionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testAdd() {
+	public void testAdd() throws SQLException {
 		if(id.add(inscription)==false){
 			fail("l'insertion a retourné false");			
 		}
@@ -209,7 +209,7 @@ public class InscriptionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testUpdate() {
+	public void testUpdate() throws SQLException {
 		if(id.update(i)==false){
 			fail("l'update a retourné false");			
 		}
@@ -229,7 +229,7 @@ public class InscriptionDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testDelete() {	
+	public void testDelete() throws SQLException {	
 		if(id.delete(i)==true){
 			fail("La suppression a réussi sur un mauvais identifiant");
 		}

@@ -5,6 +5,8 @@
  */
 package fr.eni.yapalQCM.dal;
 
+import java.sql.SQLException;
+
 import org.junit.Test;
 
 /**
@@ -19,25 +21,25 @@ public interface ITEST {
 	 * Méthode en charge de tester la méthode getOne (récupération d'un élément par son id)
 	 */
 	@Test
-	public void testGetOne();
+	public void testGetOne() throws SQLException;
 	/**
 	 * Méthode en charge de tester la méthode getAll (récupération de tous les éléments d'une table)
 	 */
 	@Test
-	public void testGetAll();
+	public void testGetAll() throws SQLException;
 	/**
 	 * Méthode en charge de tester la méthode add (insertion d'un élément en base de données)
 	 */
 	@Test
-	public void testAdd();
+	public void testAdd() throws SQLException;
 	/**
 	 * Méthode en charge de tester la méthode update (modification d'un élément en base de données)
 	 */
 	@Test
-	public void testUpdate();
+	public void testUpdate() throws SQLException;
 	/**
 	 * Méthode en charge de tester la méthode delete (suppression d'un élément en base de données)
 	 */
 	@Test
-	public void testDelete();
+	public void testDelete() throws SQLException;
 }

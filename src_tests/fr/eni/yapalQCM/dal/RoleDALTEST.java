@@ -101,7 +101,7 @@ public class RoleDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetOne() {
+	public void testGetOne() throws SQLException {
 		Role r = new Role();
 		r.setId(3);
 		int result = rd.getOne(r).getId();
@@ -122,7 +122,7 @@ public class RoleDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetAll() {
+	public void testGetAll() throws SQLException {
 		List<Role> listGA = new ArrayList<Role>();
 		listGA = rd.getAll();
 		if(listGA.size()!=2){
@@ -139,7 +139,7 @@ public class RoleDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testAdd() {
+	public void testAdd() throws SQLException {
 		role.setName("monrole");
 		
 		if(rd.add(role)==false){
@@ -155,7 +155,7 @@ public class RoleDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testUpdate() {
+	public void testUpdate() throws SQLException {
 		Role r = new Role();
 		r.setId(1);
 		r.setName("montest");
@@ -179,7 +179,7 @@ public class RoleDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testDelete() {
+	public void testDelete() throws SQLException {
 		Role r = new Role();
 		r.setId(3);
 		if(rd.delete(r)==true){
