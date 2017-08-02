@@ -39,7 +39,7 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 		int resultat = 0;
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement requete = cnx.createStatement();
-			ResultSet rs = requete.executeQuery("SELECT COUNT(*) AS Total FROM UTILISATEURS");
+			ResultSet rs = requete.executeQuery(UtilisateurSQL.GET_LENGTH);
 			if(rs.next()){
 				resultat = rs.getInt("Total");
 			}
@@ -61,7 +61,7 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 		
 		Utilisateur utilisateur = null;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?)}");
+			CallableStatement cmd = cnx.prepareCall(UtilisateurSQL.GET_ONE);
 			cmd.setInt(1, u.getId());
 			ResultSet rs = cmd.executeQuery();		
 			if(rs.next()){
@@ -86,7 +86,7 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 		
 		ArrayList<Utilisateur> listeUtilisateurs = new ArrayList<Utilisateur>();
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********}");
+			CallableStatement cmd = cnx.prepareCall(UtilisateurSQL.GET_ALL);
 			ResultSet rs = cmd.executeQuery();		
 			while(rs.next()){
 				listeUtilisateurs.add(itemBuilder(rs));
@@ -110,12 +110,13 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?,?,?,?)}");
-			cmd.setString(1, u.getNom());
-			cmd.setString(2, u.getPrenom());
-			cmd.setString(3, u.getPassword());
-			cmd.setDate(4, (Date) u.getDateDeNaissance());
-			cmd.setString(5, u.getEmail());
+			CallableStatement cmd = cnx.prepareCall(UtilisateurSQL.ADD);
+			cmd.setInt(1, u.getRole().getId());
+			cmd.setString(2, u.getPassword());
+			cmd.setString(3, u.getNom());
+			cmd.setString(4, u.getPrenom());		
+			cmd.setDate(5, (Date) u.getDateDeNaissance());
+			cmd.setString(6, u.getEmail());
 			resultat = (cmd.executeUpdate()>0);
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
@@ -136,13 +137,14 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?,?,?,?,?)}");
-			cmd.setInt(1, u.getId());
+			CallableStatement cmd = cnx.prepareCall(UtilisateurSQL.UPDATE);
+			cmd.setInt(1, u.getRole().getId());
 			cmd.setString(2, u.getNom());
 			cmd.setString(3, u.getPrenom());
 			cmd.setString(4, u.getPassword());
 			cmd.setDate(5, (Date) u.getDateDeNaissance());
 			cmd.setString(6, u.getEmail());
+			cmd.setInt(7, u.getId());
 			resultat = (cmd.executeUpdate()>0);
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
@@ -163,7 +165,7 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?)}");
+			CallableStatement cmd = cnx.prepareCall(UtilisateurSQL.DELETE);
 			cmd.setInt(1, u.getId());
 			resultat = (cmd.executeUpdate()>0);
 		} catch (SQLException e) {

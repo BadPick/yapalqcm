@@ -37,7 +37,7 @@ public class RoleDAL implements IDAL<Role> {
 		int resultat = 0;
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement requete = cnx.createStatement();
-			ResultSet rs = requete.executeQuery("SELECT COUNT(*) AS Total FROM ROLES");
+			ResultSet rs = requete.executeQuery(RoleSQL.GET_LENGTH);
 			if(rs.next()){
 				resultat = rs.getInt("Total");
 			}
@@ -59,7 +59,7 @@ public class RoleDAL implements IDAL<Role> {
 		
 		Role role = null;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?)}");
+			CallableStatement cmd = cnx.prepareCall(RoleSQL.GET_ONE);
 			cmd.setInt(1, r.getId());
 			ResultSet rs = cmd.executeQuery();		
 			if(rs.next()){
@@ -84,7 +84,7 @@ public class RoleDAL implements IDAL<Role> {
 		
 		ArrayList<Role> listeRoles = new ArrayList<Role>();
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********}");
+			CallableStatement cmd = cnx.prepareCall(RoleSQL.GET_ALL);
 			ResultSet rs = cmd.executeQuery();		
 			while(rs.next()){
 				listeRoles.add(itemBuilder(rs));
@@ -108,7 +108,7 @@ public class RoleDAL implements IDAL<Role> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?)}");
+			CallableStatement cmd = cnx.prepareCall(RoleSQL.ADD);
 			cmd.setString(1, r.getName());
 			resultat = (cmd.executeUpdate()>0);
 		} catch (SQLException e) {
@@ -130,9 +130,9 @@ public class RoleDAL implements IDAL<Role> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?)}");
-			cmd.setInt(1, r.getId());
-			cmd.setString(2, r.getName());
+			CallableStatement cmd = cnx.prepareCall(RoleSQL.UPDATE);
+			cmd.setString(1, r.getName());
+			cmd.setInt(2, r.getId());			
 			resultat = (cmd.executeUpdate()>0);
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
@@ -153,7 +153,7 @@ public class RoleDAL implements IDAL<Role> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?)}");
+			CallableStatement cmd = cnx.prepareCall(RoleSQL.DELETE);
 			cmd.setInt(1, r.getId());
 			resultat = (cmd.executeUpdate()>0);
 		} catch (SQLException e) {
