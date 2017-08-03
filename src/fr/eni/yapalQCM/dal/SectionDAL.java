@@ -39,7 +39,7 @@ public class SectionDAL implements IDAL<Section> {
 		int resultat = 0;
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement requete = cnx.createStatement();
-			ResultSet rs = requete.executeQuery("SELECT COUNT(*) AS Total FROM SECTIONS");
+			ResultSet rs = requete.executeQuery(SectionSQL.GET_LENGTH);
 			if(rs.next()){
 				resultat = rs.getInt("Total");
 			}
@@ -61,7 +61,7 @@ public class SectionDAL implements IDAL<Section> {
 		
 		Section section = null;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?)}");
+			CallableStatement cmd = cnx.prepareCall(SectionSQL.GET_ONE);
 			cmd.setInt(1, s.getTest().getId());
 			cmd.setInt(2, s.getTheme().getId());
 			ResultSet rs = cmd.executeQuery();		
@@ -87,7 +87,7 @@ public class SectionDAL implements IDAL<Section> {
 		
 		ArrayList<Section> listeSections = new ArrayList<Section>();
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********}");
+			CallableStatement cmd = cnx.prepareCall(SectionSQL.GET_ALL);
 			ResultSet rs = cmd.executeQuery();		
 			while(rs.next()){
 				listeSections.add(itemBuilder(rs));
@@ -111,7 +111,7 @@ public class SectionDAL implements IDAL<Section> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?,?)}");
+			CallableStatement cmd = cnx.prepareCall(SectionSQL.ADD);
 			cmd.setInt(1, s.getTest().getId());
 			cmd.setInt(2, s.getTheme().getId());
 			cmd.setInt(3, s.getNbQuestions());
@@ -135,7 +135,7 @@ public class SectionDAL implements IDAL<Section> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?,?)}");
+			CallableStatement cmd = cnx.prepareCall(SectionSQL.UPDATE);
 			cmd.setInt(1, s.getTest().getId());
 			cmd.setInt(2, s.getTheme().getId());
 			cmd.setInt(3, s.getNbQuestions());
@@ -159,7 +159,7 @@ public class SectionDAL implements IDAL<Section> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?)}");
+			CallableStatement cmd = cnx.prepareCall(SectionSQL.DELETE);
 			cmd.setInt(1, s.getTest().getId());
 			cmd.setInt(2, s.getTheme().getId());
 			resultat = (cmd.executeUpdate()>0);

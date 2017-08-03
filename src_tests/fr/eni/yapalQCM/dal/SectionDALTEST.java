@@ -33,6 +33,8 @@ public class SectionDALTEST implements ITEST {
 	public static List<Section> sections = new ArrayList<Section>();
 	public static SectionDAL sd;
 	public static Theme theme;
+	public static List<Theme> themes = new ArrayList<Theme>();
+	public static ThemeDAL themedal;
 	public static fr.eni.yapalQCM.bo.Test test;
 	public static TestDAL td;
 	public static List<fr.eni.yapalQCM.bo.Test> tests = new ArrayList<fr.eni.yapalQCM.bo.Test>();
@@ -45,6 +47,7 @@ public class SectionDALTEST implements ITEST {
 	public static void setUpBeforeClass() throws Exception {
 		sd = new SectionDAL();
 		td = new TestDAL();
+		themedal = new ThemeDAL();
 		section = new Section();
 	}
 
@@ -73,6 +76,7 @@ public class SectionDALTEST implements ITEST {
 			section.setNbQuestions(15);
 			section.setTheme(theme);
 			section.setTest(test);
+			themedal.add(theme);
 			td.add(test);
 			sd.add(section);
 		}
@@ -94,6 +98,11 @@ public class SectionDALTEST implements ITEST {
 		{
 			td.delete(test);
 		}
+		themes = themedal.getAll();
+		for(Theme theme : themes)
+		{
+			themedal.delete(theme);
+		}
 		
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement cmd = cnx.createStatement();
@@ -106,6 +115,12 @@ public class SectionDALTEST implements ITEST {
 			cmd.execute("DBCC CHECKIDENT ('TESTS', RESEED, 0)");
 		} catch (SQLException e) {
 			System.out.println("Problème de réinitialisation de l'auto-incrément de la table TESTS");
+		}
+		try(Connection cnx = DBConnection.getConnection()) {
+			Statement cmd = cnx.createStatement();
+			cmd.execute("DBCC CHECKIDENT ('THEMES', RESEED, 0)");
+		} catch (SQLException e) {
+			System.out.println("Problème de réinitialisation de l'auto-incrément de la table THEMES");
 		}
 	}
 
@@ -133,15 +148,15 @@ public class SectionDALTEST implements ITEST {
 		s.getTest().setId(3);
 		s.setTheme(new Theme());
 		s.getTheme().setId(3);
-		int result = sd.getOne(s).getTest().getId();
-		if(result>0){
+		Section se = sd.getOne(s);
+		if(se!=null){
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
 		
 		s.getTest().setId(2);
 		s.getTheme().setId(2);
 		
-		result = sd.getOne(s).getTest().getId();
+		int result = sd.getOne(s).getTest().getId();
 		if(result!=2){
 			fail("L'élément ciblé n'a pas été récupéré");
 		}

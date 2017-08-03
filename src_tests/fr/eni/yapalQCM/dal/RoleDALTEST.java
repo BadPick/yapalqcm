@@ -104,12 +104,13 @@ public class RoleDALTEST implements ITEST {
 	public void testGetOne() throws SQLException {
 		Role r = new Role();
 		r.setId(3);
-		int result = rd.getOne(r).getId();
-		if(result>0){
+		Role re = rd.getOne(r);
+		if(re!=null){
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
 		
-		result = rd.getOne(r).getId();
+		r.setId(2);
+		int result = rd.getOne(r).getId();
 		if(result!=2){
 			fail("L'élément ciblé n'a pas été récupéré");
 		}

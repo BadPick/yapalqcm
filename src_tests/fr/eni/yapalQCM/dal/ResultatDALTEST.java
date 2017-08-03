@@ -204,12 +204,12 @@ public class ResultatDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetOne() {
-		int result = rd.getOne(r).getCandidat().getId();
-		if(result!=2){
-			fail("L'élément ciblé n'a pas été récupéré");
+	public void testGetOne() throws SQLException {
+		Resultat re = rd.getOne(resultat);
+		if(re!=null){
+			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
-		assertEquals(2, result);
+		assertEquals(2, rd.getOne(resultat).getCandidat().getId());
 	}
 
 	/* (non-Javadoc)
@@ -218,7 +218,7 @@ public class ResultatDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetAll() {
+	public void testGetAll() throws SQLException {
 		List<Resultat> listGA = new ArrayList<Resultat>();
 		listGA = rd.getAll();
 		if(listGA.size()!=2){
@@ -235,7 +235,7 @@ public class ResultatDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testAdd() {
+	public void testAdd() throws SQLException {
 		if(rd.add(resultat)==false){
 			fail("l'insertion a retourné false");			
 		}
@@ -249,7 +249,7 @@ public class ResultatDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testUpdate() {
+	public void testUpdate() throws SQLException {
 		if(rd.update(r)==false){
 			fail("l'update a retourné false");			
 		}
@@ -269,7 +269,7 @@ public class ResultatDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testDelete() {	
+	public void testDelete() throws SQLException {	
 		if(rd.delete(r)==true){
 			fail("La suppression a réussi sur un mauvais identifiant");
 		}

@@ -45,7 +45,6 @@ public class ReponseDALTEST implements ITEST {
 	public static void setUpBeforeClass() throws Exception {
 		rd = new ReponseDAL();
 		reponse = new Reponse();
-		
 	}
 
 	/**
@@ -122,15 +121,15 @@ public class ReponseDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetOne() {
+	public void testGetOne() throws SQLException {
 		reponse.setId(3);
-		int result = rd.getOne(reponse).getId();
-		if(result>0){
+		Reponse re = rd.getOne(reponse);
+		if(re!=null){
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
 		
 		reponse.setId(2);
-		result = rd.getOne(reponse).getId();
+		int result = rd.getOne(reponse).getId();
 		if(result!=2){
 			fail("L'élément ciblé n'a pas été récupéré");
 		}
@@ -143,7 +142,7 @@ public class ReponseDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetAll() {
+	public void testGetAll() throws SQLException {
 		List<Reponse> listGA = new ArrayList<Reponse>();
 		listGA = rd.getAll();
 		if(listGA.size()!=2){
@@ -160,7 +159,7 @@ public class ReponseDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testAdd() {
+	public void testAdd() throws SQLException {
 		if(rd.add(reponse)==false){
 			fail("l'insertion a retourné false");			
 		}
@@ -174,7 +173,7 @@ public class ReponseDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testUpdate() {
+	public void testUpdate() throws SQLException {
 		reponse.setId(2);
 
 		if(rd.update(reponse)==false){
@@ -196,7 +195,7 @@ public class ReponseDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testDelete() {
+	public void testDelete() throws SQLException {
 		reponse.setId(3);
 		
 		if(rd.delete(reponse)==true){

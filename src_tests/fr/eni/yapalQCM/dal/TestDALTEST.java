@@ -29,7 +29,7 @@ import fr.eni.yapalQCM.dal.DBConnection;
 public class TestDALTEST implements ITEST{
 	public static fr.eni.yapalQCM.bo.Test test;
 	public static TestDAL td;
-	List<fr.eni.yapalQCM.bo.Test>tests = new ArrayList<fr.eni.yapalQCM.bo.Test>();
+	public static List<fr.eni.yapalQCM.bo.Test>tests = new ArrayList<fr.eni.yapalQCM.bo.Test>();
 	/**
 	 * Méthode en charge d'initialiser les variables de notre classe de test
 	 * @throws java.lang.Exception
@@ -103,13 +103,13 @@ public class TestDALTEST implements ITEST{
 	@Test
 	public void testGetOne() throws SQLException {
 		test.setId(3);
-		int result = td.getOne(test).getId();
-		if(result>0){
+		fr.eni.yapalQCM.bo.Test te = td.getOne(test);
+		if(te!=null){
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
 		
 		test.setId(2);
-		result = td.getOne(test).getId();
+		int result = td.getOne(test).getId();
 		if(result!=2){
 			fail("L'élément ciblé n'a pas été récupéré");
 		}

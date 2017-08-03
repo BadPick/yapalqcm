@@ -103,14 +103,14 @@ public class QuestionDALTEST implements ITEST {
 	public void testGetOne() throws SQLException {
 		Question q = new Question();
 		q.setId(3);
-		int result = qd.getOne(q).getId();
-		if(result>0){
+		Question qu = qd.getOne(q);
+		if(qu!=null){
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
 		
 		q.setId(2);
 		
-		result = qd.getOne(q).getId();
+		int result = qd.getOne(q).getId();
 		if(result!=2){
 			fail("L'élément ciblé n'a pas été récupéré");
 		}

@@ -57,7 +57,7 @@ public class InscriptionDALTEST implements ITEST {
 		
 		i = new Inscription();
 		Utilisateur u = new Utilisateur();
-		u.setId(2);
+		u.setId(1);
 		u.setNom("nom");
 		u.setPrenom("prenom");
 		u.setEmail("mail@mail.com");
@@ -90,20 +90,20 @@ public class InscriptionDALTEST implements ITEST {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		for(int i = 1 ; i<3 ; i++){
+		for(int ii = 1 ; ii<3 ; ii++){
 			Utilisateur u = new Utilisateur();
-			u.setId(i);
+			u.setId(ii);
 			u.setNom("nom");
 			u.setPrenom("prenom");
 			u.setEmail("mail@mail.com");
 			u.setPassword("password");
 			Role r = new Role();
-			r.setId(i);
+			r.setId(ii);
 			r.setName("monrole");
 			u.setRole(r);
 			inscription.setCandidat(u);
 			Session s = new Session();
-			s.setId(i);
+			s.setId(ii);
 			s.setNbPlaces(25);
 			s.setTests(new ArrayList<fr.eni.yapalQCM.bo.Test>());
 			inscription.setSession(s);
@@ -175,11 +175,11 @@ public class InscriptionDALTEST implements ITEST {
 	@Override
 	@Test
 	public void testGetOne() throws SQLException {
-		int result = id.getOne(i).getCandidat().getId();
-		if(result!=2){
-			fail("L'élément ciblé n'a pas été récupéré");
+		Inscription in = id.getOne(inscription);
+		if(in==null){
+			fail("Récupération d'un élément connu, échouée");
 		}
-		assertEquals(2, result);
+		assertEquals(2, in.getCandidat().getId());
 	}
 
 	/* (non-Javadoc)
@@ -206,7 +206,7 @@ public class InscriptionDALTEST implements ITEST {
 	@Override
 	@Test
 	public void testAdd() throws SQLException {
-		if(id.add(inscription)==false){
+		if(id.add(i)==false){
 			fail("l'insertion a retourné false");			
 		}
 		
@@ -222,12 +222,6 @@ public class InscriptionDALTEST implements ITEST {
 	public void testUpdate() throws SQLException {
 		if(id.update(i)==false){
 			fail("l'update a retourné false");			
-		}
-		
-		i.getCandidat().setId(3);
-		
-		if(id.update(inscription)==true){
-			fail("l'udpate est réussi sur un mauvais identifiant");
 		}
 		
 		assertEquals(2, id.getAll().size());

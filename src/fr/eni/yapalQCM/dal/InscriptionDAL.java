@@ -137,6 +137,8 @@ public class InscriptionDAL implements IDAL<Inscription> {
 			CallableStatement cmd = cnx.prepareCall(InscriptionSQL.UPDATE);
 			cmd.setInt(1, i.getCandidat().getId());
 			cmd.setInt(2, i.getSession().getId());
+			cmd.setInt(3, i.getCandidat().getId());
+			cmd.setInt(4, i.getSession().getId());
 			resultat = (cmd.executeUpdate()>0);
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());

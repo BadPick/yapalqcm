@@ -38,7 +38,7 @@ public class SessionDAL implements IDAL<Session> {
 		int resultat = 0;
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement requete = cnx.createStatement();
-			ResultSet rs = requete.executeQuery("SELECT COUNT(*) AS Total FROM SESSIONS");
+			ResultSet rs = requete.executeQuery(SessionSQL.GET_LENGTH);
 			if(rs.next()){
 				resultat = rs.getInt("Total");
 			}
@@ -60,7 +60,7 @@ public class SessionDAL implements IDAL<Session> {
 		
 		Session session = null;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?)}");
+			CallableStatement cmd = cnx.prepareCall(SessionSQL.GET_ONE);
 			cmd.setInt(1, s.getId());
 			ResultSet rs = cmd.executeQuery();		
 			if(rs.next()){
@@ -85,7 +85,7 @@ public class SessionDAL implements IDAL<Session> {
 		
 		ArrayList<Session> listeSessions = new ArrayList<Session>();
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********}");
+			CallableStatement cmd = cnx.prepareCall(SessionSQL.GET_ALL);
 			ResultSet rs = cmd.executeQuery();		
 			while(rs.next()){
 				listeSessions.add(itemBuilder(rs));
@@ -109,7 +109,7 @@ public class SessionDAL implements IDAL<Session> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?)}");
+			CallableStatement cmd = cnx.prepareCall(SessionSQL.ADD);
 			cmd.setDate(1, (Date) s.getDate());
 			cmd.setInt(2, s.getNbPlaces());
 			resultat = (cmd.executeUpdate()>0);
@@ -132,7 +132,7 @@ public class SessionDAL implements IDAL<Session> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?,?,?)}");
+			CallableStatement cmd = cnx.prepareCall(SessionSQL.UPDATE);
 			cmd.setInt(1, s.getId());
 			cmd.setDate(2, (Date) s.getDate());
 			cmd.setInt(3, s.getNbPlaces());
@@ -156,7 +156,7 @@ public class SessionDAL implements IDAL<Session> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall("{CALL **********(?)}");
+			CallableStatement cmd = cnx.prepareCall(SessionSQL.DELETE);
 			cmd.setInt(1, s.getId());
 			resultat = (cmd.executeUpdate()>0);
 		} catch (SQLException e) {

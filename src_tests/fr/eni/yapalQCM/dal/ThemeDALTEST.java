@@ -100,17 +100,17 @@ public class ThemeDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetOne() {
+	public void testGetOne() throws SQLException {
 		Theme t = new Theme();
 		t.setId(3);
-		int result = td.getOne(t).getId();
-		if(result>0){
+		Theme th = td.getOne(t);
+		if(th!=null){
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
 		
 		t.setId(2);
 		
-		result = td.getOne(t).getId();
+		int result = td.getOne(t).getId();
 		if(result!=2){
 			fail("L'élément ciblé n'a pas été récupéré");
 		}
@@ -123,7 +123,7 @@ public class ThemeDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testGetAll() {
+	public void testGetAll() throws SQLException {
 		List<Theme> listGA = new ArrayList<Theme>();
 		listGA = td.getAll();
 		if(listGA.size()!=2){
@@ -140,7 +140,7 @@ public class ThemeDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testAdd() {
+	public void testAdd() throws SQLException {
 		if(td.add(theme)==false){
 			fail("l'insertion a retourné false");			
 		}
@@ -154,7 +154,7 @@ public class ThemeDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testUpdate() {
+	public void testUpdate() throws SQLException {
 		Theme t = new Theme();
 		t.setNom("montheme2");
 		t.setId(1);
@@ -178,7 +178,7 @@ public class ThemeDALTEST implements ITEST {
 	 */
 	@Override
 	@Test
-	public void testDelete() {
+	public void testDelete() throws SQLException {
 		Theme t = new Theme();
 		t.setId(3);
 		if(td.delete(t)==true){

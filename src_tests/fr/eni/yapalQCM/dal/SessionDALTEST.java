@@ -103,14 +103,14 @@ public class SessionDALTEST implements ITEST {
 	public void testGetOne() throws SQLException {
 		Session s = new Session();
 		s.setId(3);
-		int result = sd.getOne(s).getId();
-		if(result>0){
+		Session se = sd.getOne(s);
+		if(se!=null){
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
 		
 		s.setId(2);
 		
-		result = sd.getOne(s).getId();
+		int result = sd.getOne(s).getId();
 		if(result!=2){
 			fail("L'élément ciblé n'a pas été récupéré");
 		}

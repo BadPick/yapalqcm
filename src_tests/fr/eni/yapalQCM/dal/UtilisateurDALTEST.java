@@ -44,7 +44,6 @@ public class UtilisateurDALTEST implements ITEST {
 		ud = new UtilisateurDAL();
 		rd = new RoleDAL();
 		utilisateur = new Utilisateur();
-		
 	}
 
 	/**
@@ -116,14 +115,14 @@ public class UtilisateurDALTEST implements ITEST {
 	public void testGetOne() throws SQLException {
 		Utilisateur u = new Utilisateur();
 		u.setId(3);
-		int result = ud.getOne(u).getId();
-		if(result>0){
+		Utilisateur ut = ud.getOne(u);
+		if(ut!=null){
 			fail("Récupération d'un mauvais élément (id innexistant en base de données)");
 		}
 		
 		u.setId(2);
 		
-		result = ud.getOne(u).getId();
+		int result = ud.getOne(u).getId();
 		if(result!=2){
 			fail("L'élément ciblé n'a pas été récupéré");
 		}
