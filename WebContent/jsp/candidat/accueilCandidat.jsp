@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="/yapalQCM/css/yapalcss.css">
 </head>
 <body>
-	
+<%@include file="/menu.jsp"%>	
 	<c:set var="testList" value="${requestScope['testList']}" scope="page" />
 	<c:set var="resultList" value="${requestScope['resultList']}"
 		scope="page" />

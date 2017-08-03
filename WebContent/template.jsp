@@ -11,6 +11,7 @@
 <link rel="stylesheet" type="text/css" href="/yapalQCM/css/yapalcss.css">
 </head>
 <body>
+<%@include file="/menu.jsp"%>
 <c:set var="message" value="${requestScope['message']}" scope="page" />
 <div id="message" class="hidden">${message.message}</div>
 <div id="messageType" class="hidden">${message.type}</div>
