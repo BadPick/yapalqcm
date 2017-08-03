@@ -44,7 +44,9 @@ public class ReponseDALTEST implements ITEST {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		rd = new ReponseDAL();
+		qd = new QuestionDAL();
 		reponse = new Reponse();
+		question = new Question();
 	}
 
 	/**
@@ -61,11 +63,11 @@ public class ReponseDALTEST implements ITEST {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		for(int i = 0 ; i<2 ; i++){
+		for(int i = 1 ; i<3 ; i++){
 			reponse.setEnonce("mareponse");
 			reponse.setCorrect(true);
-			question = new Question();
 			question.setId(i);
+			question.setEnonce("maquestion");
 			reponse.setQuestion(question);
 			qd.add(question);
 			rd.add(reponse);

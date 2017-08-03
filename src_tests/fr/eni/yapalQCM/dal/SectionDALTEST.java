@@ -30,6 +30,7 @@ import fr.eni.yapalQCM.bo.Theme;
  */
 public class SectionDALTEST implements ITEST {
 	public static Section section;
+	public static Section sec;
 	public static List<Section> sections = new ArrayList<Section>();
 	public static SectionDAL sd;
 	public static Theme theme;
@@ -49,6 +50,13 @@ public class SectionDALTEST implements ITEST {
 		td = new TestDAL();
 		themedal = new ThemeDAL();
 		section = new Section();
+		
+		sec = new Section();
+		test = new fr.eni.yapalQCM.bo.Test();
+		theme = new Theme();
+		sec.setNbQuestions(15);
+		sec.setTheme(theme);
+		sec.setTest(test);
 	}
 
 	/**
@@ -66,18 +74,22 @@ public class SectionDALTEST implements ITEST {
 	@Before
 	public void setUp() throws Exception {
 		for(int i = 1 ; i<3 ; i++){
-			test = new fr.eni.yapalQCM.bo.Test();
-			test.setId(1);
-			theme = new Theme();
-			theme.setId(i);
+			test.setNom("montest");
+			test.setSeuilAcquis(14);
+			test.setSeuilEnCoursDacquisition(10);
+			test.setDuree(3600);
+			
 			theme.setNom("theme");
-			test = new fr.eni.yapalQCM.bo.Test();
-			test.setId(i);
-			section.setNbQuestions(15);
-			section.setTheme(theme);
-			section.setTest(test);
+			
 			themedal.add(theme);
 			td.add(test);
+			
+			section.setNbQuestions(15);
+			theme.setId(i);
+			section.setTheme(theme);
+			test.setId(i);
+			section.setTest(test);
+			
 			sd.add(section);
 		}
 	}
@@ -104,12 +116,6 @@ public class SectionDALTEST implements ITEST {
 			themedal.delete(theme);
 		}
 		
-		try(Connection cnx = DBConnection.getConnection()) {
-			Statement cmd = cnx.createStatement();
-			cmd.execute("DBCC CHECKIDENT ('SECTIONS', RESEED, 0)");
-		} catch (SQLException e) {
-			System.out.println("Problème de réinitialisation de l'auto-incrément de la table SECTIONS");
-		}
 		try(Connection cnx = DBConnection.getConnection()) {
 			Statement cmd = cnx.createStatement();
 			cmd.execute("DBCC CHECKIDENT ('TESTS', RESEED, 0)");
@@ -187,7 +193,11 @@ public class SectionDALTEST implements ITEST {
 	@Override
 	@Test
 	public void testAdd() throws SQLException {
-		if(sd.add(section)==false){
+		sec.getTest().setId(3);
+		td.add(sec.getTest());
+		sec.getTheme().setId(3);
+		themedal.add(sec.getTheme());
+		if(sd.add(sec)==false){
 			fail("l'insertion a retourné false");			
 		}
 		
@@ -203,17 +213,13 @@ public class SectionDALTEST implements ITEST {
 	public void testUpdate() throws SQLException {
 		Section s = new Section();
 		s.setNbQuestions(10);
-		s.setTheme(theme);
-		s.setTest(test);
+		s.setTest(new fr.eni.yapalQCM.bo.Test());
+		s.getTest().setId(2);
+		s.setTheme(new Theme());
+		s.getTheme().setId(2);
 		
 		if(sd.update(s)==false){
 			fail("l'update a retourné false");			
-		}
-		
-		s.getTest().setId(3);
-		
-		if(sd.update(s)==true){
-			fail("l'udpate est réussi sur un mauvais identifiant");
 		}
 		
 		assertEquals(2, sd.getAll().size());
@@ -227,12 +233,10 @@ public class SectionDALTEST implements ITEST {
 	@Test
 	public void testDelete() throws SQLException {
 		Section s = new Section();
-		s.getTest().setId(3);
-		if(sd.delete(s)==true){
-			fail("La suppression a réussi sur un mauvais identifiant");
-		}
-		
-		s.getTest().setId(1);
+		s.setTest(new fr.eni.yapalQCM.bo.Test());
+		s.getTest().setId(2);
+		s.setTheme(new Theme());
+		s.getTheme().setId(2);
 		
 		if(sd.delete(s)==false){
 			fail("La suppression a retourné false");

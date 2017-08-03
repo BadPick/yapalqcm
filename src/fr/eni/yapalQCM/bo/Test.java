@@ -3,7 +3,9 @@
  */
 package fr.eni.yapalQCM.bo;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author mrault2015
@@ -17,7 +19,61 @@ public class Test {
 	private float seuilEnCoursDacquisition;
 	private long duree;
 	private ArrayList<Section> sections;
+	//transient pour Test Session
+	private Time heure;
+	private boolean isBegin;
+	private long tempsEcoule;
 	
+	
+	
+	/**
+	 * Getter pour heure.
+	 * @return the heure
+	 */
+	public Time getHeure() {
+		return heure;
+	}
+
+	/**
+	 * Getter pour heure.
+	 * @param heure the heure to set
+	 */
+	public void setHeure(Time heure) {
+		this.heure = heure;
+	}
+
+	/**
+	 * Getter pour isBegin.
+	 * @return the isBegin
+	 */
+	public boolean isBegin() {
+		return isBegin;
+	}
+
+	/**
+	 * Getter pour isBegin.
+	 * @param isBegin the isBegin to set
+	 */
+	public void setBegin(boolean isBegin) {
+		this.isBegin = isBegin;
+	}
+
+	/**
+	 * Getter pour tempsEcoule.
+	 * @return the tempsEcoule
+	 */
+	public long getTempsEcoule() {
+		return tempsEcoule;
+	}
+
+	/**
+	 * Getter pour tempsEcoule.
+	 * @param tempsEcoule the tempsEcoule to set
+	 */
+	public void setTempsEcoule(long tempsEcoule) {
+		this.tempsEcoule = tempsEcoule;
+	}
+
 	public Test() {
 		sections = new ArrayList<Section>();
 	}
