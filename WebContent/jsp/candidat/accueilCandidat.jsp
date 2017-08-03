@@ -7,45 +7,50 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="./css/yapalcss.css">
+<link rel="stylesheet" type="text/css" href="/yapalQCM/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/yapalQCM/css/yapalcss.css">
 </head>
 <body>
-<c:set var="testList" value="${requestScope['testList']}" scope="page" />
-<c:set var="resultList" value="${requestScope['resultList']}" scope="page" />
-<c:set var="message" value="${requestScope['message']}" scope="page" />
-<div id="message" class="hidden">${message.message}</div>
-<div id="messageType" class="hidden">${message.type}</div>
-<div class="container">
-	<h2>Passer un test</h2>
+	
+	<c:set var="testList" value="${requestScope['testList']}" scope="page" />
+	<c:set var="resultList" value="${requestScope['resultList']}"
+		scope="page" />
+	<c:set var="message" value="${requestScope['message']}" scope="page" />
+	<div id="message" class="hidden">${message.message}</div>
+	<div id="messageType" class="hidden">${message.type}</div>
+	<div class="container">
+		<h1>Bienvenue ${sessionScope.user.prenom } ${sessionScope.user.nom }</h1>
+		<h2 class="title">Vos tests :</h2>
 		<div>
-			<c:forEach var="test" items="${testList}">
-				<div class="row">
-	
-					<a href="<%= request.getContextPath() %>/CandidatPasserUnTest?idTest=${test.id}">
-					<c:out value="${test.nom} (${test.duree})" />
-					</a>
-	
-				</div>
-			</c:forEach>
+			<table class="table table-hover">
+				<c:forEach var="test" items="${testList}">
+					<tr>
+						<td class="table-col-80">${test.nom}(${test.duree})</td>
+						<td>
+							<form action="<%=request.getContextPath()%>/CandidatPasserUnTest">
+								<input type="hidden" name="idTest">
+								<button type="submit" class="form-control yapalBoutton">Passer ce
+									test</button>
+							</form>
+						</td>
+						<td><c:forEach var="result" items="${resultList}">
+								<c:if test="${result.test.id == test.id}">
+									<form
+										action="<%=request.getContextPath()%>/CandidatConsulterResultat">
+										<input type="hidden" name="idTest">
+										<button type="submit" class="form-control yapalBoutton">Résultats</button>
+									</form>
+								</c:if>
+							</c:forEach></td>
+					</tr>
+				</c:forEach>
+			</table>
 		</div>
-		
-	<h2>Consulter mes résultats</h2>
-		<div>
-			<c:forEach var="result" items="${resultList}">
-				<div class="row">
-	
-					<a href="<%= request.getContextPath() %>/CandidatConsulterResultat?idTest=${result.test.id}&idSession=${result.session.id}">
-					<c:out value="${result.test.nom}" />
-					</a>
-	
-				</div>
-			</c:forEach>
-		</div>
-</div>
+	</div>
 
-<script type="text/javascript" src="./js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.1/packaged/jquery.noty.packaged.min.js"></script>
-<script type="text/javascript" src="./js/gestionMessages.js"></script>
+	<script type="text/javascript" src="/yapalQCM/js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.1/packaged/jquery.noty.packaged.min.js"></script>
+	<script type="text/javascript" src="/yapalQCM/js/gestionMessages.js"></script>
 </body>
 </html>

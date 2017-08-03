@@ -24,7 +24,7 @@ import fr.eni.yapalQCM.utils.MessageType;
 /**
  * Servlet implementation class CandidatAccueil
  */
-@WebServlet("/CandidatAccueil")
+@WebServlet("/Candidat/Accueil")
 public class CandidatAccueil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Message message = null;  
@@ -89,7 +89,6 @@ public class CandidatAccueil extends HttpServlet {
 			message = ErrorManager.getMessage(e);		
 		}
 		
-		message = ErrorManager.getMessage("test message jyhgjkhfkjfgjk", MessageType.information);
 		if (message != null) {
 			request.setAttribute("message", message);
 		}
