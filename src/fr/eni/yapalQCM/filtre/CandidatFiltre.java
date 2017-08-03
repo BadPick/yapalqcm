@@ -43,7 +43,7 @@ public class CandidatFiltre implements Filter {
 		session = ((HttpServletRequest)request).getSession();
 		RequestDispatcher rd;
 		Utilisateur util = (Utilisateur) session.getAttribute("user");
-		if (util.getRole().getName()!="Candidat") {
+		if (util != null && util.getRole()!=null && !util.getRole().getName().equals("Candidat")) {
 			rd=((HttpServletRequest)request).getRequestDispatcher(((HttpServletRequest)request).getContextPath()+"/error.jsp");
 			rd.forward(request, response);
 		} 
