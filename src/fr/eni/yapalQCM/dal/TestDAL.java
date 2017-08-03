@@ -14,7 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import fr.eni.yapalQCM.bo.Question;
+import fr.eni.yapalQCM.bo.Reponse;
+import fr.eni.yapalQCM.bo.Section;
 import fr.eni.yapalQCM.bo.Test;
+import fr.eni.yapalQCM.bo.Theme;
 import fr.eni.yapalQCM.utils.YapalLogger;
 
 /**
@@ -207,5 +211,76 @@ public class TestDAL implements IDAL<Test> {
 		logger.exiting("TestDAL", "getManyBy");
 		
 		return tests;
+	}
+	
+	public Test getOne(int idTest) throws SQLException {
+		logger.entering("TestDAL", "getOne");
+		
+		Test test = null;
+		try(Connection cnx = DBConnection.getConnection()) {
+			CallableStatement cmd = cnx.prepareCall(TestSQL.GET_ONE_BY_ID);
+			cmd.setInt(1, idTest);
+			ResultSet rs = cmd.executeQuery();		
+			if(rs.next()){
+				test = itemBuilderComplet(rs);
+			}
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}
+		
+		logger.exiting("TestDAL", "getOne");
+		return test;
+	}
+
+	private Test itemBuilderComplet(ResultSet rs) throws SQLException {
+		Test test = null;
+		Section section = null;
+		Theme theme = null;
+		Question question = null;
+		Reponse reponse = null;
+		int lastThemeId = 0;
+		int lastQuestionId = 0;
+		while (rs.next()) {
+			if (test==null) {
+				test = new Test();
+				test.setId(rs.getInt("idTest"));
+				test.setNom(rs.getString("nomTest"));
+				test.setSeuilAcquis(rs.getInt("seuilAcquis"));
+				test.setSeuilEnCoursDacquisition(rs.getInt("seuilEnCoursAcquisition"));
+				test.setDuree(rs.getLong("duree"));			
+			}
+			if (lastThemeId != rs.getInt("idTheme")) {
+				lastThemeId = rs.getInt("idTheme");
+				
+				theme = new Theme();
+				theme.setId(rs.getInt("idTheme"));
+				theme.setNom(rs.getString("nom"));
+				
+				section = new Section();
+				section.setNbQuestions(rs.getInt("nombreQuestions"));
+				section.setTheme(theme);
+				
+				test.addSection(section);
+			}
+			if (lastQuestionId != rs.getInt("idQuestion")) {
+				lastQuestionId = rs.getInt("idQuestion");
+						
+				question = new Question();
+				question.setId(rs.getInt("idQuestion"));
+				question.setEnonce(rs.getString("enonce"));
+								
+			}
+				
+			reponse = new Reponse();
+			reponse.setId(rs.getInt("idReponse"));
+			reponse.setEnonce(rs.getString("enonce"));
+			reponse.setCorrect(rs.getBoolean("isCorrect"));
+			
+			question.addReponse(reponse);
+			theme.getQuestions().add(question);
+			
+		}
+		return test;
 	}
 }

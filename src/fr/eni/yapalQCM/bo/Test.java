@@ -184,6 +184,11 @@ public class Test {
 		this.duree = duree;
 	}
 
+	public void addSection(Section section) {
+		section.setTest(this);
+		getSections().add(section);	
+	}
+
 
 
 	
