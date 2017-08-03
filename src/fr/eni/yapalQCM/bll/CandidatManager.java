@@ -1,5 +1,6 @@
 package fr.eni.yapalQCM.bll;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -7,6 +8,7 @@ import fr.eni.yapalQCM.bo.Resultat;
 import fr.eni.yapalQCM.bo.Session;
 import fr.eni.yapalQCM.bo.Test;
 import fr.eni.yapalQCM.bo.Utilisateur;
+import fr.eni.yapalQCM.dal.TestDAL;
 
 public class CandidatManager {
 
@@ -16,14 +18,18 @@ public class CandidatManager {
 	 * 
 	 * @param idTest
 	 * @return test
+	 * @throws SQLException 
 	 */
-	public static Test getTest(String idTest) {
-		Test test = null;
-
+	public static Test getTest(int idTest) throws SQLException {
+//		TestDAL testDal = new TestDAL();
+//		Test test = new Test();
+//		test.setId(idTest);
+//		test = testDal.getOne(test);
+			
 		// génération du test
-		generateTest(idTest);
+		//generateTest(idTest);
 
-		return test;
+		return null;
 	}
 
 	/**
@@ -31,7 +37,7 @@ public class CandidatManager {
 	 * 
 	 * @param idTest
 	 */
-	public static void generateTest(String idTest) {
+	public static void generateTest(int idTest) {
 
 	}
 
@@ -42,10 +48,12 @@ public class CandidatManager {
 	 * 
 	 * @param id
 	 * @return ArrayList<Test>
+	 * @throws SQLException 
 	 */
-	public static ArrayList<Test> getTests(Utilisateur candidat) {
-		// TESTING liste de tests bidon
-		return listeTestBidon();
+	public static ArrayList<Test> getTests(Utilisateur candidat) throws SQLException {
+		TestDAL testDal = new TestDAL();
+		ArrayList<Test> tests = testDal.getManyBy(candidat.getId());
+		return tests;
 	}
 
 	/**

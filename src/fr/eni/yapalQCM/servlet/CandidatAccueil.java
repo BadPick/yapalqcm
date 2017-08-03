@@ -57,7 +57,7 @@ public class CandidatAccueil extends HttpServlet {
 		//TESTING (simulation d'un candidat en session)
 		Role role = new Role();
 		role.setId(1);
-		role.setName("candidat");
+		role.setName("Candidat");
 		Utilisateur user = new Utilisateur();
 		user.setId(1);
 		user.setNom("Doe");

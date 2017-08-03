@@ -46,8 +46,10 @@ public class CandidatFiltre implements Filter {
 		if (util != null && util.getRole()!=null && !util.getRole().getName().equals("Candidat")) {
 			rd=((HttpServletRequest)request).getRequestDispatcher(((HttpServletRequest)request).getContextPath()+"/error.jsp");
 			rd.forward(request, response);
-		} 
-		chain.doFilter(request, response);
+		}else{
+			chain.doFilter(request, response);
+		}
+		
 	}
 
 	/**

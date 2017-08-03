@@ -51,7 +51,7 @@ public class CandidatPasserUnTest extends HttpServlet {
 		try {
 			//Récupération du test généré
 			if (request.getParameter("idTest")!=null) {
-				Test test = CandidatManager.getTest(request.getParameter("idTest"));
+				Test test = CandidatManager.getTest(Integer.valueOf(request.getParameter("idTest")));
 			}
 			
 			
