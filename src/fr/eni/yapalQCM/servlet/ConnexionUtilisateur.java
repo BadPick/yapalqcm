@@ -75,7 +75,15 @@ public class ConnexionUtilisateur extends HttpServlet {
 					{
 						message = ErrorManager.getMessage("Mauvais login ou mot de passe.",MessageType.error);
 						dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-					}else{
+					}else if (user.getRole().getId()==1){
+						message = ErrorManager.getMessage("Connection validée",MessageType.success);
+						session.setAttribute("user", user);
+						dispatcher = getServletContext().getRequestDispatcher("/Candidat/Accueil");
+					}else if (user.getRole().getId()==2){
+						message = ErrorManager.getMessage("Connection validée",MessageType.success);
+						session.setAttribute("user", user);
+						dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+					}else if (user.getRole().getId()==3){
 						message = ErrorManager.getMessage("Connection validée",MessageType.success);
 						session.setAttribute("user", user);
 						dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
