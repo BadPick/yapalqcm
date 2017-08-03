@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -38,7 +38,7 @@
 									<form
 										action="<%=request.getContextPath()%>/CandidatConsulterResultat">
 										<input type="hidden" name="idTest">
-										<button type="submit" class="form-control yapalBoutton">Résultats</button>
+										<button type="submit" class="form-control yapalBoutton">Rï¿½sultats</button>
 									</form>
 								</c:if>
 							</c:forEach></td>
