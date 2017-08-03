@@ -21,23 +21,25 @@ public class ConnexionManager {
 	 */
 	public Utilisateur getConnexion(String login, String password) throws SQLException {
 		logger.entering("ConnexionManager", "getConnexion");
+		System.out.println("Entrée :Manager de Connextion");
 		
-		Utilisateur util = new Utilisateur();
+		Utilisateur user = null;
 		Role role = new Role();
 		UtilisateurDAL utilDal = new UtilisateurDAL();
 		RoleDAL roleDal = new RoleDAL();
 		
-		util = utilDal.getConnexion(login, password);		
-		role=util.getRole();
+		user = utilDal.getConnexion(login, password);		
+		role=user.getRole();
 		
 		try {
-			util.setRole(roleDal.getOne(role));
+			user.setRole(roleDal.getOne(role));
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
 			throw e;
 		}
 		logger.exiting("ConnexionManager", "getConnexion");
-		return util;
+		System.out.println("Sortie :Manager de Connextion => user: "+user.toString());
+		return user;
 	}
 
 }

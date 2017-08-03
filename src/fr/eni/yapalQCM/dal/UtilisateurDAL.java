@@ -8,6 +8,7 @@ package fr.eni.yapalQCM.dal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -187,22 +188,23 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 	 */
 	public Utilisateur getConnexion(String login,String password) throws SQLException {
 		logger.entering("UtilisateurDAL", "getConnexion");
-		Utilisateur util=new Utilisateur();
-		String encryptPassword = ToolUtilisateur.encryptPassword(password);		
+		System.out.println("Entrée dans le DAL Utilisateur");
+		Utilisateur user=null;			
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall(UtilisateurSQL.GET_CONNEXION);
 			cmd.setString(1, login);
-			cmd.setString(2, encryptPassword);
+			cmd.setString(2, password);
 			ResultSet rs = cmd.executeQuery();		
 			if(rs.next()){
-				util = itemBuilder(rs);
+				user = itemBuilder(rs);
 			}
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
 			throw e;
 		}		
-		logger.exiting("UtilisateurDAL", "getConnexion");	
-		return util;
+		logger.exiting("UtilisateurDAL", "getConnexion");
+		System.out.println("Sortie de le DAL Utilisateur => user: "+user.toString());
+		return user;
 	}
 	
 	
@@ -221,6 +223,7 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 		u.setDateDeNaissance(rs.getDate("dateNaissance"));
 		Role role = new Role();
 		role.setId(rs.getInt("idRole"));
+		u.setRole(role);
 		return u;
 	}
 	

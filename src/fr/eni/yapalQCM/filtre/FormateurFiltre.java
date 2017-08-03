@@ -46,8 +46,9 @@ public class FormateurFiltre implements Filter {
 		if (util.getRole().getName()!="Formateur") {
 			rd=((HttpServletRequest)request).getRequestDispatcher(((HttpServletRequest)request).getContextPath()+"/error.jsp");
 			rd.forward(request, response);
-		} 
-		chain.doFilter(request, response);
+		} else {
+			chain.doFilter(request, response);
+		}
 	}
 
 	/**

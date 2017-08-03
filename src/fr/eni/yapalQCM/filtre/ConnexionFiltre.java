@@ -11,12 +11,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
  * Servlet Filter implementation class ConnexionFiltre
  */
-@WebFilter("/*")
+@WebFilter("/")
 public class ConnexionFiltre implements Filter {
 
     /**
@@ -37,14 +38,19 @@ public class ConnexionFiltre implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		System.out.println("entrée dans le filtre ConnexionFiltre");
 		HttpSession session;
 		session = ((HttpServletRequest)request).getSession();
 		RequestDispatcher rd;
-		if (session.getAttribute("user")==null) {
-			rd=((HttpServletRequest)request).getRequestDispatcher("/index.jsp");
-			rd.forward(request, response);
+		if (session.getAttribute("user")!=null) {			
+			System.out.println("Sortie filtre utilisateur non null: "+session.getAttribute("user").toString());			
+			chain.doFilter(request, response);
 		} 
-		chain.doFilter(request, response);
+		else{			
+			rd=((HttpServletRequest)request).getRequestDispatcher("/index.jsp");
+			System.out.println("Sortie filtre utilisateur null: ");
+			rd.forward(request, response);
+		}
 	}
 
 	/**
