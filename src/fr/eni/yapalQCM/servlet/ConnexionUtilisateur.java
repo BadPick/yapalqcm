@@ -1,6 +1,7 @@
 package fr.eni.yapalQCM.servlet;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,11 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
+
 import fr.eni.yapalQCM.bll.ConnexionManager;
 import fr.eni.yapalQCM.bll.ErrorManager;
 import fr.eni.yapalQCM.bo.Utilisateur;
 import fr.eni.yapalQCM.utils.Message;
 import fr.eni.yapalQCM.utils.MessageType;
+import fr.eni.yapalQCM.utils.YapalLogger;
 
 /**
  * Servlet implementation class ConnexionUtilisateur
@@ -22,6 +26,7 @@ import fr.eni.yapalQCM.utils.MessageType;
 @WebServlet("/ConnexionUtilisateur")
 public class ConnexionUtilisateur extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	Logger logger = YapalLogger.getLogger(this.getClass().getName());
 	private Message message = null;   
     /**
      * @see HttpServlet#HttpServlet()
@@ -46,42 +51,55 @@ public class ConnexionUtilisateur extends HttpServlet {
 	}
 	
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		logger.entering("ConnexionUtilisateur", "processRequest");
 		HttpSession session = request.getSession();
 		RequestDispatcher dispatcher = null;
-		
-		try {
-			Utilisateur util = new Utilisateur();
-			String login = request.getParameter("j_username");
-			String password= request.getParameter("j_password");
+		switch (request.getParameter("typeAction")) {
+		case "connexion":
 			
-			if (login!="" || password!="") {
-				ConnexionManager connexion = new ConnexionManager();
-				util=connexion.getConnexion(login,password);
+			try {
 				
-				if(util==null)
-				{
-					message = ErrorManager.getMessage("Mauvais login ou mot de passe.",MessageType.error);
+				Utilisateur util = new Utilisateur();
+				String login = request.getParameter("login");
+				String password= request.getParameter("password");
+				if (login!="" || password!="") {
+					ConnexionManager connexion = new ConnexionManager();
+					util=connexion.getConnexion(login,password);
+					
+					if(util==null)
+					{
+						message = ErrorManager.getMessage("Mauvais login ou mot de passe.",MessageType.error);
+						dispatcher = getServletContext().getRequestDispatcher(request.getContextPath()+"/");
+					}else{
+						message = ErrorManager.getMessage("Connection validée",MessageType.success);
+						session.setAttribute("user", util);
+						dispatcher = getServletContext().getRequestDispatcher(request.getContextPath()+"/CandidatAccueil");
+					}
+				} else {
+					message = ErrorManager.getMessage("Merci de renseigner le login et le mot de passe.",MessageType.error);
 					dispatcher = getServletContext().getRequestDispatcher(request.getContextPath()+"/");
-				}else{
-					message = ErrorManager.getMessage("Connection validée",MessageType.success);
-					session.setAttribute("uder", util);
-					dispatcher = getServletContext().getRequestDispatcher(request.getContextPath()+"/CandidatAccueil");
 				}
-			} else {
-				message = ErrorManager.getMessage("Merci de renseigner le login et le mot de passe.",MessageType.error);
-				dispatcher = getServletContext().getRequestDispatcher(request.getContextPath()+"/");
+				
+				
+				
+			} catch (Exception e) {
+				//gestion des messages d'erreurs
+				message = ErrorManager.getMessage(e);
+				logger.severe(e.getMessage());
 			}
 			
-			
-			
-		} catch (Exception e) {
-			//gestion des messages d'erreurs
-			message = ErrorManager.getMessage(e);		
+			break;
+		case "deconnexion":			
+			session.invalidate();			
+			break;
+		default:
+			break;
 		}
 		
 		if (message != null) {
 			request.setAttribute("message", message);
 		}
+		logger.exiting("ConnexionUtilisateur", "processRequest");
 		dispatcher.forward(request, response);
 	}
 }

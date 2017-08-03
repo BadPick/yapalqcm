@@ -15,7 +15,7 @@
 					<div>
 						<div>
 							<div class="logo col-sm-2">
-								<img alt="ENI" src="" class="logo">
+								<img alt="YapalQCM" src="logo.png" class="logo">
 							</div>
 
 						</div>
@@ -25,7 +25,7 @@
 						<c:if test="${user == null}">
 							<!-- formulaire de connexion -->
 							<form class="navbar-form navbar-right"
-								action="<%=request.getContextPath()%>/Connexion" method="post">
+								action="<%=request.getContextPath()%>/ConnexionUtilisateur" method="post">
 								<div class="form-group">
 									<input type="text" name="login" id="inputlogin"
 										class="form-control" placeholder="Login..." required
@@ -44,10 +44,10 @@
 						<c:if test="${user != null}">
 							<!-- formulaire de Déconnexion -->
 							<form class="navbar-form navbar-right"
-								action="<%=request.getContextPath()%>/Connexion" method="post">
+								action="<%=request.getContextPath()%>/ConnexionUtilisateur" method="post">
 								<div class="form-group">
 									<div class="col-sm-4">
-										<div class="userName" title="">${user.name} ${user.firstName}</div>
+										<div class="userName" title="">${user.nom} ${user.prenom}</div>
 									</div>
 								</div>
 								<div class="form-group">
@@ -65,8 +65,5 @@
 
 
 		</div>
-</div>
-
-</nav>
-
+	</nav>
 </div>

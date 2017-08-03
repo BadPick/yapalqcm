@@ -12,7 +12,8 @@ import fr.eni.yapalQCM.utils.YapalLogger;
 public class ConnexionManager {
 	Logger logger = YapalLogger.getLogger(this.getClass().getName());
 	/**
-	 * 
+	 * Méthode appelant la base de donnée pour vérifier la présence d'un 
+	 * Utilisateur.
 	 * @param password 
 	 * @param login 
 	 * @return Utilisateur
@@ -20,12 +21,15 @@ public class ConnexionManager {
 	 */
 	public Utilisateur getConnexion(String login, String password) throws SQLException {
 		logger.entering("ConnexionManager", "getConnexion");
+		
 		Utilisateur util = new Utilisateur();
+		Role role = new Role();
 		UtilisateurDAL utilDal = new UtilisateurDAL();
 		RoleDAL roleDal = new RoleDAL();
-		util = utilDal.getConnexion(login, password);
-		Role role = new Role();
+		
+		util = utilDal.getConnexion(login, password);		
 		role=util.getRole();
+		
 		try {
 			util.setRole(roleDal.getOne(role));
 		} catch (SQLException e) {

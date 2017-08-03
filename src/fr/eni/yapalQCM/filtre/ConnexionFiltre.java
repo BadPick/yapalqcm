@@ -41,7 +41,7 @@ public class ConnexionFiltre implements Filter {
 		session = ((HttpServletRequest)request).getSession();
 		RequestDispatcher rd;
 		if (session.getAttribute("user")==null) {
-			rd=((HttpServletRequest)request).getRequestDispatcher("/login.jsp");
+			rd=((HttpServletRequest)request).getRequestDispatcher("/index.jsp");
 			rd.forward(request, response);
 		} 
 		chain.doFilter(request, response);
