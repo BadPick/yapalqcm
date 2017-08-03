@@ -1,7 +1,7 @@
 package fr.eni.yapalQCM.dal;
 
 public abstract class SectionSQL {
-	public static String GET_LENGTH="SELECT COUNT(*) FROM SECTIONS;";
+	public static String GET_LENGTH="SELECT COUNT(*) as Total FROM SECTIONS;";
 	public static String GET_ONE="SELECT * FROM SECTIONS WHERE idTest=? AND idTheme=?;";
 	public static String GET_ALL="SELECT * FROM SECTIONS;";
 	public static String ADD="INSERT INTO SECTIONS (idTest,idTheme,nombreQuestions) VALUES (?,?,?);";

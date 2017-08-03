@@ -117,13 +117,14 @@ public class ResultatDALTEST implements ITEST {
 			s.setId(i);
 			s.setNbPlaces(25);
 			s.setTests(new ArrayList<fr.eni.yapalQCM.bo.Test>());
-			resultat.setSession(s);
 			fr.eni.yapalQCM.bo.Test t = new fr.eni.yapalQCM.bo.Test();
 			t.setId(i);
 			t.setDuree(3600);
 			t.setNom("test");
 			t.setSeuilAcquis(14);
 			t.setSeuilEnCoursDacquisition(10);
+			s.getTests().add(t);
+			resultat.setSession(s);
 			resultat.setTest(t);
 			roledal.add(role);
 			ud.add(u);

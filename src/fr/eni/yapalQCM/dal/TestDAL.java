@@ -185,4 +185,27 @@ public class TestDAL implements IDAL<Test> {
 		t.setDuree(rs.getLong("duree"));
 		return t;
 	}
+
+	public ArrayList<Test> getManyBy(int idCandidat) throws SQLException {
+		logger.entering("TestDAL", "getManyBy");
+		ArrayList<Test> tests = new ArrayList<Test>();
+		
+		Test test = null;
+		try(Connection cnx = DBConnection.getConnection()) {
+			CallableStatement cmd = cnx.prepareCall(TestSQL.GET_MANY_BY_UTILISATEUR);
+			cmd.setInt(1, idCandidat);
+			ResultSet rs = cmd.executeQuery();		
+			while (rs.next()) {
+				test = itemBuilder(rs);	
+				tests.add(test);
+			}
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}
+		
+		logger.exiting("TestDAL", "getManyBy");
+		
+		return tests;
+	}
 }

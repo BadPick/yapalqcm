@@ -8,7 +8,7 @@ public abstract class TestSQL {
 	public static String UPDATE="UPDATE TESTS SET nomTest=?,seuilAcquis=?,seuilEnCoursAcquisition=?,duree=? WHERE idTest=?;";
 	public static String DELETE="DELETE FROM TESTS WHERE idTest=?;";
 	public static String GET_MANY_BY_UTILISATEUR="select te.idTest as idTest,nomTest,seuilAcquis,seuilEnCoursAcquisition,duree "
-													+"from UTLISATEURS ut "
+													+"from UTILISATEURS ut "
 													+"LEFT JOIN INSCRIPTIONS ip on ut.idUser=ip.idUser "
 													+"LEFT JOIN SESSIONS se on ip.idSession=se.idSession "
 													+"LEFT JOIN TEST_SESSIONS ts on se.idSession=ts.idSession "

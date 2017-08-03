@@ -8,14 +8,17 @@ package fr.eni.yapalQCM.dal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import fr.eni.yapalQCM.bo.Session;
+import fr.eni.yapalQCM.bo.Test;
 import fr.eni.yapalQCM.utils.YapalLogger;
 
 /**
@@ -109,10 +112,24 @@ public class SessionDAL implements IDAL<Session> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall(SessionSQL.ADD);
+			PreparedStatement cmd = cnx.prepareStatement(SessionSQL.ADD, new String[] {"PRODUCT_ID"});
 			cmd.setDate(1, (Date) s.getDate());
 			cmd.setInt(2, s.getNbPlaces());
 			resultat = (cmd.executeUpdate()>0);
+			ResultSet rs = cmd.getGeneratedKeys();
+			int productId = 0;
+			if (rs.next()) {
+			   productId = rs.getInt(1);
+			   for(Test test : s.getTests()){
+				   CallableStatement cmdTest = cnx.prepareCall(SessionSQL.ADDTESTSESSION);
+				   cmdTest.setInt(1, productId);
+				   cmdTest.setInt(2, test.getId());
+				   cmdTest.setTime(3, test.getHeure());
+				   cmdTest.setBoolean(4, test.isBegin());
+				   cmdTest.setLong(5, test.getTempsEcoule());
+				   resultat = (cmdTest.executeUpdate()>0);
+			   }
+			}
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
 			throw e;
@@ -133,9 +150,9 @@ public class SessionDAL implements IDAL<Session> {
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall(SessionSQL.UPDATE);
-			cmd.setInt(1, s.getId());
-			cmd.setDate(2, (Date) s.getDate());
-			cmd.setInt(3, s.getNbPlaces());
+			cmd.setDate(1, (Date) s.getDate());
+			cmd.setInt(2, s.getNbPlaces());
+			cmd.setInt(3, s.getId());
 			resultat = (cmd.executeUpdate()>0);
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
@@ -156,6 +173,12 @@ public class SessionDAL implements IDAL<Session> {
 		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
+			for(Test test : s.getTests()){
+			   CallableStatement cmdTest = cnx.prepareCall(SessionSQL.DELETETESTSESSION);
+			   cmdTest.setInt(1, s.getId());
+			   cmdTest.setInt(2, test.getId());
+			   resultat = (cmdTest.executeUpdate()>0);
+		    }
 			CallableStatement cmd = cnx.prepareCall(SessionSQL.DELETE);
 			cmd.setInt(1, s.getId());
 			resultat = (cmd.executeUpdate()>0);

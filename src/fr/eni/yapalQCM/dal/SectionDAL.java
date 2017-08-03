@@ -136,9 +136,9 @@ public class SectionDAL implements IDAL<Section> {
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall(SectionSQL.UPDATE);
-			cmd.setInt(1, s.getTest().getId());
-			cmd.setInt(2, s.getTheme().getId());
-			cmd.setInt(3, s.getNbQuestions());
+			cmd.setInt(1, s.getNbQuestions());
+			cmd.setInt(2, s.getTest().getId());
+			cmd.setInt(3, s.getTheme().getId());
 			resultat = (cmd.executeUpdate()>0);
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
@@ -184,6 +184,7 @@ public class SectionDAL implements IDAL<Section> {
 		Theme t = new Theme();
 		t.setId(rs.getInt("idTheme"));
 		s.setNbQuestions(rs.getInt("nombreQuestions"));
+		s.setTest(test);
 		s.setTheme(t);
 		return s;
 	}

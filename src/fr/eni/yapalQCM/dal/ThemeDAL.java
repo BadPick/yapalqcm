@@ -154,8 +154,7 @@ public class ThemeDAL implements IDAL<Theme> {
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall(ThemeSQL.DELETE);
-			cmd.setString(1, t.getNom());	
-			cmd.setInt(2, t.getId());
+			cmd.setInt(1, t.getId());
 			resultat = (cmd.executeUpdate()>0);
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
