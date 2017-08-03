@@ -14,8 +14,28 @@ public class Question {
 	private int id;
 	private String enonce;
 	private ArrayList<Reponse> reponses;
+	//transient
+	private boolean marquee;
 	
 	
+	public Question() {
+		reponses = new ArrayList<Reponse>();
+	}
+	
+	/**
+	 * @return the marquee
+	 */
+	public boolean isMarquee() {
+		return marquee;
+	}
+
+	/**
+	 * @param marquee the marquee to set
+	 */
+	public void setMarquee(boolean marquee) {
+		this.marquee = marquee;
+	}
+
 	/**
 	 * @return the reponses
 	 */
@@ -57,9 +77,20 @@ public class Question {
 	public void setEnonce(String enonce) {
 		this.enonce = enonce;
 	}
-
-	public Question() {
-		// TODO Auto-generated constructor stub
+	
+	/**
+	 * méthode calculé qui vérifie si une (ou plusieur) réponse est cochée
+	 * @return true si une réponse est cochée
+	 */
+	public boolean isRepondue(){
+		if (getReponses()!=null && getReponses().size()>0) {
+			for (Reponse r : reponses) {
+				if (r.isChecked()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

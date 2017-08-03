@@ -5,7 +5,9 @@ public class Inscription {
 	private Utilisateur candidat;
 	private Session session;
 
-	
+	public Inscription() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	/**
 	 * @return the candidat
@@ -36,11 +38,6 @@ public class Inscription {
 	 */
 	public void setSession(Session session) {
 		this.session = session;
-	}
-
-
-	public Inscription() {
-		// TODO Auto-generated constructor stub
 	}
 
 }

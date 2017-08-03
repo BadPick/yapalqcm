@@ -18,7 +18,9 @@ public class Test {
 	private long duree;
 	private ArrayList<Section> sections;
 	
-	
+	public Test() {
+		sections = new ArrayList<Section>();
+	}
 	
 	/**
 	 * @return the id
@@ -128,8 +130,6 @@ public class Test {
 
 
 
-	public Test() {
-		// TODO Auto-generated constructor stub
-	}
+	
 
 }

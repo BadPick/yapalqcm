@@ -15,6 +15,10 @@ public class Theme {
 	private String nom;
 	private ArrayList<Question> questions;
 
+	public Theme() {
+		questions = new ArrayList<Question>();
+	}
+	
 	/**
 	 * @return the id
 	 */
@@ -87,8 +91,6 @@ public class Theme {
 
 
 
-	public Theme() {
-		// TODO Auto-generated constructor stub
-	}
+	
 
 }

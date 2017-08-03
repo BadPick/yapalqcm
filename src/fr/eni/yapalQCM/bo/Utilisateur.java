@@ -19,7 +19,9 @@ public class Utilisateur {
 	private String email;
 	private Role role;
 	
-	
+	public Utilisateur() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	/**
 	 * @return the role
@@ -158,11 +160,5 @@ public class Utilisateur {
 		this.email = email;
 	}
 
-
-
-
-	public Utilisateur() {
-		// TODO Auto-generated constructor stub
-	}
 
 }

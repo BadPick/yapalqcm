@@ -13,8 +13,31 @@ public class Reponse {
 	private String enonce;
 	private boolean isCorrect;
 	private Question question;
+	//transient
+	private boolean checked;
 	
+	public Reponse() {
+		// TODO Auto-generated constructor stub
+	}
 	
+	/**
+	 * @return the checked
+	 */
+	public boolean isChecked() {
+		return checked;
+	}
+
+
+
+	/**
+	 * @param checked the checked to set
+	 */
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
+
+
+
 	/**
 	 * Getter pour question.
 	 * @return the question
@@ -89,8 +112,6 @@ public class Reponse {
 
 
 
-	public Reponse() {
-		// TODO Auto-generated constructor stub
-	}
+	
 
 }

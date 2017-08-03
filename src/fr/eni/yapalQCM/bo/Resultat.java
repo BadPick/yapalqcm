@@ -9,7 +9,9 @@ public class Resultat {
 	private Utilisateur candidat;
 	
 
-	
+	public Resultat() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	/**
 	 * @return the tempsEcoule
@@ -101,8 +103,6 @@ public class Resultat {
 
 
 
-	public Resultat() {
-		// TODO Auto-generated constructor stub
-	}
+	
 
 }

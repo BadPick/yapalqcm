@@ -13,7 +13,9 @@ public class Section {
 	private Theme theme;
 	private int nbQuestions;
 	
-	
+	public Section() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	/**
 	 * Getter pour test.
@@ -65,8 +67,6 @@ public class Section {
 
 
 
-	public Section() {
-		// TODO Auto-generated constructor stub
-	}
+	
 
 }

@@ -12,6 +12,9 @@ public class Role {
 	private int id;
 	private String name;
 	
+	public Role() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	/**
 	 * @return the id
@@ -45,8 +48,6 @@ public class Role {
 	}
 
 
-	public Role() {
-		// TODO Auto-generated constructor stub
-	}
+
 
 }

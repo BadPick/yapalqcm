@@ -17,7 +17,9 @@ public class Session {
 	private int nbPlaces;
 	private ArrayList<Test> tests;
 	
-	
+	public Session() {
+		tests = new ArrayList<Test>();
+	}
 	
 	/**
 	 * @return the id
@@ -91,8 +93,6 @@ public class Session {
 
 
 
-	public Session() {
-		// TODO Auto-generated constructor stub
-	}
+	
 
 }
