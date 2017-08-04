@@ -27,7 +27,7 @@
 					<tr>
 						<td class="table-col-80">${test.nom}(${test.duree})</td>
 						<td>
-							<form action="<%=request.getContextPath()%>/CandidatPasserUnTest">
+							<form action="<%=request.getContextPath()%>/Candidat/PasserUnTest">
 								<input type="hidden" name="idTest">
 								<button type="submit" class="form-control yapalBoutton">Passer ce
 									test</button>
