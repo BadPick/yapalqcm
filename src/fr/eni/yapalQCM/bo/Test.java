@@ -5,6 +5,7 @@ package fr.eni.yapalQCM.bo;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author mrault2015

@@ -55,6 +55,7 @@ public class CandidatAccueil extends HttpServlet {
 		RequestDispatcher dispatcher = null;
 		
 		//TESTING (simulation d'un candidat en session)
+<<<<<<< HEAD
 		/*Role role = new Role();
 		role.setId(1);
 		role.setName("Candidat");
@@ -66,6 +67,19 @@ public class CandidatAccueil extends HttpServlet {
 		user.setEmail("jd@gmail.com");		
 		user.setRole(role);
 		session.setAttribute("user", user);*/
+=======
+//		Role role = new Role();
+//		role.setId(1);
+//		role.setName("Candidat");
+//		Utilisateur user = new Utilisateur();
+//		user.setId(1);
+//		user.setNom("Doe");
+//		user.setPrenom("Jhon");
+//		user.setDateDeNaissance(new Date());
+//		user.setEmail("jd@gmail.com");		
+//		user.setRole(role);
+//		session.setAttribute("user", user);
+>>>>>>> branch 'master' of https://github.com/BadPick/yapalqcm.git
 		
 		
 		

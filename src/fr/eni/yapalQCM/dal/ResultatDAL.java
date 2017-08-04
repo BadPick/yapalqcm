@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import fr.eni.yapalQCM.bo.Resultat;
+import fr.eni.yapalQCM.bo.Test;
+import fr.eni.yapalQCM.bo.Utilisateur;
 import fr.eni.yapalQCM.utils.YapalLogger;
 
 /**
@@ -173,6 +175,51 @@ public class ResultatDAL implements IDAL<Resultat> {
 		}
 		
 		logger.exiting("ResultatDAL", "delete");
+		return resultat;
+	}
+	/**
+	 * Méthode permettant de récupérer la liste des résultats correspondant à
+	 * un candidat.
+	 * @param user
+	 * @return List<Resultat>
+	 * @throws SQLException
+	 */
+	public ArrayList<Resultat> getAllByUtilisateur(Utilisateur user) throws SQLException{
+		ArrayList<Resultat> listeResultats = new ArrayList<Resultat>();
+		try(Connection cnx = DBConnection.getConnection()) {
+			CallableStatement cmd = cnx.prepareCall(ResultatSQL.GET_MANY_BY_UTILISATEUR);
+			cmd.setInt(1, user.getId());	
+			ResultSet rs = cmd.executeQuery();
+			while(rs.next()){
+				listeResultats.add(itemBuilder(rs));
+			}
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}
+		return listeResultats;
+	}
+	/**
+	 * Méthode permettant de récupérer un résultat pour un utilisateur et un test donné.
+	 * @param user
+	 * @param test
+	 * @return Resultat
+	 * @throws SQLException
+	 */
+	public Resultat getOneByUtilisateur(Utilisateur user, Test test) throws SQLException{
+		Resultat resultat = null;
+		try(Connection cnx = DBConnection.getConnection()) {
+			CallableStatement cmd = cnx.prepareCall(ResultatSQL.GET_MANY_BY_UTILISATEUR_AND_TEST);
+			cmd.setInt(1, user.getId());
+			cmd.setInt(2, test.getId());
+			ResultSet rs = cmd.executeQuery();
+			while(rs.next()){
+				resultat=itemBuilder(rs);
+			}
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}
 		return resultat;
 	}
 	

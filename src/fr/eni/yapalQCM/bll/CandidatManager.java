@@ -24,15 +24,12 @@ public class CandidatManager {
 	 * @throws SQLException 
 	 */
 	public static Test getTest(int idTest) throws SQLException {
-//		TestDAL testDal = new TestDAL();
-//		Test test = new Test();
-//		test.setId(idTest);
-//		test = testDal.getOne(test);
-			
-		// génération du test
-		//generateTest(idTest);
-
-		return null;
+		TestDAL testDal = new TestDAL();
+		Test test = testDal.getOne(idTest);
+		
+		// gï¿½nï¿½ration du test
+		generateTest(idTest);
+		return test;
 	}
 
 	/**
