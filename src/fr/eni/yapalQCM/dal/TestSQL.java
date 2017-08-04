@@ -14,4 +14,13 @@ public abstract class TestSQL {
 													+"LEFT JOIN TEST_SESSIONS ts on se.idSession=ts.idSession "
 													+"LEFT JOIN TESTS te on ts.idTest=te.idTest "
 													+"WHERE ut.idUser=?";
+	
+	public static String GET_ONE_BY_ID = "SELECT t.*,th.*,q.*,s.nombreQuestions,r.enonce as repEnonce,r.idReponse,r.isCorrect "
+													+"FROM TESTS t "
+													+"inner join  sections s on t.idTest=s.idTest "
+													+"inner join  themes th on s.idTheme = th.idTheme "
+													+"inner join  QUESTIONS_THEMES qt on th.idTheme = qt.idTheme "
+													+"inner join  QUESTIONS q on q.idQuestion=qt.idQuestion "
+													+"inner join  REPONSES r on q.idQuestion=r.idQuestion "
+													+"where t.idTest=?";
 }

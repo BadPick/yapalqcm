@@ -93,4 +93,9 @@ public class Question {
 		return false;
 	}
 
+	public void addReponse(Reponse reponse) {
+		reponse.setQuestion(this);
+		getReponses().add(reponse);		
+	}
+
 }
