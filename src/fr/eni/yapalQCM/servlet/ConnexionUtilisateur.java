@@ -108,6 +108,7 @@ public class ConnexionUtilisateur extends HttpServlet {
 			break;
 		default:
 			System.out.println("!!!Non Traité!!!");
+			dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 			break;
 		}
 		
