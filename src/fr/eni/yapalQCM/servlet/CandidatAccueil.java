@@ -55,7 +55,7 @@ public class CandidatAccueil extends HttpServlet {
 		RequestDispatcher dispatcher = null;
 		
 		//TESTING (simulation d'un candidat en session)
-<<<<<<< HEAD
+
 		/*Role role = new Role();
 		role.setId(1);
 		role.setName("Candidat");
@@ -67,19 +67,7 @@ public class CandidatAccueil extends HttpServlet {
 		user.setEmail("jd@gmail.com");		
 		user.setRole(role);
 		session.setAttribute("user", user);*/
-=======
-//		Role role = new Role();
-//		role.setId(1);
-//		role.setName("Candidat");
-//		Utilisateur user = new Utilisateur();
-//		user.setId(1);
-//		user.setNom("Doe");
-//		user.setPrenom("Jhon");
-//		user.setDateDeNaissance(new Date());
-//		user.setEmail("jd@gmail.com");		
-//		user.setRole(role);
-//		session.setAttribute("user", user);
->>>>>>> branch 'master' of https://github.com/BadPick/yapalqcm.git
+
 		
 		
 		
@@ -89,10 +77,16 @@ public class CandidatAccueil extends HttpServlet {
 			
 			//récupération de la liste de tests dispo pour ce candidat
 			ArrayList<Test> tests = CandidatManager.getTests(candidat);
+			ArrayList<Resultat> resultats=new ArrayList<Resultat>();
 			request.setAttribute("testList", tests);
-			
-			//récupération de la liste de résultats dispo pour ce candidat
-			ArrayList<Resultat> resultats = CandidatManager.getResultats(candidat);
+			for (Test test : tests) {
+				//récupération de la liste de résultats dispo pour ce candidat	
+				Resultat resultat = null;
+				resultat = CandidatManager.getResultat(candidat,test);
+				if (resultat!=null) {
+					resultats.add(resultat);					
+				}
+			}
 			request.setAttribute("resultList", resultats);			
 			
 			//besoin d'afficher un message

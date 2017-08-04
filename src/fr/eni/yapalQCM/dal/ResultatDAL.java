@@ -184,15 +184,21 @@ public class ResultatDAL implements IDAL<Resultat> {
 	 * @return List<Resultat>
 	 * @throws SQLException
 	 */
+	@SuppressWarnings("null")
 	public ArrayList<Resultat> getAllByUtilisateur(Utilisateur user) throws SQLException{
-		ArrayList<Resultat> listeResultats = new ArrayList<Resultat>();
+		ArrayList<Resultat> listeResultats=null; 
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall(ResultatSQL.GET_MANY_BY_UTILISATEUR);
 			cmd.setInt(1, user.getId());	
 			ResultSet rs = cmd.executeQuery();
-			while(rs.next()){
-				listeResultats.add(itemBuilder(rs));
-			}
+			if (!rs.next() ) {
+				logger.severe("Pas d'enregistrement résultats.") ;
+			} else {
+				listeResultats=new ArrayList<Resultat>();
+			    do {
+			    	listeResultats.add(itemBuilder(rs));
+			    } while (rs.next());
+			}			
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
 			throw e;

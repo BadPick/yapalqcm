@@ -37,7 +37,7 @@
 								<c:if test="${result.test.id == test.id}">
 									<form
 										action="<%=request.getContextPath()%>/Candidat/ConsulterResultat">
-										<input type="hidden" name="idTest">
+										<input type="hidden" name="idTest" value="${result.test.id}">
 										<button type="submit" class="form-control yapalBoutton">R�sultats</button>
 									</form>
 								</c:if>

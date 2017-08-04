@@ -10,7 +10,7 @@ public abstract class ResultatSQL {
 	public static String GET_MANY_BY_UTILISATEUR="select re.idUser as idUser,re.idTest as idTest,re.idSession as idSession,re.tempsEcoule as tempsEcoule,re.seuilObtenu as seuilObtenu "
 													+"from UTILISATEURS ut "
 													+"LEFT JOIN RESULTATS re on ut.idUser=re.idUser "
-													+"where ut.idUser=?";
+													+"where re.idUser=?";
 	public static String GET_MANY_BY_UTILISATEUR_AND_TEST="select re.idUser as idUser,re.idTest as idTest,re.idSession as idSession,re.tempsEcoule as tempsEcoule,re.seuilObtenu as seuilObtenu "
 													+"from UTILISATEURS ut "
 													+"LEFT JOIN RESULTATS re on ut.idUser=re.idUser "

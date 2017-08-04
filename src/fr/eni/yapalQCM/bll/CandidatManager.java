@@ -68,9 +68,10 @@ public class CandidatManager {
 		ResultatDAL resultatDal = new ResultatDAL();
 		SessionDAL sessionDal = new SessionDAL();
 		resultat = resultatDal.getOneByUtilisateur(candidat, test);
-		resultat.setCandidat(candidat);
-		resultat.setSession(sessionDal.getOne(resultat.getSession()));
-		resultat.setTest(test);
+		if (resultat!=null) {
+			resultat.setCandidat(candidat);
+			resultat.setTest(test);			
+		}
 		return resultat;
 	}
 	
@@ -80,19 +81,21 @@ public class CandidatManager {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static ArrayList<Resultat> getResultats(Utilisateur candidat) throws SQLException{
-		ArrayList<Resultat> listeResultats = new ArrayList<Resultat>();
+	/*public static ArrayList<Resultat> getResultats(Utilisateur candidat) throws SQLException{
+		ArrayList<Resultat> listeResultats = null;
 		ResultatDAL resultatDal = new ResultatDAL();
 		SessionDAL sessionDal = new SessionDAL();
 		TestDAL testDal = new TestDAL();
 		listeResultats = resultatDal.getAllByUtilisateur(candidat);
-		for (Resultat resultat : listeResultats) {
-			resultat.setCandidat(candidat);
-			resultat.setSession(sessionDal.getOne(resultat.getSession()));
-			resultat.setTest(testDal.getOne(resultat.getTest()));
-		}
+		if (listeResultats!=null) {
+			for (Resultat resultat : listeResultats) {
+				resultat.setCandidat(candidat);
+				resultat.setSession(sessionDal.getOne(resultat.getSession()));
+				resultat.setTest(testDal.getOne(resultat.getTest()));
+			}
+		}		
 		return listeResultats;
-	}
+	}*/
 	
 	
 	
