@@ -82,7 +82,7 @@ public class ConnexionUtilisateur extends HttpServlet {
 					}else if (user.getRole().getId()==2){
 						message = ErrorManager.getMessage("Connection validée",MessageType.success);
 						session.setAttribute("user", user);
-						dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+						dispatcher = getServletContext().getRequestDispatcher("/Formateur/Accueil");
 					}else if (user.getRole().getId()==3){
 						message = ErrorManager.getMessage("Connection validée",MessageType.success);
 						session.setAttribute("user", user);

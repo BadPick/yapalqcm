@@ -88,7 +88,9 @@ public class CandidatConsulterResultat extends HttpServlet {
 		}
 		
 		if (message != null) {
+			request.removeAttribute("message");
 			request.setAttribute("message", message);
+			message=null;
 		}
 		rd.forward(request, response);
 	}

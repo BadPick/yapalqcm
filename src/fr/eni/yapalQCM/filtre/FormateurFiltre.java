@@ -18,7 +18,7 @@ import fr.eni.yapalQCM.bo.Utilisateur;
 /**
  * Servlet Filter implementation class FormateurFiltre
  */
-@WebFilter("/Formateur/*")
+@WebFilter("/Formateur/")
 public class FormateurFiltre implements Filter {
 
     /**

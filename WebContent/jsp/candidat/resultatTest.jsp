@@ -6,18 +6,20 @@
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>YapalQCM</title>
 <link rel="stylesheet" type="text/css" href="/yapalQCM/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/yapalQCM/css/yapalcss.css">
 </head>
 <body>
 <%@include file="/menu.jsp"%>
-<c:set var="message" value="${requestScope['message']}" scope="page" />
-<div id="message" class="hidden">${message.message}</div>
-<div id="messageType" class="hidden">${message.type}</div>
+	<c:set var="message" value="${requestScope['message']}" scope="page" />
+	<c:set var="resultat" value="${resquestScope['resultat']}" scope="page"/>
+	<div id="message" class="hidden">${message.message}</div>
+	<div id="messageType" class="hidden">${message.type}</div>
 <div class="container">
-
-
+	<h1>Résultat du test: ${resultat.test.nom }</h1>
+	<p>Score obtenu: ${resultat.seuilObtenu }</p>
+	<p>Temps passé: ${resultat.tempsEcoule }</p>
 	
 </div>
 <script type="text/javascript" src="/yapalQCM/js/jquery-3.2.1.min.js"></script>
