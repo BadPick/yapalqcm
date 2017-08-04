@@ -15,9 +15,8 @@
 					<div>
 						<div>
 							<div class="logo col-sm-2">
-								<img alt="YapalQCM" src="logo.png" class="logo">
+								<img alt="YapalQCM" src="img/logo.png" class="logo">
 							</div>
-
 						</div>
 					</div>
 					<div>
