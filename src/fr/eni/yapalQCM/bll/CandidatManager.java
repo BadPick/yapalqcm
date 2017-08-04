@@ -13,8 +13,8 @@ import fr.eni.yapalQCM.dal.TestDAL;
 public class CandidatManager {
 
 	/**
-	 * méthode en charge de la récupération d'un test le test doit être généré,
-	 * le but étant de passer le test
+	 * mï¿½thode en charge de la rï¿½cupï¿½ration d'un test le test doit ï¿½tre gï¿½nï¿½rï¿½,
+	 * le but ï¿½tant de passer le test
 	 * 
 	 * @param idTest
 	 * @return test
@@ -26,14 +26,14 @@ public class CandidatManager {
 //		test.setId(idTest);
 //		test = testDal.getOne(test);
 			
-		// génération du test
+		// gï¿½nï¿½ration du test
 		//generateTest(idTest);
 
 		return null;
 	}
 
 	/**
-	 * méthode en charge de la génération du test
+	 * mï¿½thode en charge de la gï¿½nï¿½ration du test
 	 * 
 	 * @param idTest
 	 */
@@ -42,8 +42,8 @@ public class CandidatManager {
 	}
 
 	/**
-	 * méthode en charge de la récupération de la liste de tests dispo pour cet
-	 * utilisateur les test n'ont pas besoin d'être générés,le but étant
+	 * mï¿½thode en charge de la rï¿½cupï¿½ration de la liste de tests dispo pour cet
+	 * utilisateur les test n'ont pas besoin d'ï¿½tre gï¿½nï¿½rï¿½s,le but ï¿½tant
 	 * d'afficher le nom et l'id du test
 	 * 
 	 * @param id
@@ -57,14 +57,14 @@ public class CandidatManager {
 	}
 
 	/**
-	 * méthode en charge de la récupération de la liste de résultat pour cet
+	 * mï¿½thode en charge de la rï¿½cupï¿½ration de la liste de rï¿½sultat pour cet
 	 * utilisateur
 	 * 
 	 * @param id
 	 * @return ArrayList<Resultat>
 	 */
 	public static ArrayList<Resultat> getResultats(Utilisateur candidat) {
-		// TESTING liste de résultats bidon
+		// TESTING liste de rï¿½sultats bidon
 		return listeResultatsBidon();
 	}
 
@@ -74,7 +74,7 @@ public class CandidatManager {
 		for (int i = 0; i < 10; i++) {
 			Test test = new Test();
 			test.setId(i);
-			test.setNom("Test numéro " + i);
+			test.setNom("Test numï¿½ro " + i);
 			test.setDuree(i * 2500);
 			tests.add(test);
 		}

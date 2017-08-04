@@ -19,8 +19,13 @@
 <div class="container">
 <h1>coucou</h1>
 	<div id="chrono"></div>
-	<c:forEach items="${ listeQuestions }" var="question" varStatus="status">
-		<article class="question" id="${ status }" style="display:none">
+	<div id="recap">
+		<c:forEach items="${ listeQuestions }" var="question" varStatus="statusRecap">
+			<button id="'btnRecap' + '${ statusRecap }'">${ statusRecap }</button>
+		</c:forEach>
+	</div>
+	<c:forEach items="${ listeQuestions }" var="question" varStatus="statusQues">
+		<div class="question" id="${ status }" style="display:none">
 			<h2>Question n°<c:out value="${ status }"/></h2>
 			<h2><c:out value="${ question.enonce }"/></h2>
 			<ul>
@@ -28,12 +33,18 @@
 				<input type="checkbox" name="${ statusRep }" id="${ statusRep }" /> <label for="${ statusRep }">${ reponse.enonce }"</label><br>
 			</c:forEach>
 			</ul>
-		</article>
+		</div>
 	</c:forEach>
+	<button id="marquageQuestion" onclick="MarqueQuestion(numQuestionEnCours)"></button>
 	<button id="questionSuivante" onclick="PageSuivante(numQuestionEnCours)"></button>
 	
 </div>
 <script type="text/javascript">
+	function MarqueQuestion(numQuestion){
+		var btnRecapQuestion = document.getElementById('btnRecap' + numQuestion);
+		btnRecapQuestion.style.backGround="red";
+	}
+
 	function PageSuivante(numQuestion){
 		var btnQS = document.getElementById("questionSuivante");
 		var questionEnCours = document.getElementById(numQuestion);

@@ -51,19 +51,19 @@ public class CandidatPasserUnTest extends HttpServlet {
 		HttpSession session = request.getSession();
 		RequestDispatcher dispatcher = null;
 		Test test = null;
+		ArrayList<Question> listeQuestions = new ArrayList<Question>();
 		
 		try {
 			//R�cup�ration du test g�n�r�
-			//if (request.getParameter("idTest")!=null) {
+			if (request.getParameter("idTest")!=null) {
 				test = CandidatManager.getTest(Integer.valueOf(request.getParameter("1")));
-				ArrayList<Question> listeQuestions = new ArrayList<Question>();
 				for(Section section : test.getSections()){
 					for(Question question : section.getTheme().getQuestions()){
 						listeQuestions.add(question);
 					}
 				}
-				request.setAttribute("listeQuestions", listeQuestions);
-			//}
+			}
+			request.setAttribute("listeQuestions", listeQuestions);
 			
 			
 			
@@ -73,7 +73,8 @@ public class CandidatPasserUnTest extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/jsp/candidat/passageTest.jsp");
 		} catch (Exception e) {
 			//gestion des messages d'erreurs
-			message = ErrorManager.getMessage(e);		
+			message = ErrorManager.getMessage(e);
+			dispatcher = getServletContext().getRequestDispatcher("/jsp/candidat/accueilCandidat.jsp");
 		}
 		
 		if (message != null) {
