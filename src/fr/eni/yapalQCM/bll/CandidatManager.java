@@ -3,11 +3,14 @@ package fr.eni.yapalQCM.bll;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import fr.eni.yapalQCM.bo.Resultat;
 import fr.eni.yapalQCM.bo.Session;
 import fr.eni.yapalQCM.bo.Test;
 import fr.eni.yapalQCM.bo.Utilisateur;
+import fr.eni.yapalQCM.dal.ResultatDAL;
+import fr.eni.yapalQCM.dal.SessionDAL;
 import fr.eni.yapalQCM.dal.TestDAL;
 
 public class CandidatManager {
@@ -55,19 +58,47 @@ public class CandidatManager {
 		ArrayList<Test> tests = testDal.getManyBy(candidat.getId());
 		return tests;
 	}
-
+		
 	/**
-	 * méthode en charge de la récupération de la liste de résultat pour cet
-	 * utilisateur
-	 * 
-	 * @param id
-	 * @return ArrayList<Resultat>
+	 * Récupération d'un résultat pour un test et un candidat donné.
+	 * @param candidat
+	 * @param test
+	 * @return
+	 * @throws SQLException
 	 */
-	public static ArrayList<Resultat> getResultats(Utilisateur candidat) {
-		// TESTING liste de résultats bidon
-		return listeResultatsBidon();
+	public static Resultat getResultat(Utilisateur candidat,Test test) throws SQLException{
+		Resultat resultat = null;
+		ResultatDAL resultatDal = new ResultatDAL();
+		SessionDAL sessionDal = new SessionDAL();
+		resultat = resultatDal.getOneByUtilisateur(candidat, test);
+		resultat.setCandidat(candidat);
+		resultat.setSession(sessionDal.getOne(resultat.getSession()));
+		resultat.setTest(test);
+		return resultat;
 	}
-
+	
+	/**
+	 * Récupération d'une liste de résultats pour un candidat donné.
+	 * @param candidat
+	 * @return
+	 * @throws SQLException
+	 */
+	public static ArrayList<Resultat> getResultats(Utilisateur candidat) throws SQLException{
+		ArrayList<Resultat> listeResultats = new ArrayList<Resultat>();
+		ResultatDAL resultatDal = new ResultatDAL();
+		SessionDAL sessionDal = new SessionDAL();
+		TestDAL testDal = new TestDAL();
+		listeResultats = resultatDal.getAllByUtilisateur(candidat);
+		for (Resultat resultat : listeResultats) {
+			resultat.setCandidat(candidat);
+			resultat.setSession(sessionDal.getOne(resultat.getSession()));
+			resultat.setTest(testDal.getOne(resultat.getTest()));
+		}
+		return listeResultats;
+	}
+	
+	
+	
 	public static ArrayList<Test> listeTestBidon() {
 		// TESTING liste de tests bidon
 		ArrayList<Test> tests = new ArrayList<Test>();
@@ -80,7 +111,7 @@ public class CandidatManager {
 		}
 		return tests;
 	}
-	
+		
 	public static ArrayList<Resultat> listeResultatsBidon() {
 		ArrayList<Test> tests = listeTestBidon();
 		// TESTING liste de resultats bidon
@@ -102,4 +133,6 @@ public class CandidatManager {
 		return results;
 	}
 
+	
+	
 }

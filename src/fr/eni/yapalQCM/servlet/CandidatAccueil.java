@@ -55,7 +55,7 @@ public class CandidatAccueil extends HttpServlet {
 		RequestDispatcher dispatcher = null;
 		
 		//TESTING (simulation d'un candidat en session)
-		Role role = new Role();
+		/*Role role = new Role();
 		role.setId(1);
 		role.setName("Candidat");
 		Utilisateur user = new Utilisateur();
@@ -65,7 +65,7 @@ public class CandidatAccueil extends HttpServlet {
 		user.setDateDeNaissance(new Date());
 		user.setEmail("jd@gmail.com");		
 		user.setRole(role);
-		session.setAttribute("user", user);
+		session.setAttribute("user", user);*/
 		
 		
 		
@@ -90,7 +90,9 @@ public class CandidatAccueil extends HttpServlet {
 		}
 		
 		if (message != null) {
+			request.removeAttribute("message");
 			request.setAttribute("message", message);
+			message=null;
 		}
 		dispatcher.forward(request, response);
 	}
