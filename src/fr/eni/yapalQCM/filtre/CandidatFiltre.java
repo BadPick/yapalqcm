@@ -18,7 +18,7 @@ import fr.eni.yapalQCM.bo.Utilisateur;
 /**
  * Servlet Filter implementation class CandidatFiltre
  */
-@WebFilter("/Candidat/*")
+@WebFilter("/Candidatsdfsdf/*")
 public class CandidatFiltre implements Filter {
 
     /**

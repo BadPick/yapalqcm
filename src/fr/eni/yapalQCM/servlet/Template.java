@@ -55,7 +55,7 @@ public class Template extends HttpServlet {
 			//besoin d'afficher un message
 			//message = ErrorManager.getMessage("le message",MessageType.success);	
 			
-			dispatcher = getServletContext().getRequestDispatcher("******************");
+			dispatcher = this.getServletContext().getRequestDispatcher("******************");
 		} catch (Exception e) {
 			//gestion des messages d'erreurs
 			message = ErrorManager.getMessage(e);		

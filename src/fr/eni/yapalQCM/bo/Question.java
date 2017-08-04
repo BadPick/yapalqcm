@@ -16,6 +16,7 @@ public class Question {
 	private ArrayList<Reponse> reponses;
 	//transient
 	private boolean marquee;
+	private boolean repondue;
 	
 	
 	public Question() {
@@ -79,18 +80,19 @@ public class Question {
 	}
 	
 	/**
-	 * méthode calculé qui vérifie si une (ou plusieur) réponse est cochée
-	 * @return true si une réponse est cochée
+	 * mï¿½thode calculï¿½ qui vï¿½rifie si une (ou plusieur) rï¿½ponse est cochï¿½e
+	 * @return true si une rï¿½ponse est cochï¿½e
 	 */
 	public boolean isRepondue(){
+		repondue=false;
 		if (getReponses()!=null && getReponses().size()>0) {
 			for (Reponse r : reponses) {
 				if (r.isChecked()) {
-					return true;
+					repondue=true;
 				}
 			}
 		}
-		return false;
+		return repondue;
 	}
 
 	public void addReponse(Reponse reponse) {
