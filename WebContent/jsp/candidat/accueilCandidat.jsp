@@ -27,8 +27,8 @@
 					<tr>
 						<td class="table-col-80">${test.nom}(${test.duree})</td>
 						<td>
-							<form action="<%=request.getContextPath()%>/Candidat/PasserUnTest">
-								<input type="hidden" name="idTest">
+												<form action="<%=request.getContextPath()%>/Candidat/PasserUnTest">
+								<input type="hidden" name="idTest" value="${ test.id }">
 								<button type="submit" class="form-control yapalBoutton">Passer ce
 									test</button>
 							</form>
@@ -36,7 +36,7 @@
 						<td><c:forEach var="result" items="${resultList}">
 								<c:if test="${result.test.id == test.id}">
 									<form
-										action="<%=request.getContextPath()%>/CandidatConsulterResultat">
+										action="<%=request.getContextPath()%>/Candidat/ConsulterResultat">
 										<input type="hidden" name="idTest">
 										<button type="submit" class="form-control yapalBoutton">R�sultats</button>
 									</form>

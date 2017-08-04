@@ -1,6 +1,7 @@
 package fr.eni.yapalQCM.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,13 +13,15 @@ import javax.servlet.http.HttpSession;
 
 import fr.eni.yapalQCM.bll.CandidatManager;
 import fr.eni.yapalQCM.bll.ErrorManager;
+import fr.eni.yapalQCM.bo.Question;
+import fr.eni.yapalQCM.bo.Section;
 import fr.eni.yapalQCM.bo.Test;
 import fr.eni.yapalQCM.utils.Message;
 
 /**
  * Servlet implementation class CandidatPasserUnTest
  */
-@WebServlet("/CandidatPasserUnTest")
+@WebServlet("/Candidat/PasserUnTest")
 public class CandidatPasserUnTest extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Message message = null;   
@@ -47,19 +50,27 @@ public class CandidatPasserUnTest extends HttpServlet {
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		HttpSession session = request.getSession();
 		RequestDispatcher dispatcher = null;
+		Test test = null;
 		
 		try {
-			//Récupération du test généré
-			if (request.getParameter("idTest")!=null) {
-				Test test = CandidatManager.getTest(Integer.valueOf(request.getParameter("idTest")));
-			}
+			//Rï¿½cupï¿½ration du test gï¿½nï¿½rï¿½
+			//if (request.getParameter("idTest")!=null) {
+				test = CandidatManager.getTest(Integer.valueOf(request.getParameter("1")));
+				ArrayList<Question> listeQuestions = new ArrayList<Question>();
+				for(Section section : test.getSections()){
+					for(Question question : section.getTheme().getQuestions()){
+						listeQuestions.add(question);
+					}
+				}
+				request.setAttribute("listeQuestions", listeQuestions);
+			//}
 			
 			
 			
 			//besoin d'afficher un message
 			//message = ErrorManager.getMessage("le message",MessageType.success);	
 			
-			dispatcher = getServletContext().getRequestDispatcher("******************");
+			dispatcher = getServletContext().getRequestDispatcher("/jsp/candidat/passageTest.jsp");
 		} catch (Exception e) {
 			//gestion des messages d'erreurs
 			message = ErrorManager.getMessage(e);		
