@@ -21,9 +21,9 @@ public class SessionsManager {
 			ArrayList<Test> tests = new ArrayList<Test>();
 			List<Integer> idTests = new ArrayList<Integer>();
 			idTests = sessionDal.listeTests(session.getId());
-			for (Integer idTest : idTests) {
-				tests.add(testDal.getOne(idTest));
-			}
+				for (Integer idTest : idTests) {
+					tests.add(testDal.getOne(idTest));
+				}
 			session.setTests(tests);
 		}
 		

@@ -211,18 +211,20 @@ public class SessionDAL implements IDAL<Session> {
 	 * @throws SQLException 
 	 */
 	public List<Integer> listeTests(int id) throws SQLException {
-		List<Integer> liste = new ArrayList<Integer>();
 		logger.entering("SessionDAL", "listeTests");
+		List<Integer> liste = new ArrayList<Integer>();
 		
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall(SessionSQL.GET_TESTS);
+			PreparedStatement cmd = cnx.prepareStatement(SessionSQL.GET_TESTS);
 			cmd.setInt(1, id);
 			ResultSet rs = cmd.executeQuery();		
-			if(rs.next()){
+			while(rs.next()){
+				System.out.println(rs);
 				liste.add(rs.getInt("idTest"));
 			}
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
+			e.printStackTrace();
 			throw e;
 		}
 		
