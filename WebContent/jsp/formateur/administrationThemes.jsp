@@ -19,8 +19,24 @@
 <div id="messageType" class="hidden">${message.type}</div>
 
 <div class="container">
+
 <h1>Espace Formateur: ${user.nom } ${user.prenom }</h1>
 <%@include file="/jsp/formateur/menuFormateur.jsp"%>
+<h2>Administration des thèmes</h2>
+
+<c:set var="themes" value="${requestScope['themes'] }" scope="page"/>
+
+<table class="table table-striped">
+
+	<thead>
+		<tr>
+			<!-- TODO -->
+		</tr>
+	</thead>
+
+
+</table>
+
 
 </div>
 <script type="text/javascript" src="/yapalQCM/js/jquery-3.2.1.min.js"></script>
