@@ -16,9 +16,13 @@ import fr.eni.yapalQCM.bll.CandidatManager;
 import fr.eni.yapalQCM.bll.ErrorManager;
 import fr.eni.yapalQCM.bo.Question;
 import fr.eni.yapalQCM.bo.Reponse;
+import fr.eni.yapalQCM.bo.Resultat;
 import fr.eni.yapalQCM.bo.Section;
+import fr.eni.yapalQCM.bo.Session;
 import fr.eni.yapalQCM.bo.Test;
 import fr.eni.yapalQCM.bo.Theme;
+import fr.eni.yapalQCM.bo.Utilisateur;
+import fr.eni.yapalQCM.dal.ResultatDAL;
 import fr.eni.yapalQCM.utils.Message;
 
 /**
@@ -163,6 +167,17 @@ public class CandidatPasserUnTest extends HttpServlet {
 				else{
 					acquisition = "Non-acquis";
 				}
+				
+				Resultat resultat = new Resultat();
+				Session sessionResult = new Session();
+				sessionResult.setId(1);
+				resultat.setSession(sessionResult);
+				resultat.setCandidat((Utilisateur)session.getAttribute("user"));
+				resultat.setTest(test);
+				resultat.setSeuilObtenu((float)score);
+				resultat.setTempsEcoule(1000);
+				ResultatDAL rd = new ResultatDAL();
+				rd.add(resultat);
 				
 				request.setAttribute("score", score);
 				request.setAttribute("nbreQuestions", listeQuestions.size());
