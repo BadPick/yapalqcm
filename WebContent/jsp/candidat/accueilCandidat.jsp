@@ -38,7 +38,7 @@
 									<form
 										action="<%=request.getContextPath()%>/Candidat/ConsulterResultat">
 										<input type="hidden" name="idTest" value="${result.test.id}">
-										<button type="submit" class="form-control yapalBoutton">R�sultats</button>
+										<button type="submit" class="form-control yapalBoutton">Résultats</button>
 									</form>
 								</c:if>
 							</c:forEach></td>

@@ -7,12 +7,14 @@ public abstract class TestSQL {
 	public static String ADD="INSERT INTO TESTS (nomTest,seuilAcquis,seuilEnCoursAcquisition,duree) VALUES (?,?,?,?);";
 	public static String UPDATE="UPDATE TESTS SET nomTest=?,seuilAcquis=?,seuilEnCoursAcquisition=?,duree=? WHERE idTest=?;";
 	public static String DELETE="DELETE FROM TESTS WHERE idTest=?;";
-	public static String GET_MANY_BY_UTILISATEUR="select te.idTest as idTest,nomTest,seuilAcquis,seuilEnCoursAcquisition,duree "
+	public static String GET_MANY_BY_UTILISATEUR="select te.idTest as idTest,nomTest,seuilAcquis,seuilEnCoursAcquisition,duree,s.nombreQuestions,th.nom,th.idTheme "
 													+"from UTILISATEURS ut "
 													+"LEFT JOIN INSCRIPTIONS ip on ut.idUser=ip.idUser "
 													+"LEFT JOIN SESSIONS se on ip.idSession=se.idSession "
 													+"LEFT JOIN TEST_SESSIONS ts on se.idSession=ts.idSession "
 													+"LEFT JOIN TESTS te on ts.idTest=te.idTest "
+													+"inner join  sections s on te.idTest=s.idTest "
+													+"inner join  themes th on s.idTheme = th.idTheme "
 													+"WHERE ut.idUser=?";
 	
 	public static String GET_ONE_BY_ID = "SELECT t.*,th.*,q.*,s.nombreQuestions,r.enonce as repEnonce,r.idReponse,r.isCorrect "

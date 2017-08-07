@@ -52,24 +52,7 @@ public class CandidatAccueil extends HttpServlet {
 	
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		HttpSession session = request.getSession();
-		RequestDispatcher dispatcher = null;
-		
-		//TESTING (simulation d'un candidat en session)
-
-		/*Role role = new Role();
-		role.setId(1);
-		role.setName("Candidat");
-		Utilisateur user = new Utilisateur();
-		user.setId(1);
-		user.setNom("Doe");
-		user.setPrenom("Jhon");
-		user.setDateDeNaissance(new Date());
-		user.setEmail("jd@gmail.com");		
-		user.setRole(role);
-		session.setAttribute("user", user);*/
-
-		
-		
+		RequestDispatcher dispatcher = null;	
 		
 		try {
 			//récupération du user en session

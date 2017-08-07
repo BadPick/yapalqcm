@@ -192,16 +192,14 @@ public class TestDAL implements IDAL<Test> {
 
 	public ArrayList<Test> getManyBy(int idCandidat) throws SQLException {
 		logger.entering("TestDAL", "getManyBy");
-		ArrayList<Test> tests = new ArrayList<Test>();
-		
+		ArrayList<Test> tests = null;	
 		Test test = null;
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall(TestSQL.GET_MANY_BY_UTILISATEUR);
 			cmd.setInt(1, idCandidat);
 			ResultSet rs = cmd.executeQuery();		
-			while (rs.next()) {
-				test = itemBuilder(rs);	
-				tests.add(test);
+			if (rs.next()) {
+				tests = itemBuilderWithoutSuestion(rs);	
 			}
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
@@ -213,6 +211,46 @@ public class TestDAL implements IDAL<Test> {
 		return tests;
 	}
 	
+	private ArrayList<Test> itemBuilderWithoutSuestion(ResultSet rs) throws SQLException {
+		ArrayList<Test> tests = new ArrayList<Test>();
+		
+		Test test = null;
+		Section section = null;
+		Theme theme = null;
+		Question question = null;
+		Reponse reponse = null;
+		int lastThemeId = 0;
+		int lastQuestionId = 0;
+		int lastTestId = 0;
+		while (rs.next()) {
+			
+			if (lastTestId!= rs.getInt("idTest")) {
+				lastTestId = rs.getInt("idTest");
+				test = new Test();
+				test.setId(rs.getInt("idTest"));
+				test.setNom(rs.getString("nomTest"));
+				test.setSeuilAcquis(rs.getInt("seuilAcquis"));
+				test.setSeuilEnCoursDacquisition(rs.getInt("seuilEnCoursAcquisition"));
+				test.setDuree(rs.getLong("duree"));	
+				tests.add(test);
+			}
+			if (lastThemeId != rs.getInt("idTheme")) {
+				lastThemeId = rs.getInt("idTheme");
+				
+				theme = new Theme();
+				theme.setId(rs.getInt("idTheme"));
+				theme.setNom(rs.getString("nom"));
+				
+				section = new Section();
+				section.setNbQuestions(rs.getInt("nombreQuestions"));
+				section.setTheme(theme);
+				
+				test.addSection(section);
+			}
+		}
+		return tests;
+	}
+
 	public Test getOne(int idTest) throws SQLException {
 		logger.entering("TestDAL", "getOne");
 		
@@ -265,28 +303,28 @@ public class TestDAL implements IDAL<Test> {
 				
 				test.addSection(section);
 			}
-			if (lastQuestionId != rs.getInt("idQuestion")) {
-				addQuestion = true;
-				lastQuestionId = rs.getInt("idQuestion");
-						
-				question = new Question();
-				question.setId(rs.getInt("idQuestion"));
-				question.setEnonce(rs.getString("enonce"));
-								
-			}
+
+				if (lastQuestionId != rs.getInt("idQuestion")) {
+					addQuestion = true;
+					lastQuestionId = rs.getInt("idQuestion");
+							
+					question = new Question();
+					question.setId(rs.getInt("idQuestion"));
+					question.setEnonce(rs.getString("enonce"));
+									
+				}
+					
+				reponse = new Reponse();
+				reponse.setId(rs.getInt("idReponse"));
+				reponse.setEnonce(rs.getString("repEnonce"));
+				reponse.setCorrect(rs.getBoolean("isCorrect"));
 				
-			reponse = new Reponse();
-			reponse.setId(rs.getInt("idReponse"));
-			reponse.setEnonce(rs.getString("repEnonce"));
-			reponse.setCorrect(rs.getBoolean("isCorrect"));
-			
-			question.addReponse(reponse);
-			
-			if(addQuestion){
-				theme.getQuestions().add(question);				
-			}
-			
-		}
+				question.addReponse(reponse);
+				
+				if(addQuestion){
+					theme.getQuestions().add(question);				
+				}
+			}			
 		return test;
 	}
 }
