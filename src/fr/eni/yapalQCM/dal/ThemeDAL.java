@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import fr.eni.yapalQCM.bo.Question;
 import fr.eni.yapalQCM.bo.Theme;
 import fr.eni.yapalQCM.utils.YapalLogger;
 
@@ -175,5 +176,52 @@ public class ThemeDAL implements IDAL<Theme> {
 		t.setId(rs.getInt("idTheme"));
 		t.setNom(rs.getString("nom"));
 		return t;
+	}
+	/**
+	 * Méthode permettant de récupérer la liste des questions associées
+	 * à la thème.
+	 * @param t
+	 * @return List<Question>
+	 * @throws SQLException 
+	 */
+	public List<Integer> listeIdQuestions(Theme t) throws SQLException{
+		logger.entering("ThemeDAL", "listeIdQuestions");
+		List<Integer> listeIdQuestions = new ArrayList<Integer>();
+
+		try(Connection cnx = DBConnection.getConnection()) {
+			CallableStatement cmd = cnx.prepareCall(ThemeSQL.GET_QUESTIONS);
+			cmd.setInt(1, t.getId());
+			ResultSet rs = cmd.executeQuery();		
+			while(rs.next()){
+				listeIdQuestions.add(rs.getInt("idQuestion"));
+			}
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}
+		
+		logger.exiting("ThemeDAL", "listeIdQuestions");
+		
+		return listeIdQuestions;		
+	}
+
+	public List<Integer> listeIdTest(Theme t) throws SQLException {
+		logger.entering("ThemeDAL", "listeIdTest");
+		List<Integer> listeIdQuestions = new ArrayList<Integer>();
+
+		try(Connection cnx = DBConnection.getConnection()) {
+			CallableStatement cmd = cnx.prepareCall(ThemeSQL.GET_TESTS);
+			cmd.setInt(1, t.getId());
+			ResultSet rs = cmd.executeQuery();		
+			while(rs.next()){
+				listeIdQuestions.add(rs.getInt("idTest"));
+			}
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}		
+		logger.exiting("ThemeDAL", "listeIdTest");
+		
+		return listeIdQuestions;
 	}
 }

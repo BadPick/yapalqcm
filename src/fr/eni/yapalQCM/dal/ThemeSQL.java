@@ -7,4 +7,6 @@ public abstract class ThemeSQL {
 	public static String ADD="INSERT INTO THEMES (nom) VALUES (?);";
 	public static String UPDATE="UPDATE THEMES SET nom=? WHERE idTheme=?;";
 	public static String DELETE="DELETE FROM THEMES WHERE idTheme=?;";
+	public static String GET_QUESTIONS="SELECT * FROM QUESTIONS_THEMES WHERE idTheme=?";
+	public static String GET_TESTS = "SELECT * FROM SECTIONS WHERE idTheme=?";
 }

@@ -26,17 +26,40 @@
 
 <c:set var="themes" value="${requestScope['themes'] }" scope="page"/>
 
+<div id="theme" style="display:none">
+	<form action="<%=request.getContextPath()%>/Formateur/Administration/Themes" method="post">
+		<input type="text" name="nom" id="themeNom"/>
+		<input type="submit" class="btn btn-success" name="typeAction" value="ajouter"/>	
+	</form>
+</div>
 <table class="table table-striped">
-
 	<thead>
 		<tr>
-			<!-- TODO -->
+			<th>Libellé  <button type="button" class="btn btn-success" onclick="document.getElementById("theme").style.display="block";"><span class="glyphicon-plus"></span></button></th>
 		</tr>
 	</thead>
-
+	<tbody>					
+		<c:forEach items="${themes }" var="theme">
+			<tr id="theme-${theme.id }">
+				<td>
+					<form action="<%=request.getContextPath()%>/Formateur/Administration/Themes" method="post">
+						<input type="hidden" name="id" value="${theme.id }" id="themeId-${theme.id }"/>
+						<input type="text" name="nom" value="${theme.nom }" id="themeNom-${theme.id }"/>
+						<button class="btn btn-danger btn-lg" type="submit" name="typeAction" value="supprimer" onclick="return confirmationSupprimer();"><span class="glyphicon glyphicon-remove"></span></button>
+						<button class="btn btn-primary btn-lg" type="submit" name="typeAction" value="modifier"><span class="glyphicon glyphicon-pencil"></span></button>
+					</form>		
+				</td>
+			</tr>			
+		</c:forEach>
+	</tbody>
 
 </table>
+<script type="text/javascript">
 
+function confirmationSupprimer(){
+	return confirm("Voulez-vous valider la supression?");
+}
+</script>
 
 </div>
 <script type="text/javascript" src="/yapalQCM/js/jquery-3.2.1.min.js"></script>
