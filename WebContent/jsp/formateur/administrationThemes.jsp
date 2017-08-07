@@ -35,7 +35,7 @@
 <table class="table table-striped">
 	<thead>
 		<tr>
-			<th>Libellé  <button type="button" class="btn btn-success" onclick="document.getElementById("theme").style.display="block";"><span class="glyphicon-plus"></span></button></th>
+			<th>Libellé  <button type="button" class="btn btn-success" onclick="document.getElementById('theme').style.display='block';"><span class="glyphicon-plus"></span></button></th>
 		</tr>
 	</thead>
 	<tbody>					

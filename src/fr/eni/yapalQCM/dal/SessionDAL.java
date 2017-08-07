@@ -203,5 +203,31 @@ public class SessionDAL implements IDAL<Session> {
 		s.setNbPlaces(rs.getInt("nombrePlaces"));
 		return s;
 	}
+	/**
+	 * Méthode permettant de récupérer la liste des ifdentifiants 
+	 * des test associés à une session.
+	 * @param id
+	 * @return List<Integer>
+	 * @throws SQLException 
+	 */
+	public List<Integer> listeTests(int id) throws SQLException {
+		List<Integer> liste = new ArrayList<Integer>();
+		logger.entering("SessionDAL", "listeTests");
+		
+		try(Connection cnx = DBConnection.getConnection()) {
+			CallableStatement cmd = cnx.prepareCall(SessionSQL.GET_TESTS);
+			cmd.setInt(1, id);
+			ResultSet rs = cmd.executeQuery();		
+			if(rs.next()){
+				liste.add(rs.getInt("idTest"));
+			}
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}
+		
+		logger.exiting("SessionDAL", "listeTests");
+		return liste;
+	}
 
 }

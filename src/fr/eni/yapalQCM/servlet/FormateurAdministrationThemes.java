@@ -116,7 +116,6 @@ public class FormateurAdministrationThemes extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		// Administration des thèmes : suppresion, modification, suppression.
 		
 		if (message != null) {
 			request.removeAttribute("message");
