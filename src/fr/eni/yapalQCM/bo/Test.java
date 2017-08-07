@@ -23,7 +23,8 @@ public class Test {
 	private Time heure;
 	private boolean isBegin;
 	private long tempsEcoule;
-	
+	//transient
+	private int nbQuestions;
 	
 	
 	/**
@@ -187,6 +188,15 @@ public class Test {
 	public void addSection(Section section) {
 		section.setTest(this);
 		getSections().add(section);	
+	}
+	
+	public int getNbQuestions(){
+		int nb = 0;
+		for (Section section : sections) {
+			nb += section.getNbQuestions();
+		}
+		nbQuestions = nb;
+		return nbQuestions;
 	}
 
 
