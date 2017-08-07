@@ -34,6 +34,7 @@ public class CandidatPasserUnTest extends HttpServlet {
 	private Message message = null;   
 	private Test test;
 	private ArrayList<Question> listeQuestions = null;
+	private long tempsEcoule;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -86,6 +87,7 @@ public class CandidatPasserUnTest extends HttpServlet {
 			if (request.getParameter("idTest")!=null) {
 				if(listeQuestions==null){
 					test = CandidatManager.getTest(1);
+					tempsEcoule = test.getDuree();
 					listeQuestions = new ArrayList<Question>();
 					for(Section section : test.getSections()){
 						for(Question question : section.getTheme().getQuestions()){
@@ -94,6 +96,7 @@ public class CandidatPasserUnTest extends HttpServlet {
 					}
 				}
 				request.setAttribute("test", test);
+				request.setAttribute("tempsEcoule", tempsEcoule);
 				request.setAttribute("listeQuestions", listeQuestions);
 				this.getServletContext().getRequestDispatcher("/jsp/candidat/passageTest.jsp").forward(request, response);
 			}

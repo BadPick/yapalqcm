@@ -1,277 +1,258 @@
-/**
- * jquery.timer.js
- *
- * Copyright (c) 2011 Jason Chavannes <jason.chavannes@gmail.com>
- *
- * http://jchavannes.com/jquery-timer
- *
- * Permission is hereby granted, free of charge, to any person
- * obtaining a copy of this software and associated documentation
- * files (the "Software"), to deal in the Software without
- * restriction, including without limitation the rights to use, copy,
- * modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
+/*
+* jQuery-Simple-Timer
+*
+* Creates a countdown timer.
+*
+* Example:
+*   $('.timer').startTimer();
+*
+*/
 
-;(function($) {
+(function (factory) {
+  // Using as a CommonJS module
+  if(typeof module === "object" && typeof module.exports === "object") {
+    // jQuery must be provided as argument when used
+    // as a CommonJS module.
+    //
+    // For example:
+    //   let $ = require("jquery");
+    //   require("jquery-simple-timer")($);
+    module.exports = function(jq) {
+      factory(jq, window, document);
+    }
+  } else {
+    // Using as script tag
+    //
+    // For example:
+    //   <script src="jquery.simple.timer.js"></script>
+    factory(jQuery, window, document);
+  }
+}(function($, window, document, undefined) {
 
-    $.timer = Timer;
+  var timer;
 
-    /**
-     * First parameter can either be a function or an object of parameters.
-     *
-     * @param {function | {
-     *   action: function,
-     *   time: int=,
-     *   autostart: boolean=
-     * }} action
-     * @param {int=} time
-     * @param {boolean=} autostart
-     * @returns {Timer}
-     */
-    function Timer(action, time, autostart) {
+  var Timer = function(targetElement){
+    this._options = {};
+    this.targetElement = targetElement;
+    return this;
+  };
 
-        if (this.constructor != Timer || this.init) {
-            return new Timer(action, time, autostart);
+  Timer.start = function(userOptions, targetElement){
+    timer = new Timer(targetElement);
+    mergeOptions(timer, userOptions);
+    return timer.start(userOptions);
+  };
+
+  // Writes to `this._options` object so that other
+  // functions can access it without having to
+  // pass this object as argument multiple times.
+  function mergeOptions(timer, opts) {
+    opts = opts || {};
+    var classNames = opts.classNames || {};
+
+    timer._options.classNameSeconds       = classNames.seconds  || 'jst-seconds'
+      , timer._options.classNameMinutes   = classNames.minutes  || 'jst-minutes'
+      , timer._options.classNameHours     = classNames.hours    || 'jst-hours'
+      , timer._options.classNameClearDiv  = classNames.clearDiv || 'jst-clearDiv'
+      , timer._options.classNameTimeout   = classNames.timeout || 'jst-timeout';
+  }
+
+  Timer.prototype.start = function(options) {
+
+    var that = this;
+
+    var createSubDivs = function(timerBoxElement){
+      var seconds = document.createElement('div');
+      seconds.className = that._options.classNameSeconds;
+
+      var minutes = document.createElement('div');
+      minutes.className = that._options.classNameMinutes;
+
+      var hours = document.createElement('div');
+      hours.className = that._options.classNameHours;
+
+      var clearDiv = document.createElement('div');
+      clearDiv.className = that._options.classNameClearDiv;
+
+      return timerBoxElement.
+        append(hours).
+        append(minutes).
+        append(seconds).
+        append(clearDiv);
+    };
+
+    this.targetElement.each(function(_index, timerBox) {
+      var that = this;
+      var timerBoxElement = $(timerBox);
+      var cssClassSnapshot = timerBoxElement.attr('class');
+
+      timerBoxElement.on('complete', function() {
+        clearInterval(timerBoxElement.intervalId);
+      });
+
+      timerBoxElement.on('complete', function() {
+        timerBoxElement.onComplete(timerBoxElement);
+      });
+
+      timerBoxElement.on('complete', function(){
+        timerBoxElement.addClass(that._options.classNameTimeout);
+      });
+
+      timerBoxElement.on('complete', function(){
+        if(options && options.loop === true) {
+          timer.resetTimer(timerBoxElement, options, cssClassSnapshot);
         }
+      });
 
-        this.set(action, time, autostart);
+      timerBoxElement.on('pause', function() {
+        clearInterval(timerBoxElement.intervalId);
+        timerBoxElement.paused = true;
+      });
 
-        return this;
+      timerBoxElement.on('resume', function() {
+        timerBoxElement.paused = false;
+        that.startCountdown(timerBoxElement, { secondsLeft: timerBoxElement.data('timeLeft') });
+      });
 
+      createSubDivs(timerBoxElement);
+      return this.startCountdown(timerBoxElement, options);
+    }.bind(this));
+  };
+
+  /**
+   * Resets timer and add css class 'loop' to indicate the timer is in a loop.
+   * $timerBox {jQuery object} - The timer element
+   * options {object} - The options for the timer
+   * css - The original css of the element
+   */
+  Timer.prototype.resetTimer = function($timerBox, options, css) {
+    var interval = 0;
+    if(options.loopInterval) {
+      interval = parseInt(options.loopInterval, 10) * 1000;
+    }
+    setTimeout(function() {
+      $timerBox.trigger('reset');
+      $timerBox.attr('class', css + ' loop');
+      timer.startCountdown($timerBox, options);
+    }, interval);
+  }
+
+  Timer.prototype.fetchSecondsLeft = function(element){
+    var secondsLeft = element.data('seconds-left');
+    var minutesLeft = element.data('minutes-left');
+
+    if(Number.isFinite(secondsLeft)){
+      return parseInt(secondsLeft, 10);
+    } else if(Number.isFinite(minutesLeft)) {
+      return parseFloat(minutesLeft) * 60;
+    }else {
+      throw 'Missing time data';
+    }
+  };
+
+  Timer.prototype.startCountdown = function(element, options) {
+    options = options || {};
+
+    var intervalId = null;
+    var defaultComplete = function(){
+      clearInterval(intervalId);
+      return this.clearTimer(element);
+    }.bind(this);
+
+    element.onComplete = options.onComplete || defaultComplete;
+    element.allowPause = options.allowPause || false;
+    if(element.allowPause){
+      element.on('click', function() {
+        if(element.paused){
+          element.trigger('resume');
+        }else{
+          element.trigger('pause');
+        }
+      });
     }
 
-    /**
-     * @see Timer
-     *
-     * @param {function | {
-     *   action: function,
-     *   time: int=,
-     *   autostart: boolean=
-     * }} action
-     * @param {int=} time
-     * @param {boolean=} autostart
-     * @returns {Timer}
-     */
-    Timer.prototype.set = function(action, time, autostart) {
+    var secondsLeft = options.secondsLeft || this.fetchSecondsLeft(element);
 
-        this.init = true;
+    var refreshRate = options.refreshRate || 1000;
+    var endTime = secondsLeft + this.currentTime();
+    var timeLeft = endTime - this.currentTime();
 
-        if (typeof action == "object") {
+    this.setFinalValue(this.formatTimeLeft(timeLeft), element);
 
-            if (action.time) {
-                time = action.time;
-            }
+    intervalId = setInterval((function() {
+      timeLeft = endTime - this.currentTime();
+      // When timer has been idle and only resumed past timeout,
+      // then we immediatelly complete the timer.
+      if(timeLeft < 0 ){
+        timeLeft = 0;
+      }
+      element.data('timeLeft', timeLeft);
+      this.setFinalValue(this.formatTimeLeft(timeLeft), element);
+    }.bind(this)), refreshRate);
 
-            if (action.autostart) {
-                autostart = action.autostart;
-            }
+    element.intervalId = intervalId;
+  };
 
-            action = action.action;
+  Timer.prototype.clearTimer = function(element){
+    element.find('.jst-seconds').text('00');
+    element.find('.jst-minutes').text('00:');
+    element.find('.jst-hours').text('00:');
+  };
 
-        }
+  Timer.prototype.currentTime = function() {
+    return Math.round((new Date()).getTime() / 1000);
+  };
 
-        if (typeof action == "function") {
-            this.action = action;
-        }
+  Timer.prototype.formatTimeLeft = function(timeLeft) {
 
-        if (!isNaN(time)) {
-            this.intervalTime = time;
-        }
+    var lpad = function(n, width) {
+      width = width || 2;
+      n = n + '';
 
-        if (autostart && this.isReadyToStart()) {
-            this.isActive = true;
-            this.setTimer();
-        }
+      var padded = null;
 
-        return this;
+      if (n.length >= width) {
+        padded = n;
+      } else {
+        padded = Array(width - n.length + 1).join(0) + n;
+      }
 
+      return padded;
     };
 
-    Timer.prototype.isReadyToStart = function() {
+    var hours = Math.floor(timeLeft / 3600);
+    timeLeft -= hours * 3600;
 
-        var notActive = !this.active;
-        var hasAction = typeof this.action == "function";
-        var hasTime   = !isNaN(this.intervalTime);
+    var minutes = Math.floor(timeLeft / 60);
+    timeLeft -= minutes * 60;
 
-        return notActive && hasAction && hasTime;
+    var seconds = parseInt(timeLeft % 60, 10);
 
-    };
+    if (+hours === 0 && +minutes === 0 && +seconds === 0) {
+      return [];
+    } else {
+      return [lpad(hours), lpad(minutes), lpad(seconds)];
+    }
+  };
 
-    /**
-     * @param {int=} time
-     * @returns {Timer}
-     */
-    Timer.prototype.once = function(time) {
+  Timer.prototype.setFinalValue = function(finalValues, element) {
 
-        var timer = this;
+    if(finalValues.length === 0){
+      this.clearTimer(element);
+      element.trigger('complete');
+      return false;
+    }
 
-        if (isNaN(time)) {
-            timer.action();
-            return this;
-        }
+    element.find('.' + this._options.classNameSeconds).text(finalValues.pop());
+    element.find('.' + this._options.classNameMinutes).text(finalValues.pop() + ':');
+    element.find('.' + this._options.classNameHours).text(finalValues.pop() + ':');
+  };
 
-        setTimeout(fnTimeout, time);
-        return this;
 
-        function fnTimeout() {
-            timer.action();
-        }
+  $.fn.startTimer = function(options) {
+    this.TimerObject = Timer;
+    Timer.start(options, this);
+    return this;
+  };
 
-    };
-
-    /**
-     * @param {boolean=} reset
-     * @returns {Timer}
-     */
-    Timer.prototype.play = function(reset) {
-
-        if (this.isReadyToStart()) {
-
-            if (reset) {
-                this.setTimer();
-            }
-            else {
-                this.setTimer(this.remaining);
-            }
-
-            this.isActive = true;
-
-        }
-
-        return this;
-
-    };
-
-    /**
-     * @returns {Timer}
-     */
-    Timer.prototype.pause = function() {
-
-        if (this.isActive) {
-
-            this.isActive   = false;
-            this.remaining -= new Date() - this.last;
-
-            this.clearTimer();
-
-        }
-
-        return this;
-
-    };
-
-    /**
-     * @returns {Timer}
-     */
-    Timer.prototype.stop = function() {
-
-        this.isActive  = false;
-        this.remaining = this.intervalTime;
-
-        this.clearTimer();
-
-        return this;
-
-    };
-
-    /**
-     * @param {boolean=} reset
-     * @returns {Timer}
-     */
-    Timer.prototype.toggle = function(reset) {
-
-        if (this.isActive) {
-            this.pause();
-        }
-        else if (reset) {
-            this.play(true);
-        }
-        else {
-            this.play();
-        }
-
-        return this;
-
-    };
-
-    /**
-     * @returns {Timer}
-     */
-    Timer.prototype.reset = function() {
-
-        this.isActive = false;
-        this.play(true);
-
-        return this;
-
-    };
-
-    /**
-     * @returns {Timer}
-     */
-    Timer.prototype.clearTimer = function() {
-        clearTimeout(this.timeoutObject);
-        return this;
-    };
-
-    /**
-     * @returns {Timer}
-     */
-    Timer.prototype.setTimer = function(time) {
-
-        var timer = this;
-
-        if (isNaN(time)) {
-            time = this.intervalTime;
-        }
-
-        this.remaining = time;
-        this.last      = new Date();
-
-        this.clearTimer();
-
-        this.timeoutObject = setTimeout(fnTimeout, time);
-
-        return this;
-
-        function fnTimeout() {
-            timer.execute();
-        }
-
-    };
-
-    /**
-     * @returns {Timer}
-     */
-    Timer.prototype.execute = function() {
-
-        if (this.isActive) {
-
-            try {
-                this.action();
-            }
-            finally {
-                this.setTimer();
-            }
-
-        }
-
-        return this;
-
-    };
-    
-})(jQuery);
+}));
