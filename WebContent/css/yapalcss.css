@@ -10,8 +10,18 @@
 
 .header{
 	height: 50px;
+	margin-bottom: 20px;
+	display:flex;
+	flex-direction:row;
+	justify-content:space-between;
 }
-.userName {
-    color: #fff;
+
+.header{
+	color: #fff;
+    font-size: 16px;
+}
+
+.header input {
+    color: black;
     font-size: 16px;
 }

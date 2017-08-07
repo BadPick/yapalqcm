@@ -18,11 +18,28 @@ public class Question {
 	private boolean marquee;
 	private boolean repondue;
 	
-	
+
+
 	public Question() {
 		reponses = new ArrayList<Reponse>();
 	}
 	
+	
+	/**
+	 * @return the repondue
+	 */
+	public boolean isRepondue() {
+		return repondue;
+	}
+	
+	/**
+	 * Getter pour repondue.
+	 * @param repondue the repondue to set
+	 */
+	public void setRepondue(boolean repondue) {
+		this.repondue = repondue;
+	}
+
 	/**
 	 * @return the marquee
 	 */
@@ -83,7 +100,7 @@ public class Question {
 	 * m�thode calcul� qui v�rifie si une (ou plusieur) r�ponse est coch�e
 	 * @return true si une r�ponse est coch�e
 	 */
-	public boolean isRepondue(){
+	public void checkRepondue(){
 		repondue=false;
 		if (getReponses()!=null && getReponses().size()>0) {
 			for (Reponse r : reponses) {
@@ -92,7 +109,6 @@ public class Question {
 				}
 			}
 		}
-		return repondue;
 	}
 
 	public void addReponse(Reponse reponse) {

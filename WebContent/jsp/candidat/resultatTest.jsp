@@ -13,13 +13,13 @@
 <body>
 <%@include file="/menu.jsp"%>
 	<c:set var="message" value="${requestScope['message']}" scope="page" />
-	<c:set var="resultat" value="${resquestScope['resultat']}" scope="page"/>
 	<div id="message" class="hidden">${message.message}</div>
 	<div id="messageType" class="hidden">${message.type}</div>
 <div class="container">
-	<h1>Résultat du test: ${resultat.test.nom }</h1>
-	<p>Score obtenu: ${resultat.seuilObtenu }</p>
-	<p>Temps passé: ${resultat.tempsEcoule }</p>
+	<h2>Résultat du test n°<c:out value="${ testId }"/></h2>
+	<h3>Candidat : <c:out value="${ sessionScope.user.getPrenom() }"/> <c:out value="${ sessionScope.user.getNom() }"/></h3>
+	<p>Score final du test : ${ score }/${ nbreQuestions }</p>
+	<p>Résultat : ${ acquisition }</p>
 	
 </div>
 <script type="text/javascript" src="/yapalQCM/js/jquery-3.2.1.min.js"></script>

@@ -241,7 +241,9 @@ public class TestDAL implements IDAL<Test> {
 		Reponse reponse = null;
 		int lastThemeId = 0;
 		int lastQuestionId = 0;
+		boolean addQuestion;
 		while (rs.next()) {
+			addQuestion = false;
 			if (test==null) {
 				test = new Test();
 				test.setId(rs.getInt("idTest"));
@@ -264,6 +266,7 @@ public class TestDAL implements IDAL<Test> {
 				test.addSection(section);
 			}
 			if (lastQuestionId != rs.getInt("idQuestion")) {
+				addQuestion = true;
 				lastQuestionId = rs.getInt("idQuestion");
 						
 				question = new Question();
@@ -274,11 +277,14 @@ public class TestDAL implements IDAL<Test> {
 				
 			reponse = new Reponse();
 			reponse.setId(rs.getInt("idReponse"));
-			reponse.setEnonce(rs.getString("enonce"));
+			reponse.setEnonce(rs.getString("repEnonce"));
 			reponse.setCorrect(rs.getBoolean("isCorrect"));
 			
 			question.addReponse(reponse);
-			theme.getQuestions().add(question);
+			
+			if(addQuestion){
+				theme.getQuestions().add(question);				
+			}
 			
 		}
 		return test;

@@ -17,19 +17,17 @@
 <div id="messageType" class="hidden">${message.type}</div>
 <div class="container">
 	<div id="chrono"></div>
-		<p>Les rastas !!</p>
-			<p>Les rastas !!</p>
-				<p>Les rastas !!</p>
-	<h2>Synthèse du test n°<c:out value="${ test.getId() }"/></h2>
+	<h2>Synthèse du test n°<c:out value="${ testId }"/></h2>
 	<h3>Candidat : <c:out value="${ sessionScope.user.getPrenom() }"/> <c:out value="${ sessionScope.user.getNom() }"/></h3>
 	
 	<div>
 		<ul>
 			<c:forEach items="${ listeQuestions }" var="question" varStatus="statusQues">
-				<li><a class="questionParQuestion" id="question${ statusQues.count }" 
-						<c:if test = "${ question.isMarquee==true }"> style="color:red"</c:if>
-						<c:if test = "${ question.isRepondue==true }"> style="color:green"</c:if>
-					>question ${ statusQues.count }</a>
+				<li><a class="questionParQuestion" id="question${ statusQues.count }" >
+					question ${ statusQues.count } 
+					<c:if test = "${ question.isMarquee()==true }">&#10008;</c:if>
+					<c:if test = "${ question.isRepondue()==true }">&#10004;</c:if>
+					</a>
 				</li>
 			</c:forEach>
 		</ul>

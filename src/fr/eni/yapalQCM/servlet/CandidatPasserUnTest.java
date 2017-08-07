@@ -1,6 +1,7 @@
 package fr.eni.yapalQCM.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -17,6 +18,7 @@ import fr.eni.yapalQCM.bo.Question;
 import fr.eni.yapalQCM.bo.Reponse;
 import fr.eni.yapalQCM.bo.Section;
 import fr.eni.yapalQCM.bo.Test;
+import fr.eni.yapalQCM.bo.Theme;
 import fr.eni.yapalQCM.utils.Message;
 
 /**
@@ -26,6 +28,7 @@ import fr.eni.yapalQCM.utils.Message;
 public class CandidatPasserUnTest extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Message message = null;   
+	private Test test;
 	private ArrayList<Question> listeQuestions = null;
     /**
      * @see HttpServlet#HttpServlet()
@@ -35,6 +38,18 @@ public class CandidatPasserUnTest extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    
+    public void init() throws ServletException {
+        if(test==null){
+			try {
+				test = CandidatManager.getTest(1);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+    }
+    
     /**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -51,10 +66,19 @@ public class CandidatPasserUnTest extends HttpServlet {
 	
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		HttpSession session = request.getSession();
-		Test test = null;
+		if(listeQuestions!=null){
+			for(Question question : listeQuestions){
+				question.setRepondue(false);
+				question.setMarquee(false);
+				
+				for(Reponse reponse : question.getReponses()){
+					reponse.setChecked(false);
+				}
+			}
+		}
 		
 		try {
-			//R�cup�ration du test g�n�r�
+			//Récupération du test généré
 			if (request.getParameter("idTest")!=null) {
 				if(listeQuestions==null){
 					test = CandidatManager.getTest(1);
@@ -70,9 +94,10 @@ public class CandidatPasserUnTest extends HttpServlet {
 				this.getServletContext().getRequestDispatcher("/jsp/candidat/passageTest.jsp").forward(request, response);
 			}
 			
-			if ("Valider le test".equals(request.getParameter("validerTest")) && request.getParameter("idTestSynthese")!=null){
+			// Analyse du test en cours pour création de la page de synthèse
+			if ("Page de synthese".equals(request.getParameter("pageSynthese")) && request.getParameter("idTestSynthese")!=null){
 				for(Question question : listeQuestions){
-					if(request.getParameter("questionMarquee-"+question.getId())!=null){
+					if("1".equals(request.getParameter("questionMarquee-"+question.getId()))){
 						question.setMarquee(true);
 					}
 					else{
@@ -81,18 +106,70 @@ public class CandidatPasserUnTest extends HttpServlet {
 					for(Reponse reponse : question.getReponses()){
 						if(request.getParameter("reponseSelected-"+reponse.getId())!=null){
 							reponse.setChecked(true);
-							question.isRepondue();
+							question.setRepondue(true);
 						}
 						else{
 							reponse.setChecked(false);
 						}
 					}
 				}
-				request.setAttribute("test", test);
+				request.setAttribute("testId", request.getParameter("idTestSynthese"));
 				request.setAttribute("listeQuestions", listeQuestions);
 				this.getServletContext().getRequestDispatcher("/jsp/candidat/syntheseTest.jsp").forward(request, response);
 			}
 			
+			// Analyse du test terminé pour création de la page de résultat et du stockage en base de données
+			if ("Valider le test".equals(request.getParameter("validerTest")) && request.getParameter("idTestSynthese")!=null){
+				boolean correct;
+				int score = 0;
+				boolean acquis = false;
+				boolean enCoursAcquisition = false;
+				String acquisition = null;
+				for(Question question : listeQuestions){
+					correct = false;
+					for(Reponse reponse : question.getReponses()){
+						if(request.getParameter("reponseSelected-"+reponse.getId())!=null && reponse.isCorrect() == true){
+							correct = true;
+						}
+						if(request.getParameter("reponseSelected-"+reponse.getId())==null && reponse.isCorrect() == false){
+							correct = true;
+						}
+						if(request.getParameter("reponseSelected-"+reponse.getId())!=null && reponse.isCorrect() == false){
+							correct = false;
+							break;
+						}
+						if(request.getParameter("reponseSelected-"+reponse.getId())==null && reponse.isCorrect() == true){
+							correct = false;
+							break;
+						}
+					}
+					if (correct){
+						score++;
+					}
+				}
+				if(score>=Math.round(test.getSeuilEnCoursDacquisition())){
+					enCoursAcquisition = true;
+				}
+				else if(score>=Math.round(test.getSeuilAcquis())){
+					acquis = true;
+				}
+				
+				if(acquis){
+					acquisition = "Acquis";
+				}
+				else if(!acquis && enCoursAcquisition){
+					acquisition = "En cours d'acquisition";
+				}
+				else{
+					acquisition = "Non-acquis";
+				}
+				
+				request.setAttribute("score", score);
+				request.setAttribute("nbreQuestions", listeQuestions.size());
+				request.setAttribute("acquisition", acquisition);
+				request.setAttribute("testId", request.getParameter("idTestSynthese"));
+				this.getServletContext().getRequestDispatcher("/jsp/candidat/resultatTest.jsp").forward(request, response);
+			}
 			
 			//besoin d'afficher un message
 			//message = ErrorManager.getMessage("le message",MessageType.success);	

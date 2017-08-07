@@ -19,7 +19,6 @@
 <div id="message" class="hidden">${message.message}</div>
 <div id="messageType" class="hidden">${message.type}</div>
 <div class="container">
-<h1>coucou</h1>
 	<div id="chrono"></div>
 	<form method="post" action="<%=request.getContextPath()%>/Candidat/PasserUnTest">
 		<input type="hidden" name="idTestSynthese" value="${ test.getId() }"/>
@@ -47,6 +46,7 @@
 				<button type="button" class="btn btn-default" <c:if test = "${ statusQues.count == listeQuestions.size() }">disabled</c:if> id="questionSuivante" onclick="PageSuivante()">Question suivante</button>
 			</div>
 		</c:forEach>
+		<input class="btn btn-default" id="pageSynthese" type="submit" name="pageSynthese" value="Page de synthese"/>
 		<input class="btn btn-default" id="validerTest" type="submit" name="validerTest" value="Valider le test"/>
 	</form>
 </div>
