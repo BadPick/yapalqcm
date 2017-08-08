@@ -16,14 +16,14 @@
 <div id="message" class="hidden">${message.message}</div>
 <div id="messageType" class="hidden">${message.type}</div>
 <div class="container">
-	<div id="chrono"></div>
+	<div id="chrono" style="visibility:hidden">${ test.getDuree()-tempsEcoule }</div>
 	<h2>Synthèse du test n°<c:out value="${ testId }"/></h2>
 	<h3>Candidat : <c:out value="${ sessionScope.user.getPrenom() }"/> <c:out value="${ sessionScope.user.getNom() }"/></h3>
 	
 	<div>
 		<ul>
 			<c:forEach items="${ listeQuestions }" var="question" varStatus="statusQues">
-				<li><a class="questionParQuestion" id="question${ statusQues.count }" >
+				<li><a class="questionParQuestion" id="question${ statusQues.count }" href="http://localhost:8080/yapalQCM/Candidat/PasserUnTest?idTest=${ test.getId() }&questionEnCours=${ statusQues.count }" onclick="envoyerChronoGet(${ statusQues.count })">
 					question ${ statusQues.count } 
 					<c:if test = "${ question.isMarquee()==true }">&#10008;</c:if>
 					<c:if test = "${ question.isRepondue()==true }">&#10004;</c:if>
@@ -37,5 +37,6 @@
 <script type="text/javascript" src="/yapalQCM/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.1/packaged/jquery.noty.packaged.min.js"></script>
 <script type="text/javascript" src="/yapalQCM/js/gestionMessages.js"></script>
+<script type="text/javascript" src="/yapalQCM/js/chrono.js"></script>
 </body>
 </html>

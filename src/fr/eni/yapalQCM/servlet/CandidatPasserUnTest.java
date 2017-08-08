@@ -35,6 +35,7 @@ public class CandidatPasserUnTest extends HttpServlet {
 	private Test test;
 	private ArrayList<Question> listeQuestions = null;
 	private long tempsEcoule;
+	private int questionEnCours;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -95,9 +96,17 @@ public class CandidatPasserUnTest extends HttpServlet {
 						}
 					}
 				}
+				
+				tempsEcoule=0;
+				if(request.getParameter("questionEnCours")!=null){
+					questionEnCours = Integer.parseInt(request.getParameter("questionEnCours"));
+				}else{
+					questionEnCours = 1;
+				}
 				request.setAttribute("test", test);
 				request.setAttribute("tempsEcoule", tempsEcoule);
 				request.setAttribute("listeQuestions", listeQuestions);
+				request.setAttribute("questionEnCours", questionEnCours);					
 				this.getServletContext().getRequestDispatcher("/jsp/candidat/passageTest.jsp").forward(request, response);
 			}
 			
@@ -120,7 +129,9 @@ public class CandidatPasserUnTest extends HttpServlet {
 						}
 					}
 				}
-				request.setAttribute("testId", request.getParameter("idTestSynthese"));
+				
+				request.setAttribute("test", test);
+				request.setAttribute("tempsEcoule", request.getParameter("tempsEcoule"));
 				request.setAttribute("listeQuestions", listeQuestions);
 				this.getServletContext().getRequestDispatcher("/jsp/candidat/syntheseTest.jsp").forward(request, response);
 			}
@@ -171,6 +182,8 @@ public class CandidatPasserUnTest extends HttpServlet {
 					acquisition = "Non-acquis";
 				}
 				
+				tempsEcoule = Long.parseLong(request.getParameter("tempsEcoule"));
+				
 				Resultat resultat = new Resultat();
 				Session sessionResult = new Session();
 				sessionResult.setId(1);
@@ -178,13 +191,14 @@ public class CandidatPasserUnTest extends HttpServlet {
 				resultat.setCandidat((Utilisateur)session.getAttribute("user"));
 				resultat.setTest(test);
 				resultat.setSeuilObtenu((float)score);
-				resultat.setTempsEcoule(1000);
+				resultat.setTempsEcoule(tempsEcoule);
 				ResultatDAL rd = new ResultatDAL();
 				rd.add(resultat);
 				
 				request.setAttribute("score", score);
 				request.setAttribute("nbreQuestions", listeQuestions.size());
 				request.setAttribute("acquisition", acquisition);
+				request.setAttribute("tempsEcoule", tempsEcoule);
 				request.setAttribute("testId", request.getParameter("idTestSynthese"));
 				this.getServletContext().getRequestDispatcher("/jsp/candidat/resultatTest.jsp").forward(request, response);
 			}

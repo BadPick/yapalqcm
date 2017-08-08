@@ -5,12 +5,11 @@
 <html>
 <head>
 
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css"
 	href="/yapalQCM/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/yapalQCM/css/yapalcss.css">
-<link rel="stylesheet" type="text/css" href="/yapalQCM/flipcountdown-master/jquery.flipcountdown.css" />
 </head>
 
 
@@ -19,22 +18,23 @@
 	<c:set var="message" value="${requestScope['message']}" scope="page" />
 	<c:set var="test" value="${requestScope['test']}" scope="page" />
 	<c:set var="tempsEcoule" value="${requestScope['tempsEcoule']}" scope="page" />
-	<c:set var="numQuestionEnCours" value="1" scope="page" />
 	<div id="message" class="hidden">${message.message}</div>
 	<div id="messageType" class="hidden">${message.type}</div>
 	<div class="container">
 		<div id="retroclockbox"></div>
+		<div id="chrono" style="visibility:hidden">${ test.getDuree()-tempsEcoule }</div>
 		<form method="post"
-			action="<%=request.getContextPath()%>/Candidat/PasserUnTest">
+			action="<%=request.getContextPath()%>/Candidat/PasserUnTest" onsubmit="envoyerChrono()">
 			<input type="hidden" name="idTestSynthese" value="${ test.getId() }" />
-			<input type="hidden" name="tempsEcoule" value="" />
+			<input type="hidden" id="tempsEcoule" name="tempsEcoule" value="" />
 			<div id="recap">
+				<p id="questionEnCours" style="display:none">${ questionEnCours }</p>
 				<c:forEach items="${ listeQuestions }" var="question"
 					varStatus="statusRecap">
 					<input id="inputRecap${ statusRecap.count }" type="hidden"
 						name="questionMarquee-${ question.getId() }" value="" />
 					<button type="button" class="btn btn-default"
-						id="btnRecap${ statusRecap.count }">${ statusRecap.count }</button>
+						id="btnRecap${ statusRecap.count }" onclick="RetourQuestion(${ statusRecap.count })">${ statusRecap.count }</button>
 				</c:forEach>
 			</div>
 			<c:forEach items="${ listeQuestions }" var="question"
@@ -84,9 +84,14 @@
 	<script type="text/javascript"
 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.1/packaged/jquery.noty.packaged.min.js"></script>
 	<script type="text/javascript" src="/yapalQCM/js/gestionMessages.js"></script>
-	<script type="text/javascript" src="/yapalQCM/flipcountdown-master/jquery.flipcountdown.js"></script>
+	<script type="text/javascript" src="/yapalQCM/js/chrono.js"></script>
 	<script type="text/javascript">
+		$( document ).ready(function(){
+			RetourQuestion('${ questionEnCours }');
+		});
+	
 		var numQuestion = 1;
+		
 		function MarqueQuestion() {
 			var btnRecapQuestion = document.getElementById("btnRecap"
 					+ numQuestion);
@@ -95,7 +100,7 @@
 			var btnMarquage = document.getElementById("marquageQuestion"
 					+ numQuestion);
 			if (btnMarquage.textContent == "Marquer") {
-				btnRecapQuestion.style.background = "red";
+				btnRecapQuestion.style.background = "orange";
 				btnMarquage.textContent = "Enlever le marquage";
 				inputRecapQuestion.value = "1";
 			} else {
@@ -125,28 +130,18 @@
 					+ numQuestion);
 			questionSuivante.style.display = "block";
 		}
+		
+		function RetourQuestion(questionClick) {
+			var questionEnCours = document.getElementById("question"
+					+ numQuestion);
+			questionEnCours.style.display = "none";
+			numQuestion=questionClick;
+			var questionSuivante = document.getElementById("question"
+					+ numQuestion);
+			questionSuivante.style.display = "block";
+		}
 	</script>
 	<script>
-		jQuery(function($) {
-			//alert(dt.toString());
-			$(document).ready(function() {
-				var dt = new Date();
-				var tmps = '${tempsEcoule}';
-				dt.setSeconds(dt.getSeconds() + tmps);
-				jQuery('#retroclockbox').flipcountdown({
-
-					size : 'xs',
-					beforeDateTime : dt.toString(),
-					showYear : false,
-					showMonth : false,
-					showDay : false,
-					showHour : true,
-					showMinute : true,
-					showSecond : true
-				});
-			});			
-		})
-		
 		$('#validerTest').click(function(){
 			var tmp = 3000;
 			$('#tempsEcoule').val(tmp);

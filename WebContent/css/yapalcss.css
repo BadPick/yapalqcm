@@ -1,4 +1,9 @@
-@CHARSET "ISO-8859-1";
+@CHARSET "UTF-8";
+
+body{
+	width:800px;
+	margin:auto;
+}
 
 .yapalBoutton{
 	max-width: 200px;
