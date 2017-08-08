@@ -16,10 +16,10 @@
 	<div id="message" class="hidden">${message.message}</div>
 	<div id="messageType" class="hidden">${message.type}</div>
 <div class="container">
-	<h2>Résultat du test n°<c:out value="${ test.getId() }"/></h2>
+	<h2>Résultat du test n°<c:out value="${ testId }"/></h2>
 	<h3>Candidat : <c:out value="${ sessionScope.user.getPrenom() }"/> <c:out value="${ sessionScope.user.getNom() }"/></h3>
 	<p>Score final du test : ${ score }/${ nbreQuestions }</p>
-	<p>Temps écoulé : ${ tempsEcoule }</p>
+	<p>Temps écoulé : ${ tempsEcoule } secondes</p>
 	<p>Résultat : ${ acquisition }</p>
 	
 </div>

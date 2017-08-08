@@ -17,6 +17,7 @@ public class Question {
 	//transient
 	private boolean marquee;
 	private boolean repondue;
+	private boolean plusieursReponses;
 	
 
 
@@ -25,6 +26,30 @@ public class Question {
 	}
 	
 	
+	
+	
+	/**
+	 * Getter pour plusieursReponses.
+	 * @return the plusieursReponses
+	 */
+	public boolean isPlusieursReponses() {
+		return plusieursReponses;
+	}
+
+
+
+
+	/**
+	 * Getter pour plusieursReponses.
+	 * @param plusieursReponses the plusieursReponses to set
+	 */
+	public void setPlusieursReponses(boolean plusieursReponses) {
+		this.plusieursReponses = plusieursReponses;
+	}
+
+
+
+
 	/**
 	 * @return the repondue
 	 */
@@ -103,9 +128,24 @@ public class Question {
 	public void checkRepondue(){
 		repondue=false;
 		if (getReponses()!=null && getReponses().size()>0) {
-			for (Reponse r : reponses) {
+			for (Reponse r : getReponses()) {
 				if (r.isChecked()) {
 					repondue=true;
+				}
+			}
+		}
+	}
+	
+	public void checkNbreReponses(){
+		this.setPlusieursReponses(false);
+		int nbreReponses = 0;
+		if (getReponses()!=null && getReponses().size()>0) {
+			for (Reponse r : getReponses()) {
+				if (r.isCorrect()) {
+					nbreReponses++;
+				}
+				if(nbreReponses>1){
+					this.setPlusieursReponses(true);
 				}
 			}
 		}

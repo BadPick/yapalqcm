@@ -72,7 +72,9 @@ public class CandidatPasserUnTest extends HttpServlet {
 	
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		HttpSession session = request.getSession();
-		if(listeQuestions!=null){
+		
+		// Réinitialisation des réponses et marquages fait par un stagiaire :
+		if(listeQuestions!=null && request.getParameter("idTest")==null){
 			for(Question question : listeQuestions){
 				question.setRepondue(false);
 				question.setMarquee(false);
@@ -84,20 +86,30 @@ public class CandidatPasserUnTest extends HttpServlet {
 		}
 		
 		try {
-			//Récupération du test généré
+			// Si test démarré :
+			// Données à envoyer vers page du Passage de Test :
 			if (request.getParameter("idTest")!=null) {
+				//Récupération du test généré
 				if(listeQuestions==null){
-					test = CandidatManager.getTest(1);
+					test = CandidatManager.getTest(Integer.parseInt(request.getParameter("idTest")));
 					tempsEcoule = test.getDuree();
 					listeQuestions = new ArrayList<Question>();
 					for(Section section : test.getSections()){
 						for(Question question : section.getTheme().getQuestions()){
+							question.checkNbreReponses();
 							listeQuestions.add(question);
 						}
 					}
 				}
 				
-				tempsEcoule=0;
+				// Récupération du temps écoulé
+				if(request.getParameter("tempsEcoule")!=null){
+					tempsEcoule = Long.parseLong(request.getParameter("tempsEcoule"));
+				}else{
+					tempsEcoule=0;					
+				}
+				
+				// Récupération de la question cliquée sur la page de synthèse
 				if(request.getParameter("questionEnCours")!=null){
 					questionEnCours = Integer.parseInt(request.getParameter("questionEnCours"));
 				}else{
@@ -113,19 +125,35 @@ public class CandidatPasserUnTest extends HttpServlet {
 			// Analyse du test en cours pour création de la page de synthèse
 			if ("Page de synthese".equals(request.getParameter("pageSynthese")) && request.getParameter("idTestSynthese")!=null){
 				for(Question question : listeQuestions){
+					// Vérification si la question a été marqué ou non
 					if("1".equals(request.getParameter("questionMarquee-"+question.getId()))){
 						question.setMarquee(true);
 					}
 					else{
 						question.setMarquee(false);
 					}
+					
+					// Vérification si la question a été répondue ou non
 					for(Reponse reponse : question.getReponses()){
-						if(request.getParameter("reponseSelected-"+reponse.getId())!=null){
-							reponse.setChecked(true);
-							question.setRepondue(true);
-						}
-						else{
-							reponse.setChecked(false);
+						if(question.isPlusieursReponses()){
+							if(request.getParameter("reponseSelected-"+reponse.getId())!=null){
+								reponse.setChecked(true);
+								question.setRepondue(true);
+							}
+							else{
+								reponse.setChecked(false);
+							}							
+						} else {
+							int numReponse;
+							if(request.getParameter("reponseSelected-"+question.getId())!=null){
+								numReponse = Integer.parseInt(request.getParameter("reponseSelected-"+question.getId()))-1;
+								question.getReponses().get(numReponse).setChecked(true);		
+								question.setRepondue(true);
+								break;
+							}
+							else{
+								reponse.setChecked(false);
+							}	
 						}
 					}
 				}
@@ -145,30 +173,41 @@ public class CandidatPasserUnTest extends HttpServlet {
 				String acquisition = null;
 				for(Question question : listeQuestions){
 					correct = false;
-					for(Reponse reponse : question.getReponses()){
-						if(request.getParameter("reponseSelected-"+reponse.getId())!=null && reponse.isCorrect() == true){
-							correct = true;
+					if(question.isPlusieursReponses()){
+						for(Reponse reponse : question.getReponses()){
+							if(request.getParameter("reponseSelected-"+reponse.getId())!=null && reponse.isCorrect() == true){
+								correct = true;
+							}
+							if(request.getParameter("reponseSelected-"+reponse.getId())==null && reponse.isCorrect() == false){
+								correct = true;
+							}
+							if(request.getParameter("reponseSelected-"+reponse.getId())!=null && reponse.isCorrect() == false){
+								correct = false;
+								break;
+							}
+							if(request.getParameter("reponseSelected-"+reponse.getId())==null && reponse.isCorrect() == true){
+								correct = false;
+								break;
+							}
 						}
-						if(request.getParameter("reponseSelected-"+reponse.getId())==null && reponse.isCorrect() == false){
-							correct = true;
-						}
-						if(request.getParameter("reponseSelected-"+reponse.getId())!=null && reponse.isCorrect() == false){
-							correct = false;
-							break;
-						}
-						if(request.getParameter("reponseSelected-"+reponse.getId())==null && reponse.isCorrect() == true){
-							correct = false;
-							break;
+					}
+					if(!question.isPlusieursReponses()){
+						int numReponse;
+						if(request.getParameter("reponseSelected-"+question.getId())!=null){
+							numReponse = Integer.parseInt(request.getParameter("reponseSelected-"+question.getId()))-1;
+							if(question.getReponses().get(numReponse).isCorrect()){
+								correct = true;
+							}
 						}
 					}
 					if (correct){
 						score++;
 					}
 				}
-				if(score>=Math.round(test.getSeuilEnCoursDacquisition())){
+				if(score*100/listeQuestions.size()>=Math.round(test.getSeuilEnCoursDacquisition())/listeQuestions.size()){
 					enCoursAcquisition = true;
 				}
-				else if(score>=Math.round(test.getSeuilAcquis())){
+				if(score*100/listeQuestions.size()>=Math.round(test.getSeuilAcquis())/listeQuestions.size()){
 					acquis = true;
 				}
 				
@@ -184,17 +223,19 @@ public class CandidatPasserUnTest extends HttpServlet {
 				
 				tempsEcoule = Long.parseLong(request.getParameter("tempsEcoule"));
 				
+				// Insertion du résultat du test en base de données
 				Resultat resultat = new Resultat();
 				Session sessionResult = new Session();
 				sessionResult.setId(1);
 				resultat.setSession(sessionResult);
 				resultat.setCandidat((Utilisateur)session.getAttribute("user"));
 				resultat.setTest(test);
-				resultat.setSeuilObtenu((float)score);
+				resultat.setSeuilObtenu((float)score*100/listeQuestions.size());
 				resultat.setTempsEcoule(tempsEcoule);
 				ResultatDAL rd = new ResultatDAL();
 				rd.add(resultat);
 				
+				// Renvoi des données du résultat pour affichage de la page résultat
 				request.setAttribute("score", score);
 				request.setAttribute("nbreQuestions", listeQuestions.size());
 				request.setAttribute("acquisition", acquisition);
@@ -210,7 +251,6 @@ public class CandidatPasserUnTest extends HttpServlet {
 		} catch (Exception e) {
 			//gestion des messages d'erreurs
 			message = ErrorManager.getMessage(e);
-			this.getServletContext().getRequestDispatcher("/jsp/candidat/accueilCandidat.jsp").forward(request, response);
 		}
 		
 		if (message != null) {
