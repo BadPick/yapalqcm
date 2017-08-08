@@ -18,53 +18,81 @@
 <div id="message" class="hidden">${message.message}</div>
 <div id="messageType" class="hidden">${message.type}</div>
 
-<div class="container">
+<div class="containeur">
 
 <h1>Espace Formateur: ${user.nom } ${user.prenom }</h1>
 <%@include file="/jsp/formateur/menuFormateur.jsp"%>
 <h2>Administration des thèmes</h2>
 
 <c:set var="themes" value="${requestScope['themes'] }" scope="page"/>
+<c:set var="index" value="1" scope="page"/>
 
-<div id="theme" style="display:none">
-	<form action="<%=request.getContextPath()%>/Formateur/Administration/Themes" method="post">
-		<input type="text" name="nom" id="themeNom"/>
-		<input type="submit" class="btn btn-success" name="typeAction" value="ajouter"/>	
-	</form>
-</div>
+
 <table class="table table-striped">
 	<thead>
 		<tr>
-			<th>Libellé  <button type="button" class="btn btn-success" onclick="document.getElementById('theme').style.display='block';"><span class="glyphicon-plus"></span></button></th>
+			<th>Libellé</th>
+			<th> <button type="button" class="btn btn-default btn-standard" onclick="hideShowLine()">Ajouter un thème</button></th>
+			<th></th>
 		</tr>
 	</thead>
-	<tbody>					
+	<tbody>		
+		<tr id="theme">		
+			<form action="<%=request.getContextPath()%>/Formateur/Administration/Themes" method="post">
+				<td><input type="text" name="nom" id="themeNom" class="subtilInput" required/></td>
+				<td><button type="submit" class="btn btn-default btn-standard" name="typeAction" value="ajouter">Valider</button></td>
+			</form>
+			<td><button type="button" class="btn btn-default btn-standard" name="typeAction" value="annuler" onclick="hideShowLine()">Annuler</button></td>		
+		</tr>			
 		<c:forEach items="${themes }" var="theme">
 			<tr id="theme-${theme.id }">
-				<td>
 					<form action="<%=request.getContextPath()%>/Formateur/Administration/Themes" method="post">
 						<input type="hidden" name="id" value="${theme.id }" id="themeId-${theme.id }"/>
-						<input type="text" name="nom" value="${theme.nom }" id="themeNom-${theme.id }"/>
-						<button class="btn btn-danger btn-lg" type="submit" name="typeAction" value="supprimer" onclick="return confirmationSupprimer();"><span class="glyphicon glyphicon-remove"></span></button>
-						<button class="btn btn-primary btn-lg" type="submit" name="typeAction" value="modifier"><span class="glyphicon glyphicon-pencil"></span></button>
+						<td><input type="text" name="nom" value="${theme.nom }" id="themeNom-${theme.id }" class="input-${index} subtilInput"/></td>
+						<td><button class="btn btn-default btn-standard" type="submit" name="typeAction" value="supprimer" onclick="return confirmationSupprimer();">Supprimer</button></td>
+						<td><button class="save-${index} btn btn-default btn-standard" type="submit" name="typeAction" value="modifier">Sauvegarder</button></td>
 					</form>		
-				</td>
-			</tr>			
+			</tr>
+			<c:set var="index" value="${index + 1}" scope="page"/>		
 		</c:forEach>
 	</tbody>
 
 </table>
-<script type="text/javascript">
 
-function confirmationSupprimer(){
-	return confirm("Voulez-vous valider la supression?");
-}
-</script>
 
 </div>
 <script type="text/javascript" src="/yapalQCM/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/yapalQCM/js/bootstrap.min.js"></script>
 <script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.1/packaged/jquery.noty.packaged.min.js"></script>
 <script type="text/javascript" src="/yapalQCM/js/gestionMessages.js"></script>
+<script type="text/javascript">
+$( document ).ready(function() {
+	$("button[class^='save-']").each(function(){
+		$(this).hide();
+	})
+	hideShowLine();
+});
+$("input[class^='input-']").on("change paste keyup", function(){
+	var inputClass = $(this).attr('class').split(" ")[0];
+	var btnClass = inputClass.replace('input-','save-');
+	$('.'+btnClass).show();
+})
+function confirmationSupprimer(){
+	return alert("Voulez-vous valider la supression?");
+	//notyDialogConfirm("Voulez-vous valider la supression?",valideSuppr,null);
+}
+
+function valideSuppr(){
+	
+}
+
+function hideShowLine(){
+	if($('#theme').is(":visible")) {
+		$('#theme').hide()
+	}else{
+		$('#theme').show();
+	}
+}
+</script>
 </body>
 </html>

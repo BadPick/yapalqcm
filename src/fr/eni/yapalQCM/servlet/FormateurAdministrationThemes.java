@@ -54,7 +54,7 @@ public class FormateurAdministrationThemes extends HttpServlet {
 	}
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		message = null;
 		String typeAction=request.getParameter("typeAction");
 		String libelle = request.getParameter("nom");
 		String id = request.getParameter("id");
