@@ -2,6 +2,12 @@ package fr.eni.yapalQCM.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -14,7 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import fr.eni.yapalQCM.bll.ErrorManager;
 import fr.eni.yapalQCM.bll.SessionsManager;
+import fr.eni.yapalQCM.bll.TestsManager;
 import fr.eni.yapalQCM.bo.Session;
+import fr.eni.yapalQCM.bo.Test;
 import fr.eni.yapalQCM.utils.Message;
 import fr.eni.yapalQCM.utils.MessageType;
 import fr.eni.yapalQCM.utils.YapalLogger;
@@ -49,10 +57,62 @@ public class FormateurAdministrationSessions extends HttpServlet {
 		processRequest(request, response); 
 	}
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String typeAction = request.getParameter("typeAction");
+		message = null;
+		if(typeAction!=null){
+			switch (typeAction) {
+			case "ajouter":				
+				try {
+					Session session = new Session();
+					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("date"));
+					Date heure = new SimpleDateFormat("HH:mm").parse(request.getParameter("heure"));
+					ArrayList<Test> tests = new ArrayList<Test>();
+					int nbPlaces = Integer.parseInt(request.getParameter("nbPlaces"));
+					session.setDate(date);
+					session.setNbPlaces(nbPlaces);
+					for (String id : request.getParameterValues("idTest")) {
+						int idTest = Integer.parseInt(id);
+						Test test = TestsManager.getTest(idTest);
+						tests.add(test);
+					}				
+					session.setTests(tests);
+					SessionsManager.ajouterSession(session);
+					message=ErrorManager.getMessage("session ajoutée", MessageType.information);
+				} catch (ParseException e) {
+					message=ErrorManager.getMessage("mauvais format d'heure et/ou de date", MessageType.error);
+					logger.severe("Erreur de récupération de la date et/ou de l'heure "+e.getMessage());
+					e.printStackTrace();
+				} catch (SQLException e) {
+					message=ErrorManager.getMessage("Erreur d'accès à la base de données", MessageType.error);
+					logger.severe("Erreur d'accès à la base de données "+e.getMessage());
+					e.printStackTrace();
+				}				
+				break;
+			case "modifier":
+				message=ErrorManager.getMessage("session modifiée", MessageType.information);
+				break;
+			case "supprimer":
+				int idSession = Integer.parseInt(request.getParameter("idSession"));
+				try {
+					SessionsManager.suprimerSession(idSession);
+					message=ErrorManager.getMessage("session supprimée", MessageType.information);
+				} catch (SQLException e) {
+					message=ErrorManager.getMessage("Erreur d'accès à la base de données", MessageType.error);
+					logger.severe("Erreur d'accès à la base de données "+e.getMessage());
+					e.printStackTrace();
+				}
+				
+				break;
+			default:
+				break;
+			}
+		}
 		
 		try {
 			List<Session> listeSessions = SessionsManager.getSessions();
+			List<Test> listeTests = TestsManager.getTests();
 			request.setAttribute("listeSessions", listeSessions);
+			request.setAttribute("listeTests", listeTests);
 		} catch (SQLException e) {
 			message = ErrorManager.getMessage("Erreur de récupération de la base de donnée: "+e.getMessage(),MessageType.error);
 			logger.severe("Erreur de récupération de la base de donnée: "+e.getMessage());

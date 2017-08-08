@@ -7,6 +7,7 @@ package fr.eni.yapalQCM.dal;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -88,8 +89,8 @@ public class TestDAL implements IDAL<Test> {
 		
 		ArrayList<Test> listeTests = new ArrayList<Test>();
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall(TestSQL.GET_ALL);
-			ResultSet rs = cmd.executeQuery();		
+			Statement cmd = cnx.createStatement();
+			ResultSet rs =cmd.executeQuery(TestSQL.GET_ALL);		
 			while(rs.next()){
 				listeTests.add(itemBuilder(rs));
 			}
@@ -102,6 +103,23 @@ public class TestDAL implements IDAL<Test> {
 		return listeTests;
 	}
 
+	public List<Test> getTests() throws SQLException{
+		logger.entering("TestDAL","getTests");
+		
+		List<Test> liste = new ArrayList<Test>();
+		try(Connection cnx = DBConnection.getConnection()){
+			Statement cmd = cnx.createStatement();
+			ResultSet rs = cmd.executeQuery(TestSQL.GET_TESTS);
+			liste=itemBuilderWithoutSuestion(rs);
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}
+		logger.exiting("TestDAL", "getTests");
+		return liste;
+		
+	}
+	
 	/* (non-Javadoc)
 	 * {@inheritDoc}
 	 * @see fr.eni.yapalQCM.dal.IDAL#add(java.lang.Object)
@@ -184,8 +202,8 @@ public class TestDAL implements IDAL<Test> {
 		Test t = new Test();
 		t.setId(rs.getInt("idTest"));
 		t.setNom(rs.getString("nomTest"));
-		t.setSeuilAcquis(rs.getInt("seuilAcquis"));
-		t.setSeuilEnCoursDacquisition(rs.getInt("seuilEnCoursAcquisition"));
+		t.setSeuilAcquis(rs.getFloat("seuilAcquis"));
+		t.setSeuilEnCoursDacquisition(rs.getFloat("seuilEnCoursAcquisition"));
 		t.setDuree(rs.getLong("duree"));
 		return t;
 	}
@@ -217,10 +235,7 @@ public class TestDAL implements IDAL<Test> {
 		Test test = null;
 		Section section = null;
 		Theme theme = null;
-		Question question = null;
-		Reponse reponse = null;
 		int lastThemeId = 0;
-		int lastQuestionId = 0;
 		int lastTestId = 0;
 		while (rs.next()) {
 			
@@ -258,10 +273,8 @@ public class TestDAL implements IDAL<Test> {
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall(TestSQL.GET_ONE_BY_ID);
 			cmd.setInt(1, idTest);
-			ResultSet rs = cmd.executeQuery();		
-			if(rs.next()){
-				test = itemBuilderComplet(rs);
-			}
+			ResultSet rs = cmd.executeQuery();					
+			test = itemBuilderComplet(rs);
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
 			throw e;

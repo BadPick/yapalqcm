@@ -23,25 +23,75 @@
 <%@include file="/jsp/formateur/menuFormateur.jsp"%>
 <h2>Administration des Sessions</h2>
 <c:set var="listeSessions" value="${requestScope['listeSessions'] }"/>
+<c:set var="listeTests" value="${requestScope['listeTests'] }"/>
 
-<ul>
-	<c:forEach var="session" items="${listeSessions }">
-		<li>${session.date } - ${session.nbPlaces } places disponibles.			
-			<c:forEach var="test" items="${session.tests }">
-				<ul>
-					<li>Test: ${test.nom }</li>
-					<li>Durée: ${test.duree }</li>
-				</ul>
-			</c:forEach>			
-		</li>
-	</c:forEach>
-</ul>
-
+<!-- Bloc pour affichage de la liste des sessions -->
+	<div class="col-md-8" id="liste_session" style="display:block">
+		<button type="button" class="btn btn-success" onclick="afficherNouvelleSession()">Nouvelle Session</button>
+		<ul>
+			<c:forEach var="session" items="${listeSessions }">
+				<li>${session.date } - ${session.nbPlaces } places disponibles.	
+				<div style="display:none">
+					<form id="formSession-${session.id }" method="post" action="<%=request.getContextPath()%>/Formateur/Administration/Sessions">
+						<input type="hidden" name="idSession" value="${session.id }"/>
+					</form>
+				</div>	
+				<button form="formSession-${session.id }" type="submit" class="btn btn-error" name="typeAction" value="supprimer">Supprimer</button>
+				<button type="button" class="btn btn-primary" onclick="modifierSession(${session.id})">Modifier</button>
+					<c:forEach var="test" items="${session.tests }">
+						<ul>
+							<li>Test: ${test.nom } - Durée: ${test.duree }</li>	
+						</ul>
+					</c:forEach>	
+					<div id="idObject-${session.id }" style="display:none">
+						<input type="hidden" id="idSession" value="${session.id }"/>
+						<input type="hidden" id="date" value="${session.date }"/>
+						<input type="hidden" id="nbPlaces" value="${session.nbPlaces }"/>
+						<c:forEach var="test" items="${session.tests }">
+							<input type="hidden" id="idTest" value="${test.id }"/> 	
+						</c:forEach>
+					</div>		
+				</li>				
+			</c:forEach>
+		</ul>
+	</div>
+	
+	<!-- Bloc pour édition d'un session -->
+	<div class="col-md-8" id="nouvelle_session" style="display:none">
+	<button type="button" class="btn btn-success" onclick="afficherListeSessions()">Retour</button>
+		<h2>Nouvelle Session:</h2>
+		<form id="formNvSession" method="post" action="<%=request.getContextPath()%>/Formateur/Administration/Sessions">
+			<div class="form-group col-md-8">
+				<input type="hidden" name="idSession" id="idSession"/>
+				<label for="date">Date de la Session: </label><input type="date" name="date" id="date" class="form-control" value=""/>
+				<label for="heure">Heure de passage du test</label><input type="time" name="heure" id="heure" class="form-control" value=""/>
+				<label for="nbPlaces">Nombre de places: </label><input type="number" min="5" max="30" name="nbPlaces" id="nbPlaces" class="form-control" value=""/>
+				<fieldset>
+				<legend>Sélection du test de la session:</legend>
+					<c:forEach items="${listeTests }" var="test">
+						<input type="checkbox" name="idTest" value="${test.id }" id="idTest-${test.id }"/>${test.nom }
+					</c:forEach>
+				</fieldset>
+				<button type="submit" id="formNvMod" name="typeAction" value="ajouter" class="form-control">Nouvelle Session</button>
+			</div>
+		</form>
+	</div>
 
 </div>
 <script type="text/javascript" src="/yapalQCM/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/yapalQCM/js/bootstrap.min.js"></script>
 <script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.1/packaged/jquery.noty.packaged.min.js"></script>
 <script type="text/javascript" src="/yapalQCM/js/gestionMessages.js"></script>
+
+<script type="text/javascript">
+function afficherNouvelleSession(){	
+	$('#liste_session').hide();
+	$('#nouvelle_session').show();	
+}
+function afficherListeSessions(){
+	$('#liste_session').show();
+	$('#nouvelle_session').hide();
+}
+</script>
 </body>
 </html>

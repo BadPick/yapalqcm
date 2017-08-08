@@ -113,7 +113,7 @@ public class SessionDAL implements IDAL<Session> {
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
 			PreparedStatement cmd = cnx.prepareStatement(SessionSQL.ADD, new String[] {"PRODUCT_ID"});
-			cmd.setDate(1, (Date) s.getDate());
+			cmd.setDate(1, new Date(s.getDate().getTime()) );
 			cmd.setInt(2, s.getNbPlaces());
 			resultat = (cmd.executeUpdate()>0);
 			ResultSet rs = cmd.getGeneratedKeys();
@@ -138,6 +138,8 @@ public class SessionDAL implements IDAL<Session> {
 		logger.exiting("SessionDAL", "add");
 		return resultat;
 	}
+	
+
 
 	/* (non-Javadoc)
 	 * {@inheritDoc}
@@ -191,18 +193,6 @@ public class SessionDAL implements IDAL<Session> {
 		return resultat;
 	}
 
-	/* (non-Javadoc)
-	 * {@inheritDoc}
-	 * @see fr.eni.yapalQCM.dal.IDAL#itemBuilder(java.sql.ResultSet)
-	 */
-	@Override
-	public Session itemBuilder(ResultSet rs) throws SQLException {
-		Session s = new Session();
-		s.setId(rs.getInt("idSession"));
-		s.setDate(rs.getDate("date"));
-		s.setNbPlaces(rs.getInt("nombrePlaces"));
-		return s;
-	}
 	/**
 	 * Méthode permettant de récupérer la liste des ifdentifiants 
 	 * des test associés à une session.
@@ -219,7 +209,6 @@ public class SessionDAL implements IDAL<Session> {
 			cmd.setInt(1, id);
 			ResultSet rs = cmd.executeQuery();		
 			while(rs.next()){
-				System.out.println(rs);
 				liste.add(rs.getInt("idTest"));
 			}
 		} catch (SQLException e) {
@@ -231,5 +220,51 @@ public class SessionDAL implements IDAL<Session> {
 		logger.exiting("SessionDAL", "listeTests");
 		return liste;
 	}
+	
+	/* (non-Javadoc)
+	 * {@inheritDoc}
+	 * @see fr.eni.yapalQCM.dal.IDAL#itemBuilder(java.sql.ResultSet)
+	 */
+	@Override
+	public Session itemBuilder(ResultSet rs) throws SQLException {
+		Session s = new Session();
+		s.setId(rs.getInt("idSession"));
+		s.setDate(rs.getDate("date"));
+		s.setNbPlaces(rs.getInt("nombrePlaces"));
+		return s;
+	}
 
+	public boolean deleteTestSession(int idTest, int idSession) throws SQLException {
+		logger.entering("SessionDAL", "deleteTestSession");
+		boolean retour = false;
+		try(Connection cnx = DBConnection.getConnection()) {
+			PreparedStatement cmd = cnx.prepareStatement(SessionSQL.DELETE_TEST_SESSIONS);
+			cmd.setInt(1, idTest);
+			cmd.setInt(2, idSession);
+			retour = (cmd.executeUpdate()>0);		
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		}		
+		logger.exiting("SessionDAL", "deleteTestSession");
+		return retour;		
+	}
+
+	public boolean deleteSession(int idSession) throws SQLException {
+		logger.entering("SessionDAL", "deleteSession");
+		boolean retour = false;
+		try(Connection cnx = DBConnection.getConnection()) {
+			PreparedStatement cmd = cnx.prepareStatement(SessionSQL.DELETE_SESSIONS);
+			cmd.setInt(1, idSession);
+			retour = (cmd.executeUpdate()>0);		
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		}		
+		logger.exiting("SessionDAL", "deleteSession");
+		return retour;
+	}
+	
 }

@@ -29,4 +29,15 @@ public class SessionsManager {
 		
 		return liste;
 	}
+
+	public static boolean ajouterSession(Session session) throws SQLException {		
+		return sessionDal.add(session);	
+	}
+	
+	public static boolean suprimerSession(int idSession) throws SQLException{
+		for (int idTest : sessionDal.listeTests(idSession)) {
+			sessionDal.deleteTestSession(idTest,idSession);
+		};
+		return sessionDal.deleteSession(idSession);		
+	}
 }
