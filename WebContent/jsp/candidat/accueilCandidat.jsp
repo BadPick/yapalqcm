@@ -34,7 +34,7 @@
 					<c:set var="resultFound" value="false" scope="page" />
 					<tr class="test">
 						<td class="" colspan="2">${test.nom}(${test.duree})</td>
-						<td>${test.nbQuestions }questions</td>
+						<td>${test.nbQuestions } questions</td>
 						<td class="btn-standard"><button type="button" name="details" value="${test.id}"
 								class="form-control btn-standard">Détails</button></td>
 						
@@ -68,7 +68,7 @@
 						<tr class="section-${test.id}" style="display:none;">
 							<td></td>
 							<td>${section.theme.nom}</td>
-							<td>${section.nbQuestions }questions</td>
+							<td>${section.nbQuestions } questions</td>
 							<td></td>
 							<td></td>
 							<td></td>

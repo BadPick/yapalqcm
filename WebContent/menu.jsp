@@ -15,7 +15,7 @@
 					<div>
 						<div>
 							<div class="logo col-sm-2">
-								<img alt="YapalQCM" src="img/logo.png" class="logo">
+								<a href="<%=request.getContextPath()%>/Candidat/Accueil" ><img alt="YapalQCM" src="img/logo.png" class="logo"></a>
 							</div>
 						</div>
 					</div>
