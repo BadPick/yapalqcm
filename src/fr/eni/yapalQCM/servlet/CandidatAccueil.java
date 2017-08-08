@@ -53,7 +53,7 @@ public class CandidatAccueil extends HttpServlet {
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		HttpSession session = request.getSession();
 		RequestDispatcher dispatcher = null;
-			
+
 		try {
 			//r�cup�ration du user en session
 			Utilisateur candidat = (Utilisateur) session.getAttribute("user");

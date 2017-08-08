@@ -1,6 +1,6 @@
 package fr.eni.yapalQCM.dal;
 
-public abstract class SessionSQL {
+public abstract class SessionSQL {	
 	public static String GET_LENGTH="SELECT COUNT(*) as Total FROM SESSIONS;";
 	public static String GET_ONE="SELECT * FROM SESSIONS WHERE idSession=?;";
 	public static String GET_ALL="SELECT * FROM SESSIONS;";
@@ -9,4 +9,5 @@ public abstract class SessionSQL {
 	public static String DELETE="DELETE FROM SESSIONS WHERE idSession=?;";
 	public static String ADDTESTSESSION="INSERT INTO TEST_SESSIONS VALUES(?,?,?,?,?);";
 	public static String DELETETESTSESSION="DELETE FROM TEST_SESSIONS WHERE idSession=? AND idTest=?;";
+	public static String GET_TESTS ="SELECT * from TEST_SESSIONS where idSession=?;";
 }

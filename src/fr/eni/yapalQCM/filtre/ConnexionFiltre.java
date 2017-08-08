@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet Filter implementation class ConnexionFiltre
  */
-@WebFilter("/a")
+@WebFilter("/")
 public class ConnexionFiltre implements Filter {
 
     /**
