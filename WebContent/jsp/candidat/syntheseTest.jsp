@@ -16,15 +16,15 @@
 <div id="message" class="hidden">${message.message}</div>
 <div id="messageType" class="hidden">${message.type}</div>
 <div class="container">
-	<div id="chrono" style="visibility:hidden">${ test.getDuree()-tempsEcoule }</div>
-	<h2>Synthèse du test n°<c:out value="${ testId }"/></h2>
+	<div id="chrono" style="visibility:hidden">${ sessionScope.test.getDuree()-tempsEcoule }</div>
+	<h2>Synthèse du test n°<c:out value="${ sessionScope.test.getId() }"/></h2>
 	<h3>Candidat : <c:out value="${ sessionScope.user.getPrenom() }"/> <c:out value="${ sessionScope.user.getNom() }"/></h3>
 	
 	<div>
 		<ul>
-			<c:forEach items="${ listeQuestions }" var="question" varStatus="statusQues">
+			<c:forEach items="${ sessionScope.questions }" var="question" varStatus="statusQues">
 				<form method="post" action="<%=request.getContextPath()%>/Candidat/PasserUnTest" onsubmit="envoyerChronoParam(${ tempsEcoule }, ${ statusQues.count })">
-					<input type="hidden" id="idTest" name="idTest" value="${ test.getId() }" />
+					<input type="hidden" id="idTest" name="idTest" value="${ sessionScope.test.getId() }" />
 					<input type="hidden" id="tempsEcoule${ statusQues.count }" name="tempsEcoule" value="" />
 					<input type="submit" class="questionParQuestion" id="question${ statusQues.count }" name="questionEnCours" value="${ statusQues.count }">
 						question ${ statusQues.count } 

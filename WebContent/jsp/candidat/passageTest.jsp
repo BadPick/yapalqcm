@@ -21,19 +21,21 @@
 	<div id="messageType" class="hidden">${message.type}</div>
 	
 	<div class="container">
+		<!-- Chronomètre -->
+		<h1>${ sessionScope.test.getNom() }</h1>
 		
 		<!-- Chronomètre -->
-		<div id="chrono" style="visibility:hidden">${ test.getDuree()-tempsEcoule }</div>
+		<div id="chrono" style="visibility:hidden">${ sessionScope.test.getDuree()-tempsEcoule }</div>
 		
 		<!-- Formulaire d'envoi des données du test -->
 		<form method="get" action="<%=request.getContextPath()%>/Candidat/PasserUnTest" onsubmit="envoyerChrono(${ tempsEcoule })">
-			<input type="hidden" name="idTestSynthese" value="${ test.getId() }" />
+			<input type="hidden" name="idTestSynthese" value="${ sessionScope.test.getId() }" />
 			<input type="hidden" id="tempsEcoule" name="tempsEcoule" value="" />
 			
 			<!-- Barre de boutons qui affichent l'états des questions -->
 			<div id="recap">
 				<p id="questionEnCours" style="display:none">${ questionEnCours }</p>
-				<c:forEach items="${ listeQuestions }" var="question" varStatus="statusRecap">
+				<c:forEach items="${ sessionScope.questions }" var="question" varStatus="statusRecap">
 					
 					<!-- Champs caché pour envoyer la valeur de la question marquée ou non -->
 					<input id="inputRecap${ statusRecap.count }" type="hidden"
@@ -47,7 +49,7 @@
 			</div>
 			
 			<!-- Chargement de toutes les questions et leurs réponses -->
-			<c:forEach items="${ listeQuestions }" var="question"
+			<c:forEach items="${ sessionScope.questions }" var="question"
 				varStatus="statusQues">
 				
 				<!-- Questions : -->
@@ -64,7 +66,7 @@
 									<c:forEach items="${ question.getReponses() }" var="reponse" varStatus="statusRep">
 										<span class="input-group-addon"> 
 										<input type="checkbox" name="reponseSelected-${ reponse.getId() }" id="${ statusRep.count }" <c:if test="${ reponse.isChecked()==true }">checked</c:if> /> 
-											<label for="${ statusRep.count }">${ reponse.getEnonce() }</label><br>
+											<label for="reponseSelected-${ reponse.getId() }">${ reponse.getEnonce() }</label><br>
 										</span>
 									</c:forEach>
 								</c:if>
@@ -75,7 +77,7 @@
 									<c:forEach items="${ question.getReponses() }" var="reponse" varStatus="statusRep">
 										<span class="input-group-addon"> 
 										<input type="radio" name="reponseSelected-${ question.getId() }" id="${ statusRep.count }" value="${ statusRep.count }" <c:if test="${ reponse.isChecked()==true }">checked</c:if> /> 
-											<label for="${ statusRep.count }">${ reponse.getEnonce() }</label><br>
+											<label for="reponseSelected-${ question.getId() }">${ reponse.getEnonce() }</label><br>
 									</span>
 									</c:forEach>
 								</c:if>
@@ -91,7 +93,7 @@
 						précédente</button>
 						
 					<!-- Marquer : -->
-					<button type="button" class="btn btn-default"
+					<button type="button" class="btn btn-default btn-standard"
 						id="marquageQuestion${ statusQues.count }"
 						onclick="MarqueQuestion()">
 						<c:choose>
@@ -105,8 +107,8 @@
 						</button>
 						
 					<!-- Question suivante : -->
-					<button type="button" class="btn btn-default"
-						<c:if test = "${ statusQues.count == listeQuestions.size() }">disabled</c:if>
+					<button type="button" class="btn btn-default btn-standard"
+						<c:if test = "${ statusQues.count == sessionScope.questions.size() }">disabled</c:if>
 						id="questionSuivante" onclick="ChangementPage('suivante')">Question
 						suivante</button>
 				</div>

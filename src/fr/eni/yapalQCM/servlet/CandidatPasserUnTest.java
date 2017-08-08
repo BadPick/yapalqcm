@@ -1,10 +1,8 @@
 package fr.eni.yapalQCM.servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +18,6 @@ import fr.eni.yapalQCM.bo.Resultat;
 import fr.eni.yapalQCM.bo.Section;
 import fr.eni.yapalQCM.bo.Session;
 import fr.eni.yapalQCM.bo.Test;
-import fr.eni.yapalQCM.bo.Theme;
 import fr.eni.yapalQCM.bo.Utilisateur;
 import fr.eni.yapalQCM.dal.ResultatDAL;
 import fr.eni.yapalQCM.utils.Message;
@@ -32,8 +29,6 @@ import fr.eni.yapalQCM.utils.Message;
 public class CandidatPasserUnTest extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Message message = null;   
-	private Test test;
-	private ArrayList<Question> listeQuestions = null;
 	private long tempsEcoule;
 	private int questionEnCours;
     /**
@@ -41,19 +36,6 @@ public class CandidatPasserUnTest extends HttpServlet {
      */
     public CandidatPasserUnTest() {
         super();
-        // TODO Auto-generated constructor stub
-    }
-
-    
-    public void init() throws ServletException {
-        if(test==null){
-			try {
-				test = CandidatManager.getTest(1);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
     }
     
     /**
@@ -70,12 +52,13 @@ public class CandidatPasserUnTest extends HttpServlet {
 		processRequest(request,response);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		HttpSession session = request.getSession();
 		
 		// Réinitialisation des réponses et marquages fait par un stagiaire :
-		if(listeQuestions!=null && request.getParameter("idTest")==null){
-			for(Question question : listeQuestions){
+		if(session.getAttribute("questions")!=null && request.getParameter("idTest")==null){
+			for(Question question : (ArrayList<Question>)session.getAttribute("questions")){
 				question.setRepondue(false);
 				question.setMarquee(false);
 				
@@ -90,16 +73,18 @@ public class CandidatPasserUnTest extends HttpServlet {
 			// Données à envoyer vers page du Passage de Test :
 			if (request.getParameter("idTest")!=null) {
 				//Récupération du test généré
-				if(listeQuestions==null){
-					test = CandidatManager.getTest(Integer.parseInt(request.getParameter("idTest")));
+				if(session.getAttribute("questions")==null){
+					Test test = CandidatManager.getTest(Integer.parseInt(request.getParameter("idTest")));
 					tempsEcoule = test.getDuree();
-					listeQuestions = new ArrayList<Question>();
+					ArrayList<Question> listeQuestions = new ArrayList<Question>();
 					for(Section section : test.getSections()){
 						for(Question question : section.getTheme().getQuestions()){
 							question.checkNbreReponses();
 							listeQuestions.add(question);
 						}
 					}
+					session.setAttribute("questions", listeQuestions);
+					session.setAttribute("test", test);
 				}
 				
 				// Récupération du temps écoulé
@@ -115,16 +100,14 @@ public class CandidatPasserUnTest extends HttpServlet {
 				}else{
 					questionEnCours = 1;
 				}
-				request.setAttribute("test", test);
 				request.setAttribute("tempsEcoule", tempsEcoule);
-				request.setAttribute("listeQuestions", listeQuestions);
 				request.setAttribute("questionEnCours", questionEnCours);					
 				this.getServletContext().getRequestDispatcher("/jsp/candidat/passageTest.jsp").forward(request, response);
 			}
 			
 			// Analyse du test en cours pour création de la page de synthèse
 			if ("Page de synthese".equals(request.getParameter("pageSynthese")) && request.getParameter("idTestSynthese")!=null){
-				for(Question question : listeQuestions){
+				for(Question question : (ArrayList<Question>)session.getAttribute("questions")){
 					// Vérification si la question a été marqué ou non
 					if("1".equals(request.getParameter("questionMarquee-"+question.getId()))){
 						question.setMarquee(true);
@@ -158,9 +141,7 @@ public class CandidatPasserUnTest extends HttpServlet {
 					}
 				}
 				
-				request.setAttribute("test", test);
 				request.setAttribute("tempsEcoule", request.getParameter("tempsEcoule"));
-				request.setAttribute("listeQuestions", listeQuestions);
 				this.getServletContext().getRequestDispatcher("/jsp/candidat/syntheseTest.jsp").forward(request, response);
 			}
 			
@@ -171,7 +152,7 @@ public class CandidatPasserUnTest extends HttpServlet {
 				boolean acquis = false;
 				boolean enCoursAcquisition = false;
 				String acquisition = null;
-				for(Question question : listeQuestions){
+				for(Question question : (ArrayList<Question>)session.getAttribute("questions")){
 					correct = false;
 					if(question.isPlusieursReponses()){
 						for(Reponse reponse : question.getReponses()){
@@ -204,10 +185,13 @@ public class CandidatPasserUnTest extends HttpServlet {
 						score++;
 					}
 				}
-				if(score*100/listeQuestions.size()>=Math.round(test.getSeuilEnCoursDacquisition())/listeQuestions.size()){
+				
+				int nbreQuestions = ((ArrayList<Question>) session.getAttribute("questions")).size();
+				
+				if(score*100/nbreQuestions>=Math.round(((Test)session.getAttribute("test")).getSeuilEnCoursDacquisition())/nbreQuestions){
 					enCoursAcquisition = true;
 				}
-				if(score*100/listeQuestions.size()>=Math.round(test.getSeuilAcquis())/listeQuestions.size()){
+				if(score*100/nbreQuestions>=Math.round(((Test)session.getAttribute("test")).getSeuilAcquis())/nbreQuestions){
 					acquis = true;
 				}
 				
@@ -229,18 +213,17 @@ public class CandidatPasserUnTest extends HttpServlet {
 				sessionResult.setId(1);
 				resultat.setSession(sessionResult);
 				resultat.setCandidat((Utilisateur)session.getAttribute("user"));
-				resultat.setTest(test);
-				resultat.setSeuilObtenu((float)score*100/listeQuestions.size());
+				resultat.setTest((Test)session.getAttribute("test"));
+				resultat.setSeuilObtenu((float)score*100/nbreQuestions);
 				resultat.setTempsEcoule(tempsEcoule);
 				ResultatDAL rd = new ResultatDAL();
 				rd.add(resultat);
 				
 				// Renvoi des données du résultat pour affichage de la page résultat
 				request.setAttribute("score", score);
-				request.setAttribute("nbreQuestions", listeQuestions.size());
+				request.setAttribute("nbreQuestions", nbreQuestions);
 				request.setAttribute("acquisition", acquisition);
 				request.setAttribute("tempsEcoule", tempsEcoule);
-				request.setAttribute("testId", request.getParameter("idTestSynthese"));
 				this.getServletContext().getRequestDispatcher("/jsp/candidat/resultatTest.jsp").forward(request, response);
 			}
 			
