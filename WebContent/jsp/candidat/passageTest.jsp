@@ -131,7 +131,6 @@
 	// Arrivée sur la question cliquée dans la page de synthèse
 	$( document ).ready(function Chargement(listeQuestions){
 		RetourQuestion('${ questionEnCours }');
-		MarqueQuestionEnCours();
 	});
 
 	// Numéro de suivi de la question en cours
