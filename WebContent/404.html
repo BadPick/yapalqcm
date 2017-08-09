@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Erreur 404</title>
+</head>
+<body>
+	<div style="margin:300px auto 0px auto">
+        <p id="compteur" style="font-size:50px; text-align: center">Erreur</p>
+        <p id="description" style="margin:50px auto 50px auto; font-size:30px; text-align: center"></p>
+        <button type="button" class="btn btn-info" id="retour" style="margin: auto; display: block; visibility:hidden">Retourner à la page d'accueil</button>
+    </div>
+
+    <script>
+    var compteurElt = document.getElementById("compteur");
+    var compteur = 0;
+
+    function diminuerCompteur() {
+
+        compteurElt.textContent = "Erreur ";
+
+        // Augmente le compteur jusqu'à 404
+        if (compteur < 404) {
+            ++compteur;
+            compteurElt.textContent += compteur;
+        } else {
+            // Annule l'exécution répétée
+            clearInterval(intervalId);
+            // Modifie le texte de l'erreur
+            compteurElt.textContent = "Erreur 404 :'(";
+            var description = document.getElementById("description");
+            description.textContent = "Page introuvable...";
+            var retour = document.getElementById("retour");
+            retour.style.visibility = "visible";
+            // Modification du texte de l'erreur au bout de 2 secondes
+            setTimeout(function () {
+                erreur.textContent = "Ouuuuuups !!!";
+            }, 2000);
+        }
+    }
+
+    var intervalId = setInterval(diminuerCompteur, 1);
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

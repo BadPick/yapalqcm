@@ -1,6 +1,7 @@
 var chrono = document.getElementById("chrono");
 var compteur = Number(chrono.textContent);
 var compteurInvisible = compteur;
+var tempsEcoule = document.getElementById("tempsEcoule");
 
 // Diminue le compteur jusqu'à 0
 function DiminuerCompteur() {
@@ -12,8 +13,8 @@ function DiminuerCompteur() {
     	chrono.textContent = secondsToTime(0);
         // Annule l'exécution répétée
         clearInterval(intervalId);
-		document.getElementById("tempsEcoule").value=compteur-compteurInvisible;
     }
+    tempsEcoule.value=compteur-compteurInvisible.toString();
 }
 // Appelle la fonction DiminuerCompteur toutes les secondes (1000 millisecondes)
 var intervalId = setInterval(DiminuerCompteur, 1000);

@@ -15,97 +15,120 @@
 
 <body>
 	<%@include file="/menu.jsp"%>
-	
+
 	<!-- Affichage d'un message si besoin -->
 	<div id="message" class="hidden">${message.message}</div>
 	<div id="messageType" class="hidden">${message.type}</div>
-	
+
 	<div class="container">
 		<!-- Chronomètre -->
 		<h1>${ sessionScope.test.getNom() }</h1>
-		
+
 		<!-- Chronomètre -->
-		<div id="chrono" style="visibility:hidden">${ sessionScope.test.getDuree()-tempsEcoule }</div>
-		
+		<div id="chrono" style="visibility: hidden">${ sessionScope.test.getDuree()-tempsEcoule }</div>
+
 		<!-- Formulaire d'envoi des données du test -->
-		<form method="get" action="<%=request.getContextPath()%>/Candidat/PasserUnTest" onsubmit="envoyerChrono(${ tempsEcoule })">
-			<input type="hidden" name="idTestSynthese" value="${ sessionScope.test.getId() }" />
-			<input type="hidden" id="tempsEcoule" name="tempsEcoule" value="" />
-			
+		<form method="get"
+			action="<%=request.getContextPath()%>/Candidat/PasserUnTest"
+			onsubmit="envoyerChrono(${ tempsEcoule })">
+			<input type="hidden" name="idTestSynthese"
+				value="${ sessionScope.test.getId() }" /> <input type="hidden"
+				id="tempsEcoule" name="tempsEcoule" value="" />
+
 			<!-- Barre de boutons qui affichent l'états des questions -->
 			<div id="recap">
-				<p id="questionEnCours" style="display:none">${ questionEnCours }</p>
-				<c:forEach items="${ sessionScope.questions }" var="question" varStatus="statusRecap">
-					
+				<p id="questionEnCours" style="display: none">${ questionEnCours }</p>
+				<c:forEach items="${ sessionScope.questions }" var="question"
+					varStatus="statusRecap">
+
 					<!-- Champs caché pour envoyer la valeur de la question marquée ou non -->
 					<input id="inputRecap${ statusRecap.count }" type="hidden"
-						name="questionMarquee-${ question.getId() }" value="<c:if test="${ question.isMarquee()==true }">1</c:if>" />
-					
+						name="questionMarquee-${ question.getId() }"
+						value="<c:if test="${ question.isMarquee()==true }">1</c:if>" />
+
 					<!-- Boutons qui affichent l'états des questions -->
 					<button type="button" class="btn btn-default"
-						id="btnRecap${ statusRecap.count }" onclick="RetourQuestion(${ statusRecap.count })" 
-						<c:if test="${ question.isMarquee()==true }">style="background:orange"</c:if> >${ statusRecap.count }</button>
+						id="btnRecap${ statusRecap.count }"
+						onclick="RetourQuestion(${ statusRecap.count })"
+						<c:if test="${ question.isMarquee()==true }">style="background:orange"</c:if>>${ statusRecap.count }</button>
 				</c:forEach>
 			</div>
-			
+
 			<!-- Chargement de toutes les questions et leurs réponses -->
 			<c:forEach items="${ sessionScope.questions }" var="question"
 				varStatus="statusQues">
-				
+
 				<!-- Questions : -->
 				<div class="questionParQuestion" id="question${ statusQues.count }"
 					<c:if test = "${ statusQues.count > 1 }"> style="display:none"</c:if>>
 					<!-- Numeros et énoncés : -->
-					<h2>Question n°<c:out value="${ statusQues.count }" /></h2>
-					<h2><c:out value="${ question.getEnonce() }" /></h2>
+					<h2>
+						Question n°
+						<c:out value="${ statusQues.count }" />
+					</h2>
+					<h2>
+						<c:out value="${ question.getEnonce() }" />
+					</h2>
 					<div class="input-group">
-						<ul>
-							<!-- Réponses avec plusieurs réponses possibles (checkbox) : -->
+						<div id="blockReponses-${ statusQues.count }">
+							<ul>
+								<!-- Réponses avec plusieurs réponses possibles (checkbox) : -->
 								<c:if test="${ question.isPlusieursReponses()==true }">
 									<p>Plusieurs réponses possibles</p>
-									<c:forEach items="${ question.getReponses() }" var="reponse" varStatus="statusRep">
-										<span class="input-group-addon"> 
-										<input type="checkbox" name="reponseSelected-${ reponse.getId() }" id="${ statusRep.count }" <c:if test="${ reponse.isChecked()==true }">checked</c:if> /> 
-											<label for="reponseSelected-${ reponse.getId() }">${ reponse.getEnonce() }</label><br>
-										</span>
+									<c:forEach items="${ question.getReponses() }" var="reponse"
+										varStatus="statusRep">
+
+										<input type="checkbox"
+											name="reponseSelected-${ reponse.getId() }"
+											id="${ statusRep.count }"
+											<c:if test="${ reponse.isChecked()==true }">checked</c:if> />
+										<label for="reponseSelected-${ reponse.getId() }">${ reponse.getEnonce() }</label>
+										<br>
+
 									</c:forEach>
 								</c:if>
-								
-							<!-- Réponses avec qu'une seule réponse possible (bouton radio) : -->
+
+								<!-- Réponses avec qu'une seule réponse possible (bouton radio) : -->
 								<c:if test="${ question.isPlusieursReponses()==false }">
 									<p>Une seule réponse possible</p>
-									<c:forEach items="${ question.getReponses() }" var="reponse" varStatus="statusRep">
-										<span class="input-group-addon"> 
-										<input type="radio" name="reponseSelected-${ question.getId() }" id="${ statusRep.count }" value="${ statusRep.count }" <c:if test="${ reponse.isChecked()==true }">checked</c:if> /> 
-											<label for="reponseSelected-${ question.getId() }">${ reponse.getEnonce() }</label><br>
-									</span>
+									<c:forEach items="${ question.getReponses() }" var="reponse"
+										varStatus="statusRep">
+
+										<input type="radio"
+											name="reponseSelected-${ question.getId() }"
+											id="${ statusRep.count }" value="${ statusRep.count }"
+											<c:if test="${ reponse.isChecked()==true }">checked</c:if> />
+										<label for="reponseSelected-${ question.getId() }">${ reponse.getEnonce() }</label>
+										<br>
+
 									</c:forEach>
 								</c:if>
-						</ul>
+							</ul>
+						</div>
 					</div>
-							
+
 					<!-- 3 boutons : Question précédente / Marquer / Question suivante -->
-					
+
 					<!-- Question précédente : -->
 					<button type="button" class="btn btn-default"
 						<c:if test = "${ statusQues.count == 1 }">disabled</c:if>
 						id="questionPrecedente" onclick="ChangementPage('precedente')">Question
 						précédente</button>
-						
+
 					<!-- Marquer : -->
 					<button type="button" class="btn btn-default btn-standard"
 						id="marquageQuestion${ statusQues.count }"
 						onclick="MarqueQuestion()">
 						<c:choose>
-						    <c:when test="${ question.isMarquee()==true }">
+							<c:when test="${ question.isMarquee()==true }">
 						        Enlever le marquage
 						    </c:when>
-						    <c:otherwise>
+							<c:otherwise>
 						        Marquer
 						    </c:otherwise>
 						</c:choose>
-						</button>
-						
+					</button>
+
 					<!-- Question suivante : -->
 					<button type="button" class="btn btn-default btn-standard"
 						<c:if test = "${ statusQues.count == sessionScope.questions.size() }">disabled</c:if>
@@ -113,18 +136,21 @@
 						suivante</button>
 				</div>
 			</c:forEach>
-			
+
 			<!-- 2 boutons : Page de synthèse / Valider le test -->
 			<!-- Page de synthèse -->
-			<input class="btn btn-default" id="pageSynthese" type="submit" name="pageSynthese" value="Page de synthese" />
-			<!-- Valider le test --> 
-			<input class="btn btn-default" id="validerTest" type="submit" name="validerTest" value="Valider le test" />
+			<input class="btn btn-default" id="pageSynthese" type="submit"
+				name="pageSynthese" value="Page de synthese" />
+			<!-- Valider le test -->
+			<input class="btn btn-default" id="validerTest" type="submit"
+				name="validerTest" value="Valider le test" />
 		</form>
 	</div>
 
 
 	<script type="text/javascript" src="/yapalQCM/js/jquery-3.2.1.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.1/packaged/jquery.noty.packaged.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.1/packaged/jquery.noty.packaged.min.js"></script>
 	<script type="text/javascript" src="/yapalQCM/js/gestionMessages.js"></script>
 	<script type="text/javascript" src="/yapalQCM/js/chrono.js"></script>
 	<script type="text/javascript">
@@ -141,6 +167,7 @@
 		var btnRecapQuestion = document.getElementById("btnRecap" + numQuestion);
 		var inputRecapQuestion = document.getElementById("inputRecap" + numQuestion);
 		var btnMarquage = document.getElementById("marquageQuestion" + numQuestion);
+		EnvoiDonneesAjax();
 		
 		if (btnMarquage.textContent == "Enlever le marquage"){
 			btnRecapQuestion.style.background = "none";
@@ -159,6 +186,7 @@
 		var btnRecapQuestionEnCours = document.getElementById("btnRecap" + numQuestion);
 		questionEnCours.style.display = "none";
 		btnRecapQuestionEnCours.style.border = "1px solid grey";
+		EnvoiDonneesAjax();
 		
 		if(sens=="suivante"){
 			numQuestion++;			
@@ -186,6 +214,74 @@
 		questionSuivante.style.display = "block";
 		btnRecapQuestionSuivante.style.border = "2px solid black";
 	}
+	
+	// Envoi des changements en AJAX :
+	function EnvoiDonneesAjax() {
+
+		/* VALUES */
+	    var numeroQuestion = numQuestion;
+	    if($('#marquageQuestion'+numQuestion).textContent=="Marquer"){
+		    var marquageQuestion = false;
+	    } else {
+	    	var marquageQuestion = true;
+	    }
+	    var tempsEcoule = $('#tempsEcoule').val();
+
+// 		var dataString = '{';
+// 		dataString += 'numQuestion:';
+// 		dataString += numeroQuestion;
+// 		dataString += ',';
+// 		dataString += 'marquageQuestion:';
+// 		dataString += marquageQuestion;
+// 		dataString += ',';
+// 		dataString += 'tempsEcoule:';
+// 		dataString += tempsEcoule;
+// 		dataString += ',';
+// 		dataString += 'reponses:[';
+// 		//reponses					
+// 		var blockReponses = $('#blockReponses-'+numQuestion);
+// 	    var increment = 1;
+// 	    blockReponses.find("input[name^='reponseSelected-']").each(function(){
+// 			if (increment > 1) {
+// 				dataString += ',';
+// 			}	
+// 			dataString += '{';
+// 			dataString += 'numReponse:';
+// 			dataString += increment;
+// 			dataString += ',';
+// 			dataString += 'checked:';
+// 			dataString += this.checked;
+// 			dataString += '}';
+// 			increment++;
+// 		});
+		var blockReponses = $('#blockReponses-'+numQuestion);
+	    var increment = 1;
+	    var reponses = [];
+	    var reponse;
+	    blockReponses.find("input[name^='reponseSelected-']").each(function(){
+	    	reponse = {numReponse:increment,checked:this.checked}
+	    	reponses.push(reponse);
+			increment++;
+	    });
+	    
+var dataString = {
+		numQuestion:numeroQuestion,
+		marquageQuestion:marquageQuestion,
+		tempsEcoule:tempsEcoule,
+		reponses:reponses				    
+		};
+		
+		var dataJson = JSON.stringify(dataString);
+		alert(dataJson);	
+	 
+		$.ajax({
+		type: 'POST',
+	    url: "<%=request.getContextPath()%>/EnregistrementResultatsEnCours",
+	    data: {data:dataJson}
+		});
+	}
+	
+	
 	</script>
 </body>
 </html>
