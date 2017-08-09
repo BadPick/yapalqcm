@@ -40,17 +40,9 @@
 <div class="col-md-8" id="formTest" style="display:block">
 	<form method="post" action="<%=request.getContextPath()%>/Formateur/Administration/Tests">
 		<label for="nom">Nom du test</label><input type="text" id="nom" name="nom" class="form-control"/>
-		<button type="button" id="ajouterTheme" class="btn">Ajouter une thème</button>
+		<button type="button" id="ajouterTheme" class="btn">Ajouter un thème</button>
 		<ul id="listeThemes" style="list-style-type:square">
-			<li id="theme">
-				<select name="theme">
-					<c:forEach var="theme" items="${listeThemes}">
-						<option value="${theme.id}">${theme.nom }</option>					
-					</c:forEach>
-				</select>
-				<label>Nombre de questions: </label><input type="number" id="nbQuestions" name="nbQuestions"/>
-				<button type="button" class="btn btn-danger" id="supprimerTheme">Supprimer</button>
-			</li>
+			
 		</ul>
 		<label for="seuilAcquis">Seuil Acquis</label><input type="number" id="seuilAcquis" name="seuilAcquis" class="form-control"/>
 		<label for="seuilEnCourDacquisition">Seuil Acquis</label><input type="number" id="seuilEnCourDacquisition" name="seuilEnCourDacquisition" class="form-control"/>
@@ -66,14 +58,20 @@
 <script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.1/packaged/jquery.noty.packaged.min.js"></script>
 <script type="text/javascript" src="/yapalQCM/js/gestionMessages.js"></script>
 <script type="text/javascript">
-$('#supprimerTheme').click(function(){
-	var liTheme = 'theme-'+$(this).prop('id');
-	alert(liTheme);
-	$('#'+liTheme).remove();
-})
+var numSection = 0;
 $('#ajouterTheme').click(function(){
-	var liTheme=document.createElement("li");
-	liTheme.innerHTML
+	var idtheme = "'#theme-"+numSection+"'";
+	var theme=document.createElement("li");
+	theme.setAttribute("id", "theme-"+numSection);
+	theme.innerHTML='<select name="themes">'+
+						'<c:forEach var="theme" items="${listeThemes}">'+
+							'<option value="${theme.id}">${theme.nom }</option>'+					
+						'</c:forEach>'+
+					'</select>'+
+					'<label>Nombre de questions: </label><input type="number" id="nbQuestions" name="nbQuestions"/>'+
+					'<button type="button" id="supprimerTheme-'+numSection+'" class="btn btn-danger" onclick="$('+idtheme+').remove()">Supprimer</button>'
+	$('#listeThemes').append(theme);
+	numSection++;						
 })
 
 
