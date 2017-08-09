@@ -20,12 +20,12 @@
 	<div id="message" class="hidden">${message.message}</div>
 	<div id="messageType" class="hidden">${message.type}</div>
 
-	<div class="container">
-		<!-- Chronomètre -->
-		<h1>${ sessionScope.test.getNom() }</h1>
+	<div class="containeur">
+	<div class="row">
+		<div class="col-sm-10"><h1>${ sessionScope.test.getNom() }</h1></div>
+		<div class="col-sm-2"><div id="chrono" style="visibility: hidden">${ sessionScope.test.getDuree()-tempsEcoule }</div></div>
+	</div>
 
-		<!-- Chronomètre -->
-		<div id="chrono" style="visibility: hidden">${ sessionScope.test.getDuree()-tempsEcoule }</div>
 
 		<!-- Formulaire d'envoi des données du test -->
 		<form method="get"
@@ -47,7 +47,7 @@
 						value="<c:if test="${ question.isMarquee()==true }">1</c:if>" />
 
 					<!-- Boutons qui affichent l'états des questions -->
-					<button type="button" class="btn btn-default"
+					<button type="button" class="btn btn-standard2"
 						id="btnRecap${ statusRecap.count }"
 						onclick="RetourQuestion(${ statusRecap.count })"
 						<c:if test="${ question.isMarquee()==true }">style="background:orange"</c:if>>${ statusRecap.count }</button>
@@ -74,7 +74,7 @@
 							<ul>
 								<!-- Réponses avec plusieurs réponses possibles (checkbox) : -->
 								<c:if test="${ question.isPlusieursReponses()==true }">
-									<p>Plusieurs réponses possibles</p>
+									<p class="italique">Plusieurs réponses possibles</p>
 									<c:forEach items="${ question.getReponses() }" var="reponse"
 										varStatus="statusRep">
 
@@ -110,13 +110,13 @@
 					<!-- 3 boutons : Question précédente / Marquer / Question suivante -->
 
 					<!-- Question précédente : -->
-					<button type="button" class="btn btn-default"
+					<button type="button" class="btn btn-standard"
 						<c:if test = "${ statusQues.count == 1 }">disabled</c:if>
 						id="questionPrecedente" onclick="ChangementPage('precedente')">Question
 						précédente</button>
 
 					<!-- Marquer : -->
-					<button type="button" class="btn btn-default btn-standard"
+					<button type="button" class="btn btn-standard"
 						id="marquageQuestion${ statusQues.count }"
 						onclick="MarqueQuestion()">
 						<c:choose>
@@ -130,7 +130,7 @@
 					</button>
 
 					<!-- Question suivante : -->
-					<button type="button" class="btn btn-default btn-standard"
+					<button type="button" class="btn btn-standard"
 						<c:if test = "${ statusQues.count == sessionScope.questions.size() }">disabled</c:if>
 						id="questionSuivante" onclick="ChangementPage('suivante')">Question
 						suivante</button>
@@ -139,11 +139,11 @@
 
 			<!-- 2 boutons : Page de synthèse / Valider le test -->
 			<!-- Page de synthèse -->
-			<input class="btn btn-default" id="pageSynthese" type="submit"
-				name="pageSynthese" value="Page de synthese" />
+			<button class="btn btn-standard" id="pageSynthese" type="submit"
+				name="pageSynthese" value="Page de synthese" >Page de synthese</button>
 			<!-- Valider le test -->
-			<input class="btn btn-default" id="validerTest" type="submit"
-				name="validerTest" value="Valider le test" />
+			<button class="btn btn-standard" id="validerTest" type="submit"
+				name="validerTest" value="Valider le test" >Valider le test</button>
 		</form>
 	</div>
 

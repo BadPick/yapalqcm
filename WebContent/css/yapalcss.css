@@ -1,8 +1,23 @@
 @CHARSET "UTF-8";
-
+/*
+#8ed1d4 bleu clair
+#3990a3 bleu foncé
+#535c63 gris foncé
+#f0e8d1 beige
+#000000 noir
+*/
 body{
 	width:800px;
 	margin:auto;
+	color:#535c63;
+}
+
+h1{
+	margin-bottom: 20px;
+}
+
+.containeur{
+		
 }
 
 .yapalBoutton{
@@ -11,21 +26,26 @@ body{
 
 .table-col-80{
 	width: 60%;
+	opacity:0.5;
 }
 
 .header{
-	height: 50px;
-	margin-bottom: 20px;
-	display:flex;
-	flex-direction:row;
-	justify-content:space-between;
-}
-
-.header{
+	height: 80px;
+	margin-bottom: 40px;
 	color: #fff;
     font-size: 16px;
+   
 }
-
+.navbar{
+	background-color: #3990a3;
+	height: 80px;
+	margin-bottom: 40px;
+	 padding-left: 50px;
+    padding-right: 50px;
+}
+.navbar-inverse {
+	border-color: #3990a3;
+}
 .header input {
     color: black;
     font-size: 16px;
@@ -36,8 +56,36 @@ body{
 }
 
 .btn-standard{
-	max-width: 150px;
-	min-width: 150px;
+	max-width: 170px;
+	min-width: 170px;
+	border: 2px solid #3990a3;
+	color: #3990a3;
+	background-color: #fff;
+	font-weight:bold;
+}
+
+.btn-standard:HOVER{
+	max-width: 170px;
+	min-width: 170px;
+	border: 2px solid #fff;
+	color: #fff;
+	font-weight:bold;
+	background-color: #3990a3;
+}
+.btn-standard2{
+	width:45px;
+	border: 2px solid #3990a3;
+	color: #3990a3;
+	background-color: #fff;
+	font-weight:bold;
+}
+
+.btn-standard2:HOVER{
+	width:45px;
+	border: 2px solid #fff;
+	color: #fff;
+	font-weight:bold;
+	background-color: #3990a3;
 }
 
 .subtilInput{
@@ -53,10 +101,26 @@ body{
     background-image: none;
     border: 1px solid #fff;
     border-radius: 4px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #3990a3;
 }
 
 .colSpan3{
 	width: 450px;
+}
+
+tr{
+	color:#535c63;
+}
+
+.test {
+	background-color: #f0f0f5;
+}
+
+.resultat{
+	
+}
+
+#chrono{
+	font-size: 40px;
 }
 

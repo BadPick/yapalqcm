@@ -24,7 +24,7 @@
 		<h1>Bienvenue ${sessionScope.user.prenom }
 			${sessionScope.user.nom }</h1>
 		<div>
-			<table class="table table-hover">
+			<table class="table">
 				<tr>
 					<th colspan="3" class="colSpan3">Vos tests :</th>
 					<td></td>
@@ -35,12 +35,12 @@
 					<tr class="test">
 						<td class="" colspan="2">${test.nom}(${test.duree})</td>
 						<td>${test.nbQuestions } questions</td>
-						<td class="btn-standard"><button type="button" name="details" value="${test.id}"
+						<td><button type="button" name="details" value="${test.id}"
 								class="form-control btn-standard">Détails</button></td>
 						
 						<c:forEach var="result" items="${resultList}">
 								<c:if test="${result.test.id == test.id}">
-									<td class="btn-standard">
+									<td>
 									<form
 										action="<%=request.getContextPath()%>/Candidat/ConsulterResultat">
 										<input type="hidden" name="idTest" value="${result.test.id}">
@@ -52,7 +52,7 @@
 							</c:forEach>
 						
 						<c:if test="${resultFound==false}">
-							<td class="btn-standard">
+							<td>
 								<form
 									action="<%=request.getContextPath()%>/Candidat/PasserUnTest">
 									<input type="hidden" name="idTest" value="${ test.id }">
