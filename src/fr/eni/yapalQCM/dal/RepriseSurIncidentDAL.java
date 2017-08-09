@@ -7,6 +7,7 @@ package fr.eni.yapalQCM.dal;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
@@ -103,7 +104,44 @@ public class RepriseSurIncidentDAL {
 		logger.exiting("RepriseSurIncidentDAL", "deleteTest");
 		return resultat;
 	}
+
+	public boolean updateTest(Utilisateur u, Test t, long chrono) throws SQLException {
+		logger.entering("RepriseSurIncidentDAL", "updateTest");
+		
+		boolean resultat = false;
+		try(Connection cnx = DBConnection.getConnection()) {
+			CallableStatement cmd = cnx.prepareCall(RepriseSurIncidentSQL.UPDATETEST);
+			cmd.setLong(1, chrono);	
+			cmd.setInt(2, u.getId());
+			cmd.setInt(3, t.getId());
+			resultat = (cmd.executeUpdate()>0);
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}
+		
+		logger.exiting("RepriseSurIncidentDAL", "updateTest");
+		return resultat;
+	}
 	
-	// TODO UPDATETEST
-	// TODO GETONETEST
+	public int getOneTestCount(Utilisateur u, Test t) throws SQLException {
+		logger.entering("RepriseSurIncidentDAL", "getOneTestCount");
+		
+		int resultat = 0;
+		try(Connection cnx = DBConnection.getConnection()) {
+			CallableStatement cmd = cnx.prepareCall(RepriseSurIncidentSQL.GETONETESTCOUNT);
+			cmd.setInt(1, u.getId());
+			cmd.setInt(2, t.getId());
+			ResultSet rs = cmd.executeQuery();		
+			if (rs.next()) {
+				resultat = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}
+		
+		logger.exiting("RepriseSurIncidentDAL", "getOneTestCount");
+		return resultat;
+	}
 }

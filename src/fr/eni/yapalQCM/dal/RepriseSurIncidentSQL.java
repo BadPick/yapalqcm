@@ -15,6 +15,6 @@ public abstract class RepriseSurIncidentSQL {
 	public static String DELETEREPONSE="DELETE FROM REPONSES_ENCOURS WHERE idUser=? AND idTest=? AND idQuestion=? AND idReponse=?;";
 	public static String ADDTEST="INSERT INTO TESTS_EN_COURS (idUser,idTest,chrono) VALUES (?,?,?);";
 	public static String DELETETEST="DELETE FROM TESTS_EN_COURS WHERE idUser=? AND idTest=?;";
-	// TODO UPDATETEST
-	// TODO GETONETEST
+	public static String UPDATETEST="UPDATE TESTS_EN_COURS SET chrono=? WHERE idUser=? AND idTest=?;";
+	public static String GETONETESTCOUNT="SELECT Count(*) FROM TESTS_EN_COURS WHERE idUser=? AND idTest=?;";
 }

@@ -70,8 +70,11 @@ public class EnregistrementResultatsEnCours extends HttpServlet {
 		// Insertion du Test En Cours
 		RepriseSurIncidentDAL rsiDAL = new RepriseSurIncidentDAL();
 		try {
-			rsiDAL.deleteTest(utilisateur, test);
-			rsiDAL.addTest(utilisateur, test, qw.getTempsEcoule());
+			if(rsiDAL.getOneTestCount(utilisateur, test)>0){
+				rsiDAL.updateTest(utilisateur, test, qw.getTempsEcoule());
+			}else{
+				rsiDAL.addTest(utilisateur, test, qw.getTempsEcoule());				
+			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
