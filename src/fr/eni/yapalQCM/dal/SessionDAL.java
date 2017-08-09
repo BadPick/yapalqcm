@@ -139,8 +139,6 @@ public class SessionDAL implements IDAL<Session> {
 		return resultat;
 	}
 	
-
-
 	/* (non-Javadoc)
 	 * {@inheritDoc}
 	 * @see fr.eni.yapalQCM.dal.IDAL#update(java.lang.Object)
@@ -150,9 +148,24 @@ public class SessionDAL implements IDAL<Session> {
 		logger.entering("SessionDAL", "update");
 		
 		boolean resultat = false;
-		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall(SessionSQL.UPDATE);
-			cmd.setDate(1, (Date) s.getDate());
+		try(Connection cnx = DBConnection.getConnection()) {			
+			for(int idTest : listeTests(s.getId())){
+				PreparedStatement cmdDelTestSessions = cnx.prepareStatement(SessionSQL.DELETE_TEST_SESSIONS);
+				cmdDelTestSessions.setInt(1, idTest);
+				cmdDelTestSessions.setInt(2, s.getId());
+				cmdDelTestSessions.executeUpdate();
+			 }
+			for (Test test : s.getTests()) {
+				PreparedStatement cmdAddTestSessions = cnx.prepareStatement(SessionSQL.ADDTESTSESSION);
+				cmdAddTestSessions.setInt(1, s.getId());
+				cmdAddTestSessions.setInt(2, test.getId());
+				cmdAddTestSessions.setTime(3, test.getHeure());
+				cmdAddTestSessions.setBoolean(4, test.isBegin());
+				cmdAddTestSessions.setLong(5, test.getTempsEcoule());
+				cmdAddTestSessions.executeUpdate();
+			}
+			PreparedStatement cmd = cnx.prepareStatement(SessionSQL.UPDATE);
+			cmd.setDate(1, new Date(s.getDate().getTime()));
 			cmd.setInt(2, s.getNbPlaces());
 			cmd.setInt(3, s.getId());
 			resultat = (cmd.executeUpdate()>0);

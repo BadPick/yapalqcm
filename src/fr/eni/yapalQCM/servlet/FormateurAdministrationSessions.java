@@ -58,6 +58,7 @@ public class FormateurAdministrationSessions extends HttpServlet {
 	}
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String typeAction = request.getParameter("typeAction");
+		int idSession = 0;
 		message = null;
 		if(typeAction!=null){
 			switch (typeAction) {
@@ -65,7 +66,7 @@ public class FormateurAdministrationSessions extends HttpServlet {
 				try {
 					Session session = new Session();
 					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("date"));
-					Date heure = new SimpleDateFormat("HH:mm").parse(request.getParameter("heure"));
+					Date heure = new SimpleDateFormat("HH:mm").parse("00:00");
 					ArrayList<Test> tests = new ArrayList<Test>();
 					int nbPlaces = Integer.parseInt(request.getParameter("nbPlaces"));
 					session.setDate(date);
@@ -89,11 +90,37 @@ public class FormateurAdministrationSessions extends HttpServlet {
 				}				
 				break;
 			case "modifier":
-				message=ErrorManager.getMessage("session modifiée", MessageType.information);
-				break;
-			case "supprimer":
-				int idSession = Integer.parseInt(request.getParameter("idSession"));
 				try {
+					Session session = new Session();
+					idSession = Integer.parseInt(request.getParameter("idSession"));
+					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("date"));
+					Date heure = new SimpleDateFormat("HH:mm").parse("00:00");					
+					ArrayList<Test> tests = new ArrayList<Test>();
+					int nbPlaces = Integer.parseInt(request.getParameter("nbPlaces"));
+					session.setId(idSession);
+					session.setDate(date);
+					session.setNbPlaces(nbPlaces);
+					for (String id : request.getParameterValues("idTest")) {
+						int idTest = Integer.parseInt(id);
+						Test test = TestsManager.getTest(idTest);
+						tests.add(test);
+					}				
+					session.setTests(tests);
+					SessionsManager.modifierSession(session);
+					message=ErrorManager.getMessage("session modifiée", MessageType.information);
+				} catch (ParseException e) {
+					message=ErrorManager.getMessage("mauvais format d'heure et/ou de date", MessageType.error);
+					logger.severe("Erreur de récupération de la date et/ou de l'heure "+e.getMessage());
+					e.printStackTrace();
+				} catch (SQLException e) {
+					message=ErrorManager.getMessage("Erreur d'accès à la base de données Session déjà réalisée modification impossible", MessageType.error);
+					logger.severe("Erreur d'accès à la base de données "+e.getMessage());
+					e.printStackTrace();
+				}				
+				break;
+			case "supprimer":				
+				try {
+					idSession = Integer.parseInt(request.getParameter("idSession"));
 					SessionsManager.suprimerSession(idSession);
 					message=ErrorManager.getMessage("session supprimée", MessageType.information);
 				} catch (SQLException e) {
@@ -121,9 +148,7 @@ public class FormateurAdministrationSessions extends HttpServlet {
 		
 		
 		if (message != null) {
-			request.removeAttribute("message");
 			request.setAttribute("message", message);
-			message=null;
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/jsp/formateur/administrationSessions.jsp");

@@ -40,4 +40,9 @@ public class SessionsManager {
 		};
 		return sessionDal.deleteSession(idSession);		
 	}
+
+	public static boolean modifierSession(Session session) throws SQLException {
+		return sessionDal.update(session);
+		
+	}
 }
