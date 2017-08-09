@@ -80,15 +80,13 @@ $("input[class^='input-']").on("change paste keyup", function(){
 function confirmationSupprimer(){
 	return alert("Voulez-vous valider la supression?");
 	//notyDialogConfirm("Voulez-vous valider la supression?",valideSuppr,null);
-}
-
-function valideSuppr(){
-	
+	//alert($('#buttun1').attr('data-status').val());
 }
 
 function hideShowLine(){
 	if($('#theme').is(":visible")) {
 		$('#theme').hide()
+		$('#themeNom').prop('value','');	
 	}else{
 		$('#theme').show();
 	}

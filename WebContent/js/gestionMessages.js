@@ -50,21 +50,15 @@ function notyDialogConfirm(message,confirmCB,args) {
 		id : 'confirmDialog',
 		closeWith : [],
 		maxVisible : 1,
-		buttons : [ {
-			addClass : 'button success tiny radius no-margin',
-			text : 'Continue',
-			onClick : function($noty) {
-				$noty.close();
-				//window[confirmCB].call(false, args); // heres where the magic
-														// happens.
-			}
-		}, {
-			addClass : 'button alert tiny radius no-margin',
-			text : 'Cancel',
-			onClick : function($noty) {
-				$noty.close();
-				notyMessage('la suppression a été annulée', 'information');
-			}
-		} ]
+		buttons: [
+		          noty.button('Continuer', 'btn btn-success', function () {
+		              console.log('button 1 clicked');
+		          }, {id: 'button1', 'data-status': 'ok'}),
+
+		          noty.button('Annuler', 'btn btn-error', function () {
+		              console.log('button 2 clicked');
+		              n.close();
+		          })
+		        ]
 	})
 }

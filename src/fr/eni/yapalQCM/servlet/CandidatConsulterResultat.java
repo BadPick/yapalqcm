@@ -15,8 +15,10 @@ import javax.servlet.http.HttpSession;
 import fr.eni.yapalQCM.bll.CandidatManager;
 import fr.eni.yapalQCM.bll.ErrorManager;
 import fr.eni.yapalQCM.bo.Resultat;
+import fr.eni.yapalQCM.bo.Session;
 import fr.eni.yapalQCM.bo.Test;
 import fr.eni.yapalQCM.bo.Utilisateur;
+import fr.eni.yapalQCM.dal.ResultatDAL;
 import fr.eni.yapalQCM.utils.Message;
 import fr.eni.yapalQCM.utils.MessageType;
 import fr.eni.yapalQCM.utils.YapalLogger;
@@ -65,33 +67,44 @@ public class CandidatConsulterResultat extends HttpServlet {
 		user = (Utilisateur) session.getAttribute("user");
 		RequestDispatcher rd=null;
 		Test test=null;
+		message = null;
 		Resultat resultat = null;
+		
 		try {
 			test = CandidatManager.getTest(Integer.parseInt(request.getParameter("idTest")));
 			if (test!=null) {
 				resultat = CandidatManager.getResultat(user, test);
 				rd = request.getRequestDispatcher("/jsp/candidat/resultatTest.jsp");				
 				request.setAttribute("resultat", resultat);
+				float score = (int)((resultat.getSeuilObtenu()*test.getNbQuestions())/100);
+				String acquisition = "Non acquis";
+				if (resultat.getSeuilObtenu()>=test.getSeuilAcquis()) {
+					acquisition = "Acquis";
+				}else if (resultat.getSeuilObtenu()>=test.getSeuilEnCoursDacquisition()) {
+					acquisition = "En cours d'acuisition";
+				}
+				
+				// Renvoi des donn√©es du r√©sultat pour affichage de la page r√©sultat
+				request.setAttribute("score", score);
+				request.setAttribute("nbreQuestions", test.getNbQuestions());
+				request.setAttribute("acquisition", acquisition);
+				request.setAttribute("tempsEcoule", resultat.getTempsEcoule());
+				request.setAttribute("testId", request.getParameter("idTestSynthese"));
 			}
 			else{
 				message = ErrorManager.getMessage("Test non reconnu",MessageType.error);
 				rd = request.getRequestDispatcher("/error.jsp");
 			}
-		} catch (NumberFormatException e) {
-			logger.severe("ParamËtre idTest est au mauvais format pour la fonction Integer.parseInt(): "+e.getMessage());
-			message = ErrorManager.getMessage(e);
-			e.printStackTrace();
 		} catch (SQLException e) {
 			logger.severe("erreur requÍte SQL: "+e.getMessage());
 			message = ErrorManager.getMessage(e);
 			e.printStackTrace();
+			this.getServletContext().getRequestDispatcher("/Candida/tAccueil").forward(request, response);
 		}
 		
 		if (message != null) {
-			request.removeAttribute("message");
 			request.setAttribute("message", message);
-			message=null;
 		}
-		rd.forward(request, response);
+		this.getServletContext().getRequestDispatcher("/jsp/candidat/resultatTest.jsp").forward(request, response);
 	}
 }
