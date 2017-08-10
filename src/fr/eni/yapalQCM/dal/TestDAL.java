@@ -144,6 +144,29 @@ public class TestDAL implements IDAL<Test> {
 		logger.exiting("TestDAL", "add");
 		return resultat;
 	}
+	/**
+	 * Méthode utilisée pour l'ajout des sections associés à un test.
+	 * @param t
+	 * @throws SQLException 
+	 */
+	public boolean addSections(Test t) throws SQLException{
+		logger.entering("TestDAL", "ajouter");
+		boolean resultat = false;
+		try (Connection cnx = DBConnection.getConnection()){
+			for (Section section : t.getSections()) {
+				PreparedStatement cmd = cnx.prepareStatement(TestSQL.ADDSECTIONS);
+				cmd.setInt(1, t.getId());
+				cmd.setInt(2,section.getTheme().getId());
+				cmd.setInt(3, section.getNbQuestions());
+				resultat=(cmd.executeUpdate()>0);
+			}			
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}		
+		logger.exiting("TestDal", "ajouter");
+		return resultat;
+	}
 
 	/* (non-Javadoc)
 	 * {@inheritDoc}
