@@ -10,6 +10,8 @@ body{
 	width:800px;
 	margin:auto;
 	color:#535c63;
+	background-image: url("img/fond_ecran_yapal.jpg");
+	background-position: center; 
 }
 
 h1{
@@ -100,6 +102,24 @@ h1{
 	color: #fff;
 	font-weight:bold;
 	background-color: #3990a3;
+}
+
+.btn-standard-reverse{
+	max-width: 170px;
+	min-width: 170px;
+	border: 2px solid #fff;
+	color: #fff;
+	background-color: #3990a3;
+	font-weight:bold;
+}
+
+.btn-standard-reverse:HOVER{
+	max-width: 170px;
+	min-width: 170px;
+	border: 2px solid #3990a3;
+	color: #3990a3;
+	font-weight:bold;
+	background-color: #fff;
 }
 
 .subtilInput{

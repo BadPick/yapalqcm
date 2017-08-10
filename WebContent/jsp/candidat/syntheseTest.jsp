@@ -21,6 +21,7 @@
 	<h3>Candidat : <c:out value="${ sessionScope.user.getPrenom() }"/> <c:out value="${ sessionScope.user.getNom() }"/></h3>
 	
 	<div>
+		<p>Questions marquées &#10008;<br>Questions répondues : &#10004;</p>
 		<ul>
 			<c:forEach items="${ sessionScope.questions }" var="question" varStatus="statusQues">
 				<form method="post" action="<%=request.getContextPath()%>/Candidat/PasserUnTest" onsubmit="envoyerChronoParam(${ tempsEcoule }, ${ statusQues.count })">
