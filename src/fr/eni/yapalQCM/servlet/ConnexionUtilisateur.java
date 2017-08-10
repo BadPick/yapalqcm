@@ -106,7 +106,6 @@ public class ConnexionUtilisateur extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 			break;
 		default:
-			System.out.println("!!!Non Trait�!!!");
 			dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 			break;
 		}
@@ -117,7 +116,6 @@ public class ConnexionUtilisateur extends HttpServlet {
 			message=null;
 		}
 		logger.exiting("ConnexionUtilisateur", "processRequest");
-		System.out.println("Sortie dans la Servlet ConnexionUtilisateur");
 		dispatcher.forward(request, response);
 	}
 }
