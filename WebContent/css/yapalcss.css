@@ -107,7 +107,7 @@ h1{
 .btn-standard-reverse{
 	max-width: 170px;
 	min-width: 170px;
-	border: 2px solid #fff;
+	border: 2px solid #3990a3;
 	color: #fff;
 	background-color: #3990a3;
 	font-weight:bold;
@@ -155,14 +155,14 @@ tr{
 }
 
 #chrono{
-	font-size: 40px;
+	font-size: 65px;
 }
 
 .navigation{
 	display:flex;
 	flex-direction:row;
 	justify-content:center;
-	margin-bottom: 60px;
+	margin-bottom: 80px;
 	margin-top: 20px;
 }
 
@@ -183,4 +183,10 @@ tr{
 
 .italic{
 	font-style:italic;
+}
+
+.divChrono{
+	display:flex;
+	flex-direction:row;
+	justify-content:flex-end;
 }

@@ -21,9 +21,9 @@
 	<div id="messageType" class="hidden">${message.type}</div>
 
 	<div class="containeur">
+	<div class="divChrono"><div id="chrono" style="visibility: hidden">${ sessionScope.test.getDuree()-tempsEcoule }</div></div>
 	<div class="row">
-		<div class="col-sm-10"><h1>${ sessionScope.test.getNom() }</h1></div>
-		<div class="col-sm-2"><div id="chrono" style="visibility: hidden">${ sessionScope.test.getDuree()-tempsEcoule }</div></div>
+		<div><h2>${ sessionScope.test.getNom() }</h2></div>
 	</div>
 
 
@@ -90,7 +90,7 @@
 
 								<!-- Réponses avec qu'une seule réponse possible (bouton radio) : -->
 								<c:if test="${ question.isPlusieursReponses()==false }">
-									<p>Une seule réponse possible</p>
+									<p class="italic">Une seule réponse possible</p>
 									<c:forEach items="${ question.getReponses() }" var="reponse"
 										varStatus="statusRep">
 
@@ -108,7 +108,10 @@
 					</div>
 
 					<!-- 3 boutons : Question précédente / Marquer / Question suivante -->
-
+					
+					<!-- barre de navigation -->
+					<div class="row navigation">
+						
 					<!-- Question précédente : -->
 					<button type="button" class="btn btn-standard"
 						<c:if test = "${ statusQues.count == 1 }">disabled</c:if>
@@ -116,7 +119,7 @@
 						précédente</button>
 
 					<!-- Marquer : -->
-					<button type="button" class="btn btn-standard"
+					<button type="button" class="btn btn-standard btnMarque"
 						id="marquageQuestion${ statusQues.count }"
 						onclick="MarqueQuestion()">
 						<c:choose>
@@ -134,16 +137,20 @@
 						<c:if test = "${ statusQues.count == sessionScope.questions.size() }">disabled</c:if>
 						id="questionSuivante" onclick="ChangementPage('suivante')">Question
 						suivante</button>
+						
+					</div>
 				</div>
 			</c:forEach>
 
 			<!-- 2 boutons : Page de synthèse / Valider le test -->
+			<div class="row validation">
 			<!-- Page de synthèse -->
-			<button class="btn btn-standard" id="pageSynthese" type="submit"
+			<button class="btn btn-standard-reverse" id="pageSynthese" type="submit"
 				name="pageSynthese" value="Page de synthese" >Page de synthese</button>
 			<!-- Valider le test -->
-			<button class="btn btn-standard" id="validerTest" type="submit"
+			<button class="btn btn-standard-reverse" id="validerTest" type="submit"
 				name="validerTest" value="Valider le test" >Valider le test</button>
+			</div>
 		</form>
 	</div>
 
@@ -272,7 +279,7 @@ var dataString = {
 		};
 		
 		var dataJson = JSON.stringify(dataString);
-		alert(dataJson);	
+		//alert(dataJson);	
 	 
 		$.ajax({
 		type: 'POST',
