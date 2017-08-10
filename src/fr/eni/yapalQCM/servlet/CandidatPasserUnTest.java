@@ -58,7 +58,7 @@ public class CandidatPasserUnTest extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		if(session.getAttribute("user")==null){
-			message = ErrorManager.getMessage("Votre session a expirÃ©.",MessageType.information);
+			message = ErrorManager.getMessage("Votre session a expirée.",MessageType.information);
 			request.setAttribute("message", message);
 			this.getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 			return;
