@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="ISO-8859-1"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
 
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>YapalQCM</title>
 <link rel="stylesheet" type="text/css" href="/yapalQCM/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/yapalQCM/css/yapalcss.css">
@@ -17,11 +17,11 @@
 	<div id="messageType" class="hidden">${message.type}</div>
 <div class="containeur">
 	<div class="resultat">
-	<h2>Résultat du test n°<c:out value="${ sessionScope.test.getId() }"/></h2>
+	<h2>RÃ©sultat du test nÂ°<c:out value="${ sessionScope.test.getId() }"/></h2>
 	<h3>Candidat : <c:out value="${ sessionScope.user.getPrenom() }"/> <c:out value="${ sessionScope.user.getNom() }"/></h3>
 	<p>Score final du test : ${ score }/${ nbreQuestions }</p>
-	<p>Temps écoulé : ${ tempsEcoule } secondes</p>
-	<p>Résultat : ${ acquisition }</p>
+	<p>Temps Ã©coulÃ© : ${ tempsEcoule } secondes</p>
+	<p>RÃ©sultat : ${ acquisition }</p>
 	</div>
 </div>
 <script type="text/javascript" src="/yapalQCM/js/jquery-3.2.1.min.js"></script>
