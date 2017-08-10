@@ -36,7 +36,12 @@
 				<td id="ligneTest-${test.id }">${test.nom }</td>
 				<td>Acquis:${test.seuilAcquis}</td>
 				<td>En cours d'acquisition:${test.seuilEnCoursDacquisition}</td>
-				<td><button type="button" class="btn btn-danger">Supprimer</button></td>
+				<td>
+					<form method="post" action="<%=request.getContextPath()%>/Formateur/Administration/Tests">
+						<input type="hidden" name="idTest" value="${test.id }"/>
+						<button type="submit" name="typeAction" value="supprimer" class="btn btn-danger">Supprimer</button>
+					</form>
+				</td>
 				<td><button type="button" class="btn btn-primary">Modifier</button></td>
 			</tr>		
 			<c:forEach var="section" items="${test.sections }">

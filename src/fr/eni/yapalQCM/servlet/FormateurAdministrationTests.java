@@ -126,7 +126,11 @@ public class FormateurAdministrationTests extends HttpServlet {
 				
 				break;
 			case "supprimer":
-				
+				int idTest=0;
+				if(request.getParameter("idTest")!=null){
+					idTest=Integer.parseInt(request.getParameter("idTest"));
+				}
+				//TestsManager.supprimerTest(idTest);
 				break;
 			default:
 				break;

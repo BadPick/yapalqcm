@@ -38,4 +38,12 @@ public class TestsManager {
 		testDal.add(test);
 		testDal.addSections(test);
 	}
+
+	public static void supprimerTest(int idTest) throws SQLException {
+		TestDAL testDal = new TestDAL();
+		Test test = new Test();
+		test.setId(idTest);
+		testDal.delete(test);
+		
+	}
 }
