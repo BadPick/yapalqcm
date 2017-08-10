@@ -78,14 +78,14 @@ public class FormateurAdministrationSessions extends HttpServlet {
 					}				
 					session.setTests(tests);
 					SessionsManager.ajouterSession(session);
-					message=ErrorManager.getMessage("session ajoutée", MessageType.information);
+					message=ErrorManager.getMessage("session ajoutÃ©e", MessageType.information);
 				} catch (ParseException e) {
 					message=ErrorManager.getMessage("mauvais format d'heure et/ou de date", MessageType.error);
-					logger.severe("Erreur de récupération de la date et/ou de l'heure "+e.getMessage());
+					logger.severe("Erreur de rÃ©cupÃ©ration de la date et/ou de l'heure "+e.getMessage());
 					e.printStackTrace();
 				} catch (SQLException e) {
-					message=ErrorManager.getMessage("Erreur d'accès à la base de données", MessageType.error);
-					logger.severe("Erreur d'accès à la base de données "+e.getMessage());
+					message=ErrorManager.getMessage("Erreur d'accÃ©s Ã  la base de donnÃ©es", MessageType.error);
+					logger.severe("Erreur d'accÃ©s Ã  la base de donnÃ©es "+e.getMessage());
 					e.printStackTrace();
 				}				
 				break;
@@ -107,14 +107,14 @@ public class FormateurAdministrationSessions extends HttpServlet {
 					}				
 					session.setTests(tests);
 					SessionsManager.modifierSession(session);
-					message=ErrorManager.getMessage("session modifiée", MessageType.information);
+					message=ErrorManager.getMessage("session modifiÃ©e", MessageType.information);
 				} catch (ParseException e) {
 					message=ErrorManager.getMessage("mauvais format d'heure et/ou de date", MessageType.error);
-					logger.severe("Erreur de récupération de la date et/ou de l'heure "+e.getMessage());
+					logger.severe("Erreur de rÃ©cupÃ©ration de la date et/ou de l'heure "+e.getMessage());
 					e.printStackTrace();
 				} catch (SQLException e) {
-					message=ErrorManager.getMessage("Erreur d'accès à la base de données Session déjà réalisée modification impossible", MessageType.error);
-					logger.severe("Erreur d'accès à la base de données "+e.getMessage());
+					message=ErrorManager.getMessage("Erreur d'accÃ©s Ã  la base de donnÃ©es Session dÃ©jÃ  rÃ©alisÃ©e modification impossible", MessageType.error);
+					logger.severe("Erreur d'accÃ©s Ã  la base de donnÃ©es "+e.getMessage());
 					e.printStackTrace();
 				}				
 				break;
@@ -122,10 +122,10 @@ public class FormateurAdministrationSessions extends HttpServlet {
 				try {
 					idSession = Integer.parseInt(request.getParameter("idSession"));
 					SessionsManager.suprimerSession(idSession);
-					message=ErrorManager.getMessage("session supprimée", MessageType.information);
+					message=ErrorManager.getMessage("session supprimÃ©e", MessageType.information);
 				} catch (SQLException e) {
-					message=ErrorManager.getMessage("Erreur d'accès à la base de données", MessageType.error);
-					logger.severe("Erreur d'accès à la base de données "+e.getMessage());
+					message=ErrorManager.getMessage("Erreur d'accÃ©s Ã  la base de donnÃ©es", MessageType.error);
+					logger.severe("Erreur d'accÃ©s Ã  la base de donnÃ©es "+e.getMessage());
 					e.printStackTrace();
 				}
 				
@@ -141,8 +141,8 @@ public class FormateurAdministrationSessions extends HttpServlet {
 			request.setAttribute("listeSessions", listeSessions);
 			request.setAttribute("listeTests", listeTests);
 		} catch (SQLException e) {
-			message = ErrorManager.getMessage("Erreur de récupération de la base de donnée: "+e.getMessage(),MessageType.error);
-			logger.severe("Erreur de récupération de la base de donnée: "+e.getMessage());
+			message = ErrorManager.getMessage("Erreur de rï¿½cupï¿½ration de la base de donnï¿½e: "+e.getMessage(),MessageType.error);
+			logger.severe("Erreur de rï¿½cupï¿½ration de la base de donnï¿½e: "+e.getMessage());
 			e.printStackTrace();
 		}
 		

@@ -76,15 +76,15 @@ public class ConnexionUtilisateur extends HttpServlet {
 						message = ErrorManager.getMessage("Mauvais login ou mot de passe.",MessageType.error);
 						dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 					}else if (user.getRole().getId()==1){
-						message = ErrorManager.getMessage("Connexion valid�e",MessageType.success);
+						message = ErrorManager.getMessage("Connexion validée",MessageType.success);
 						session.setAttribute("user", user);
 						dispatcher = getServletContext().getRequestDispatcher("/Candidat/Accueil");
 					}else if (user.getRole().getId()==2){
-						message = ErrorManager.getMessage("Connexion valid�e",MessageType.success);
+						message = ErrorManager.getMessage("Connexion validée",MessageType.success);
 						session.setAttribute("user", user);
 						dispatcher = getServletContext().getRequestDispatcher("/Formateur/Accueil");
 					}else if (user.getRole().getId()==3){
-						message = ErrorManager.getMessage("Connexion valid�e",MessageType.success);
+						message = ErrorManager.getMessage("Connexion validée",MessageType.success);
 						session.setAttribute("user", user);
 						dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 					}
@@ -106,7 +106,7 @@ public class ConnexionUtilisateur extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 			break;
 		default:
-			System.out.println("!!!Non Trait�!!!");
+			System.out.println("!!!Non Traité!!!");
 			dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 			break;
 		}
