@@ -63,7 +63,7 @@ public class CandidatPasserUnTest extends HttpServlet {
 			this.getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 			return;
 		}
-		else{
+		else{		
 			// Réinitialisation des réponses et marquages fait par un stagiaire :
 			if(session.getAttribute("questions")!=null && request.getParameter("idTest")==null){
 				for(Question question : (ArrayList<Question>)session.getAttribute("questions")){
@@ -80,6 +80,14 @@ public class CandidatPasserUnTest extends HttpServlet {
 				// Si test démarré :
 				// Données à envoyer vers page du Passage de Test :
 				if (request.getParameter("idTest")!=null) {
+					if(session.getAttribute("test")!=null){
+						if(Integer.parseInt(request.getParameter("idTest"))!=((Test) session.getAttribute("test")).getId()){
+							session.setAttribute("test", null);
+							session.setAttribute("questions", null);
+						}
+						
+					}
+					
 					//Récupération du test généré
 					if(session.getAttribute("questions")==null){
 						Test test = CandidatManager.getTest(Integer.parseInt(request.getParameter("idTest")));
@@ -111,6 +119,7 @@ public class CandidatPasserUnTest extends HttpServlet {
 					request.setAttribute("tempsEcoule", tempsEcoule);
 					request.setAttribute("questionEnCours", questionEnCours);					
 					this.getServletContext().getRequestDispatcher("/jsp/candidat/passageTest.jsp").forward(request, response);
+					return;
 				}
 				
 				// Analyse du test en cours pour création de la page de synthèse
@@ -151,6 +160,7 @@ public class CandidatPasserUnTest extends HttpServlet {
 					
 					request.setAttribute("tempsEcoule", request.getParameter("tempsEcoule"));
 					this.getServletContext().getRequestDispatcher("/jsp/candidat/syntheseTest.jsp").forward(request, response);
+					return;
 				}
 				
 				// Analyse du test terminé pour création de la page de résultat et du stockage en base de données
@@ -236,6 +246,7 @@ public class CandidatPasserUnTest extends HttpServlet {
 					request.setAttribute("acquisition", acquisition);
 					request.setAttribute("tempsEcoule", tempsEcoule);
 					this.getServletContext().getRequestDispatcher("/jsp/candidat/resultatTest.jsp").forward(request, response);
+					return;
 				}
 				
 				//besoin d'afficher un message

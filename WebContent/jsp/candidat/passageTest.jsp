@@ -51,7 +51,7 @@
 					<button type="button" class="btn btn-standard2"
 						id="btnRecap${ statusRecap.count }"
 						onclick="RetourQuestion(${ statusRecap.count })"
-						<c:if test="${ question.isMarquee()==true }">style="background:orange"</c:if>>${ statusRecap.count }</button>
+						<c:if test="${ question.isMarquee()==true }">style="background:#f0e8d1"</c:if>>${ statusRecap.count }</button>
 				</c:forEach>
 			</div>
 
@@ -164,7 +164,7 @@
 	<script type="text/javascript">
 	// Arrivée sur la question cliquée dans la page de synthèse
 	$( document ).ready(function Chargement(listeQuestions){
-		//RetourQuestion('${ questionEnCours }');
+		RetourQuestion('${ questionEnCours }');
 		/*A VERIFIER si on peut supprimer cette ligne*/
 	});
 
@@ -254,7 +254,6 @@
 		};
 		
 		var dataJson = JSON.stringify(dataString);
-		alert(dataJson);
 	 	if (dataJson != '') {
 	 		$.ajax({
 	 			type: 'POST',

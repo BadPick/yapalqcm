@@ -7,10 +7,16 @@ var tempsEcoule = document.getElementById("tempsEcoule");
 function DiminuerCompteur() {
 	chrono.style.visibility="visible";
     // Conversion en nombre du texte du compteur
+	if(compteurInvisible<60){
+		chrono.style.color="red";
+	}
     if (compteurInvisible > 1) {
     	chrono.textContent = secondsToTime(--compteurInvisible);
     } else {
     	chrono.textContent = secondsToTime(0);
+        // Soumet le test
+    	$('#validerTest').click();
+    	$('form').submit();
         // Annule l'exécution répétée
         clearInterval(intervalId);
     }
