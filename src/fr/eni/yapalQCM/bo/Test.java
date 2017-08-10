@@ -193,7 +193,7 @@ public class Test {
 	public int getNbQuestions(){
 		int nb = 0;
 		for (Section section : sections) {
-			nb += section.getNbQuestions();
+			nb += section.getTheme().getQuestions().size();
 		}
 		nbQuestions = nb;
 		return nbQuestions;
