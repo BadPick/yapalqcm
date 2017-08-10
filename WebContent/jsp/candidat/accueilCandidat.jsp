@@ -27,8 +27,8 @@
 			<table class="table table-standard">
 				<tr>
 					<th colspan="3" class="colSpan3">Vos tests :</th>
-					<td></td>
-					<td></td>
+					<th></th>
+					<th></th>
 				</tr>
 				<c:forEach var="test" items="${testList}">
 					<c:set var="resultFound" value="false" scope="page" />

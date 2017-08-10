@@ -67,9 +67,9 @@
 						Question n°
 						<c:out value="${ statusQues.count }" />
 					</h2>
-					<h2>
+					<h3>
 						<c:out value="${ question.getEnonce() }" />
-					</h2>
+					</h3>
 					<div class="input-group">
 						<div id="blockReponses-${ statusQues.count }">
 							<ul>
