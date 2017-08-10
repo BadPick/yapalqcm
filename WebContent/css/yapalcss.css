@@ -137,6 +137,7 @@ h1{
     border: 1px solid #fff;
     border-radius: 4px;
     border-bottom: 1px solid #3990a3;
+    font-size: 14px;
 }
 
 .colSpan3{
@@ -166,7 +167,7 @@ tr{
 	display:flex;
 	flex-direction:row;
 	justify-content:center;
-	margin-bottom: 80px;
+	margin-bottom: 30px;
 	margin-top: 20px;
 }
 
@@ -176,6 +177,7 @@ tr{
 }
 
 .validation{
+	margin-top50px;
 	display:flex;
 	flex-direction:row;
 	justify-content:flex-end;
@@ -237,4 +239,23 @@ tr{
 
 .symbole{
 	width: 50px;
+}
+
+.table-standard thead{
+	border-bottom: 3px solid #3990a3;
+}
+
+.table-standard th{
+	border-bottom: 3px solid #3990a3;
+	font-size: 18px;
+}
+.libelle{
+	width:200px;
+	font-size: 18px;
+	font-weight: bold;
+	margin-top: 20px;
+}
+
+.label-std{
+	margin-top: 10px;
 }

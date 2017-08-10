@@ -24,7 +24,7 @@
 		<h1>Bienvenue ${sessionScope.user.prenom }
 			${sessionScope.user.nom }</h1>
 		<div>
-			<table class="table">
+			<table class="table table-standard">
 				<tr>
 					<th colspan="3" class="colSpan3">Vos tests :</th>
 					<td></td>

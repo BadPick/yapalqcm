@@ -28,7 +28,7 @@
 <c:set var="index" value="1" scope="page"/>
 
 
-<table class="table table-striped">
+<table class="table table-striped table-standard">
 	<thead>
 		<tr>
 			<th>Libellé</th>

@@ -28,18 +28,25 @@
 <c:set var="listeTests" value="${requestScope['listeTests'] }"/>
 
 <!-- Bloc pour affichage de la liste des sessions -->
-	<div class="col-md-8" id="liste_session" style="display:block">
+	<div class="" id="liste_session" style="display:block">
 		<button id="nouvelleSession" type="button" class="btn btn-standard">Nouvelle Session</button>
-		<ul>
+		
 			<c:forEach var="session" items="${listeSessions }">
-				<li>${session.date } - ${session.nbPlaces } places disponibles.	
+				
+				<div class="row">
+				<div class="col-sm-8">
+				<div><p class="libelle">${session.date }</p><p class="italic">${session.nbPlaces } places disponibles.</p></div>
+				</div>	
+				<div class="col-sm-4">
 				<div style="display:none">
 					<form id="formSession-${session.id }" method="post" action="<%=request.getContextPath()%>/Formateur/Administration/Sessions">
 						<input type="hidden" name="idSession" value="${session.id }"/>
 					</form>
 				</div>	
+				</div>
 				<button form="formSession-${session.id }" type="submit" class="btn btn-error" name="typeAction" value="supprimer">Supprimer</button>
 				<button type="button" class="btn btn-primary" id="modifierSession-${session.id}">Modifier</button>
+				</div>	
 					<c:forEach var="test" items="${session.tests }">
 						<ul>
 							<li id="idTest-${test.id }">Test: ${test.nom } - Durée: ${test.duree }</li>	
@@ -52,10 +59,11 @@
 						<c:forEach var="test" items="${session.tests }">
 							<input type="hidden" id="idTest" value="${test.id }" class="checkBox"/> 	
 						</c:forEach>
-					</div>		
-				</li>				
+						
+					</div>	
+								
 			</c:forEach>
-		</ul>
+		
 	</div>
 
 	<!-- Bloc pour édition d'un session -->
@@ -65,10 +73,10 @@
 		<form id="formNvSession" method="post" action="<%=request.getContextPath()%>/Formateur/Administration/Sessions">
 			<div id="divForm" class="form-group col-md-8">
 				<input type="hidden" name="idSession" value="0"/>
-				<label for="date">Date de la Session: </label><input type="date" name="date" class="form-control" value=""/>
-				<label for="heure">Heure de passage du test</label><input type="time" name="heure" class="form-control" value=""/>
-				<label for="nbPlaces">Nombre de places: </label><input type="number" min="5" max="30" name="nbPlaces" class="form-control" value=""/>
-				<fieldset>
+				<label class="label-std" for="date">Date de la Session: </label><input type="date" name="date" class="form-control" value=""/>
+				<label class="label-std" for="heure">Heure de passage du test</label><input type="time" name="heure" class="form-control" value=""/>
+				<label class="label-std" for="nbPlaces">Nombre de places: </label><input type="number" min="5" max="30" name="nbPlaces" class="form-control" value=""/>
+				<fieldset class="label-std">
 				<legend>Sélection du test de la session:</legend>
 					<c:forEach items="${listeTests }" var="test">
 						<input type="checkbox" name="idTest" value="${test.id }"/>${test.nom }
