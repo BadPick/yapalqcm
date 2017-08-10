@@ -32,4 +32,10 @@ public class TestsManager {
 		
 		return test;
 	}
+
+	public static void ajouterTestEtSections(Test test) throws SQLException {
+		TestDAL testDal = new TestDAL();
+		testDal.add(test);
+		testDal.addSections(test);
+	}
 }

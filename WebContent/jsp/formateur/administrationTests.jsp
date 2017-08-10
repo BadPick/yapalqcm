@@ -24,29 +24,48 @@
 <%@include file="/jsp/formateur/menuFormateur.jsp"%>
 <h2>Administration des Tests</h2>
 <!-- Liste de tests -->
-<ul>
-	<c:forEach var="test" items="${listeTests }">
-		<li>${test.nom } -- Nombre de questions: ${test.nbQuestions } -- Acquis:${test.seuilAcquis} -- En cours d'acquisition:${test.seuilEnCoursDacquisition}
-			<ul>
-				<c:forEach var="section" items="${test.sections }">
-					<li>${section.theme.nom} -- nbQuestions :${section.nbQuestions}</li>
-				</c:forEach>
-			</ul>
-		</li>
-	</c:forEach>
-</ul>
+<div class="col-md-8" id="listeTest" style="display:block">
+	<table class="table table-striped table-hover">
+		<tr>
+			<th colspan="3">Tests : </th>
+			<th><button type="button" id="afficherForm" class="btn btn-default" onclick="hideShowLine()">Ajouter un thème</button></th>
+			<th></th>
+		</tr>
+		<c:forEach var="test" items="${listeTests }">
+			<tr>
+				<td id="ligneTest-${test.id }">${test.nom }</td>
+				<td>Acquis:${test.seuilAcquis}</td>
+				<td>En cours d'acquisition:${test.seuilEnCoursDacquisition}</td>
+				<td><button type="button" class="btn btn-danger">Supprimer</button></td>
+				<td><button type="button" class="btn btn-primary">Modifier</button></td>
+			</tr>		
+			<c:forEach var="section" items="${test.sections }">
+				<tr name="detail-${test.id }" style="display:none">
+					<td></td>
+					<td>${section.theme.nom}</td>
+					<td>nbQuestions :${section.nbQuestions}</td>
+					<td></td>
+					<td></td>
+				</tr>
+			</c:forEach>	
+		</c:forEach>
+	</table>
+</div>
+
+
 
 <!-- Formulaire -->
-<div class="col-md-8" id="formTest" style="display:block">
-	<form method="post" action="<%=request.getContextPath()%>/Formateur/Administration/Tests">
-		<label for="nom">Nom du test</label><input type="text" id="nom" name="nom" class="form-control"/>
+<div class="col-md-8" id="formTest" style="display:none">
+	<button id="masquerForm" type="button" class="btn btn-success" onclick="hideShowLine()">Retour</button>
+	<form method="post" action="<%=request.getContextPath()%>/Formateur/Administration/Tests" onsubmit="return validationFormualire();">
+		<label for="nom">Nom du test</label><input type="text" id="nom" name="nom" class="form-control" required/>
 		<button type="button" id="ajouterTheme" class="btn">Ajouter un thème</button>
 		<ul id="listeThemes" style="list-style-type:square">
 			
 		</ul>
-		<label for="seuilAcquis">Seuil Acquis</label><input type="number" id="seuilAcquis" name="seuilAcquis" class="form-control"/>
-		<label for="seuilEnCourDacquisition">Seuil Acquis</label><input type="number" id="seuilEnCourDacquisition" name="seuilEnCourDacquisition" class="form-control"/>
-		<label for="duree">Durée (minutes)</label><input type="number" id="duree" name="duree" class="form-control"/>
+		<label for="seuilAcquis">Seuil Acquis</label><input type="number" id="seuilAcquis" name="seuilAcquis" class="form-control" requeried/>
+		<label for="seuilEnCourDacquisition">Seuil en cours d'acquisition</label><input type="number" id="seuilEnCourDacquisition" name="seuilEnCourDacquisition" class="form-control" requeried/>
+		<label for="duree">Durée (minutes)</label><input type="number" id="duree" name="duree" class="form-control" requeried/>
 		<button type="submit" name="typeAction" value="ajouter" class="form-control">Ajouter</button>
 	</form>
 </div>
@@ -73,8 +92,69 @@ $('#ajouterTheme').click(function(){
 	$('#listeThemes').append(theme);
 	numSection++;						
 })
-
-
+$('#afficherForm').click(function(){
+	if($('#listeTest').is(":visible")){
+		$('#listeTest').hide("slow");
+		$('#formTest').show("slow");		
+	}else{
+		$('#listeTest').show("slow");
+		$('#formTest').hide("slow");
+	}
+})
+$('#masquerForm').click(function(){
+	if($('#formTest').is(":visible")){
+		$('#formTest').hide("slow");		
+		$('#listeTest').show("slow");
+	}
+})
+$("td[id^='ligneTest-']").click(function(){
+	var detail = $(this).prop('id').replace('ligneTest-','detail-');
+	if($("tr[name="+detail+"]").is(":hidden")){		
+		$("tr[name="+detail+"]").each(function(){
+			$(this).show("slow");
+		})
+	}
+	else{
+		$("tr[name="+detail+"]").each(function(){
+			$(this).hide("slow");
+		})
+	}
+})
+function validationFormualire(){
+	var message="";
+	var nom=$('#nom');
+	var seuilAcquis=$('#seuilAcquis');
+	var seuilEnCourDacquisition=$('#seuilEnCourDacquisition');
+	var duree=$('#duree');
+	var listeNbQuestion=$("#nbQuestions");
+	var flag=true;
+	if(nom.prop('value')==''){
+		flag=false;
+		message="Merci de renseigner un nom.";
+	}
+	if(seuilAcquis.prop('value')==''){
+		flag=false;
+		message="Merci de renseigner un seuil d'acquisition.";
+	}
+	if(seuilEnCourDacquisition.prop('value')==''){
+		flag=false;
+		message="Merci de renseigner un seuil d'en cours d'acquisition.";
+	}
+	if(duree.prop('value')==''){
+		flag=false;
+		message="Merci de renseigner une durée pour le test.";
+	}
+	listeNbQuestion.each(function(){
+		if($(this).prop('value')==''){
+			flag=false;
+			message="Merci de renseigner un nombre pour chaque thème.";
+		}
+	})
+	if(message!=""){
+		notyMessage(message, 'error');
+	}
+	return flag;
+}
 </script>
 
 </body>

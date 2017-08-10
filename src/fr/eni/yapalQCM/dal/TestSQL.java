@@ -28,4 +28,5 @@ public abstract class TestSQL {
 													+"inner join  QUESTIONS q on q.idQuestion=qt.idQuestion "
 													+"inner join  REPONSES r on q.idQuestion=r.idQuestion "
 													+"where t.idTest=?";
+	public static String ADDSECTIONS="INSERT INTO SECTIONS (idTest,idTheme,nombreQuestions) VALUES (?,?,?)";
 }
