@@ -76,7 +76,7 @@ public class CandidatConsulterResultat extends HttpServlet {
 				resultat = CandidatManager.getResultat(user, test);
 				rd = request.getRequestDispatcher("/jsp/candidat/resultatTest.jsp");				
 				request.setAttribute("resultat", resultat);
-				float score = (int)((resultat.getSeuilObtenu()*test.getNbQuestions())/100);
+				int score = (int)((resultat.getSeuilObtenu()*test.getNbQuestions())/100);
 				String acquisition = "Non acquis";
 				if (resultat.getSeuilObtenu()>=test.getSeuilAcquis()) {
 					acquisition = "Acquis";
