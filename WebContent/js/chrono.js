@@ -15,8 +15,7 @@ function DiminuerCompteur() {
     } else {
     	chrono.textContent = secondsToTime(0);
         // Soumet le test
-    	$('#validerTest').click();
-    	$('form').submit();
+    	//$('#formTest').submit();
         // Annule l'exécution répétée
         clearInterval(intervalId);
     }

@@ -29,7 +29,7 @@
 
 
 		<!-- Formulaire d'envoi des données du test -->
-		<form method="post"
+		<form id="formTest" method="get"
 			action="<%=request.getContextPath()%>/Candidat/PasserUnTest"
 			onsubmit="envoyerChrono(${ tempsEcoule })">
 			<input type="hidden" name="idTestSynthese"
@@ -82,8 +82,7 @@
 										<input type="checkbox"
 											name="reponseSelected-${ reponse.getId() }"
 											id="${ statusRep.count }"
-											<c:if test="${ reponse.isChecked()==true }"> checked</c:if> >
-										${ reponse.getEnonce() }</label>
+											<c:if test="${ reponse.isChecked()==true }"> checked</c:if> >${ reponse.getEnonce() }</label>
 										<br>
 
 									</c:forEach>
