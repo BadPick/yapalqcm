@@ -71,7 +71,7 @@ public class CandidatConsulterResultat extends HttpServlet {
 		Resultat resultat = null;
 		
 		try {
-			test = CandidatManager.getTest(Integer.parseInt(request.getParameter("idTest")));
+			test = CandidatManager.getTest(Integer.parseInt(request.getParameter("idTest")),(Utilisateur)session.getAttribute("user"));
 			if (test!=null) {
 				resultat = CandidatManager.getResultat(user, test);
 				rd = request.getRequestDispatcher("/jsp/candidat/resultatTest.jsp");				

@@ -11,8 +11,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
+import fr.eni.yapalQCM.bo.Question;
 import fr.eni.yapalQCM.bo.QuestionEnCoursWrapper;
+import fr.eni.yapalQCM.bo.Reponse;
 import fr.eni.yapalQCM.bo.ReponseEnCoursWrapper;
+import fr.eni.yapalQCM.bo.Section;
 import fr.eni.yapalQCM.bo.Test;
 import fr.eni.yapalQCM.bo.Utilisateur;
 import fr.eni.yapalQCM.utils.YapalLogger;
@@ -179,6 +182,20 @@ public class RepriseSurIncidentDAL {
 		while (rs.next()) {
 			if (!chronoSetted) {
 				t.setTempsEcoule(rs.getLong("chrono"));
+				chronoSetted = true;
+			}
+			for (Section s : t.getSections()) {
+				for (Question q : s.getTheme().getQuestions()) {
+					if (q.getId() == rs.getInt("idQuestion")) {
+						q.setMarquee(rs.getBoolean("isMarquee"));
+					}
+					for (Reponse r : q.getReponses()) {
+						if (r.getId() == rs.getInt("idReponse")) {
+							r.setChecked(rs.getBoolean("isCheck"));
+							break;
+						}
+					}
+				}
 			}
 		}
 		return t;

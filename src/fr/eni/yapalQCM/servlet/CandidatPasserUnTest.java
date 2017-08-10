@@ -90,7 +90,7 @@ public class CandidatPasserUnTest extends HttpServlet {
 					
 					//Récupération du test généré
 					if(session.getAttribute("questions")==null){
-						Test test = CandidatManager.getTest(Integer.parseInt(request.getParameter("idTest")));
+						Test test = CandidatManager.getTest(Integer.parseInt(request.getParameter("idTest")),(Utilisateur)session.getAttribute("user"));
 						tempsEcoule = test.getDuree();
 						ArrayList<Question> listeQuestions = new ArrayList<Question>();
 						for(Section section : test.getSections()){

@@ -9,6 +9,7 @@ import fr.eni.yapalQCM.bo.Resultat;
 import fr.eni.yapalQCM.bo.Session;
 import fr.eni.yapalQCM.bo.Test;
 import fr.eni.yapalQCM.bo.Utilisateur;
+import fr.eni.yapalQCM.dal.RepriseSurIncidentDAL;
 import fr.eni.yapalQCM.dal.ResultatDAL;
 import fr.eni.yapalQCM.dal.SessionDAL;
 import fr.eni.yapalQCM.dal.TestDAL;
@@ -23,12 +24,13 @@ public class CandidatManager {
 	 * @return test
 	 * @throws SQLException 
 	 */
-	public static Test getTest(int idTest) throws SQLException {
+	public static Test getTest(int idTest, Utilisateur user) throws SQLException {
 		TestDAL testDal = new TestDAL();
 		Test test = testDal.getOne(idTest);
 		
-		// g�n�ration du test
-		generateTest(idTest);
+		RepriseSurIncidentDAL rsi = new RepriseSurIncidentDAL();
+		test = rsi.getOneTestEnCours(user, test);
+
 		return test;
 	}
 
