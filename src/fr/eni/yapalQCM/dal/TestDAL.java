@@ -210,7 +210,7 @@ public class TestDAL implements IDAL<Test> {
 
 	public ArrayList<Test> getManyBy(int idCandidat) throws SQLException {
 		logger.entering("TestDAL", "getManyBy");
-		ArrayList<Test> tests = null;	
+		ArrayList<Test> tests = new ArrayList<Test>();	
 		Test test = null;
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall(TestSQL.GET_MANY_BY_UTILISATEUR);

@@ -226,9 +226,12 @@ public class CandidatPasserUnTest extends HttpServlet {
 					resultat.setSeuilObtenu((float)score*100/nbreQuestions);
 					resultat.setTempsEcoule(tempsEcoule);
 					ResultatDAL rd = new ResultatDAL();
-					rd.add(resultat);
+					if(rd.add(resultat)){
+						message = ErrorManager.getMessage("Test terminé et enregistré",MessageType.success);
+					}
 					
 					// Renvoi des données du résultat pour affichage de la page résultat
+					request.setAttribute("message", message);
 					request.setAttribute("score", score);
 					request.setAttribute("nbreQuestions", nbreQuestions);
 					request.setAttribute("acquisition", acquisition);

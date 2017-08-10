@@ -2,7 +2,6 @@ package fr.eni.yapalQCM.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import fr.eni.yapalQCM.bll.CandidatManager;
 import fr.eni.yapalQCM.bll.ErrorManager;
 import fr.eni.yapalQCM.bo.Resultat;
-import fr.eni.yapalQCM.bo.Role;
 import fr.eni.yapalQCM.bo.Test;
 import fr.eni.yapalQCM.bo.Utilisateur;
 import fr.eni.yapalQCM.utils.Message;
@@ -56,15 +54,15 @@ public class CandidatAccueil extends HttpServlet {
 		message = null; 
 		
 		try {
-			//r�cup�ration du user en session
+			//récupération du user en session
 			Utilisateur candidat = (Utilisateur) session.getAttribute("user");
 			
-			//r�cup�ration de la liste de tests dispo pour ce candidat
+			//récupération de la liste de tests dispo pour ce candidat
 			ArrayList<Test> tests = CandidatManager.getTests(candidat);
 			ArrayList<Resultat> resultats=new ArrayList<Resultat>();
 			request.setAttribute("testList", tests);
 			for (Test test : tests) {
-				//r�cup�ration de la liste de r�sultats dispo pour ce candidat	
+				//récupération de la liste de r�sultats dispo pour ce candidat	
 				Resultat resultat = null;
 				resultat = CandidatManager.getResultat(candidat,test);
 				if (resultat!=null) {
