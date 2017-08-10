@@ -17,4 +17,8 @@ public abstract class RepriseSurIncidentSQL {
 	public static String DELETETEST="DELETE FROM TESTS_EN_COURS WHERE idUser=? AND idTest=?;";
 	public static String UPDATETEST="UPDATE TESTS_EN_COURS SET chrono=? WHERE idUser=? AND idTest=?;";
 	public static String GETONETESTCOUNT="SELECT Count(*) FROM TESTS_EN_COURS WHERE idUser=? AND idTest=?;";
+	public static String GETONETESTENCOURS="SELECT rep.*,tec.chrono "
+							+"FROM TESTS_EN_COURS tec "
+							+"left join REPONSES_ENCOURS rep on tec.idTest=rep.idTest and tec.idUser=rep.idUser "							
+							+"WHERE rep.idUser=? AND rep.idTest=? ";
 }
