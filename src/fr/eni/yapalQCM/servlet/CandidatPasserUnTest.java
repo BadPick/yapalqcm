@@ -231,7 +231,6 @@ public class CandidatPasserUnTest extends HttpServlet {
 					}
 					
 					// Renvoi des données du résultat pour affichage de la page résultat
-					request.setAttribute("message", message);
 					request.setAttribute("score", score);
 					request.setAttribute("nbreQuestions", nbreQuestions);
 					request.setAttribute("acquisition", acquisition);
