@@ -21,9 +21,10 @@
 	<div id="messageType" class="hidden">${message.type}</div>
 
 	<div class="containeur">
-	<div class="divChrono"><div id="chrono" style="visibility: hidden">${ sessionScope.test.getDuree()-tempsEcoule }</div></div>
+	
 	<div class="row">
-		<div><h2>${ sessionScope.test.getNom() }</h2></div>
+		<div class="col-sm-6"><h2>${ sessionScope.test.getNom() }</h2></div>
+		<div class="col-sm-6 divChrono"><div id="chrono" style="visibility: hidden">${ sessionScope.test.getDuree()-tempsEcoule }</div></div>
 	</div>
 
 
@@ -74,15 +75,15 @@
 							<ul>
 								<!-- Réponses avec plusieurs réponses possibles (checkbox) : -->
 								<c:if test="${ question.isPlusieursReponses()==true }">
-									<p class="italique">Plusieurs réponses possibles</p>
+									<p class="italic">Plusieurs réponses possibles</p>
 									<c:forEach items="${ question.getReponses() }" var="reponse"
 										varStatus="statusRep">
-
+										<label>
 										<input type="checkbox"
 											name="reponseSelected-${ reponse.getId() }"
 											id="${ statusRep.count }"
-											<c:if test="${ reponse.isChecked()==true }">checked</c:if> />
-										<label for="reponseSelected-${ reponse.getId() }">${ reponse.getEnonce() }</label>
+											<c:if test="${ reponse.isChecked()==true }"> checked</c:if> >
+										${ reponse.getEnonce() }</label>
 										<br>
 
 									</c:forEach>
@@ -93,12 +94,12 @@
 									<p class="italic">Une seule réponse possible</p>
 									<c:forEach items="${ question.getReponses() }" var="reponse"
 										varStatus="statusRep">
-
+										<label>
 										<input type="radio"
 											name="reponseSelected-${ question.getId() }"
 											id="${ statusRep.count }" value="${ statusRep.count }"
-											<c:if test="${ reponse.isChecked()==true }">checked</c:if> />
-										<label for="reponseSelected-${ question.getId() }">${ reponse.getEnonce() }</label>
+											<c:if test="${ reponse.isChecked()==true }"> checked</c:if> />
+										${ reponse.getEnonce() }</label>
 										<br>
 
 									</c:forEach>
@@ -163,7 +164,8 @@
 	<script type="text/javascript">
 	// Arrivée sur la question cliquée dans la page de synthèse
 	$( document ).ready(function Chargement(listeQuestions){
-		RetourQuestion('${ questionEnCours }');
+		//RetourQuestion('${ questionEnCours }');
+		/*A VERIFIER si on peut supprimer cette ligne*/
 	});
 
 	// Numéro de suivi de la question en cours
@@ -252,12 +254,15 @@
 		};
 		
 		var dataJson = JSON.stringify(dataString);
-	 
-		$.ajax({
-		type: 'POST',
-	    url: "<%=request.getContextPath()%>/EnregistrementResultatsEnCours",
-	    data: {data:dataJson}
-		});
+		alert(dataJson);
+	 	if (dataJson != '') {
+	 		$.ajax({
+	 			type: 'POST',
+	 		    url: "<%=request.getContextPath()%>/EnregistrementResultatsEnCours",
+	 		    data: {data:dataJson}
+	 			});
+		}
+		
 	}
 	
 	

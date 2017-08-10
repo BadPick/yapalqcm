@@ -56,48 +56,51 @@ public class EnregistrementResultatsEnCours extends HttpServlet {
 		
 		// Récupération du string à convertir en Json et création des objets (Wrapper)
 		String json = request.getParameter("data");
-		Gson gson = new GsonBuilder().create();
-		QuestionEnCoursWrapper qw = gson.fromJson(json, QuestionEnCoursWrapper.class);
+		if (!json.isEmpty()) {
+			Gson gson = new GsonBuilder().create();
+			QuestionEnCoursWrapper qw = gson.fromJson(json, QuestionEnCoursWrapper.class);
 
-		// Récupération des données en session
-		ArrayList<Question> listeQuestions = (ArrayList<Question>) session.getAttribute("questions");
-		Test test = (Test) session.getAttribute("test");
-		Utilisateur utilisateur = (Utilisateur) session.getAttribute("user");
-		
-		// Récupération de l'id de la question "réelle"
-		qw.setIdQuestion(listeQuestions.get(qw.getNumQuestion()).getId());
-		
-		// Insertion du Test En Cours
-		RepriseSurIncidentDAL rsiDAL = new RepriseSurIncidentDAL();
-		try {
-			if(rsiDAL.getOneTestCount(utilisateur, test)>0){
-				rsiDAL.updateTest(utilisateur, test, qw.getTempsEcoule());
-			}else{
-				rsiDAL.addTest(utilisateur, test, qw.getTempsEcoule());				
-			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		int increment = 0;
-		for(ReponseEnCoursWrapper rw : qw.getReponses()){
-			// Récupération de l'id de la réponse réelle
-			rw.setIdReponse(listeQuestions.get(qw.getNumQuestion()).getReponses().get(increment).getId());
+			// Récupération des données en session
+			ArrayList<Question> listeQuestions = (ArrayList<Question>) session.getAttribute("questions");
+			Test test = (Test) session.getAttribute("test");
+			Utilisateur utilisateur = (Utilisateur) session.getAttribute("user");
 			
+			// Récupération de l'id de la question "réelle"
+			qw.setIdQuestion(listeQuestions.get(qw.getNumQuestion()).getId());
+			
+			// Insertion du Test En Cours
+			RepriseSurIncidentDAL rsiDAL = new RepriseSurIncidentDAL();
 			try {
-				// Suppression avant insertion
-				rsiDAL.deleteReponse(rw, utilisateur, test, qw);
-				
-				// Insertion de chaque Reponse En Cours
-				rsiDAL.addReponse(rw, utilisateur, test, qw);
-				
-			} catch (SQLException e) {
+				if(rsiDAL.getOneTestCount(utilisateur, test)>0){
+					rsiDAL.updateTest(utilisateur, test, qw.getTempsEcoule());
+				}else{
+					rsiDAL.addTest(utilisateur, test, qw.getTempsEcoule());				
+				}
+			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e1.printStackTrace();
 			}
-			increment++;
+			
+			int increment = 0;
+			for(ReponseEnCoursWrapper rw : qw.getReponses()){
+				// Récupération de l'id de la réponse réelle
+				rw.setIdReponse(listeQuestions.get(qw.getNumQuestion()).getReponses().get(increment).getId());
+				
+				try {
+					// Suppression avant insertion
+					rsiDAL.deleteReponse(rw, utilisateur, test, qw);
+					
+					// Insertion de chaque Reponse En Cours
+					rsiDAL.addReponse(rw, utilisateur, test, qw);
+					
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				increment++;
+			}
 		}
+		
 	}
 	
 }

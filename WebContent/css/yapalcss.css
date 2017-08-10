@@ -78,6 +78,7 @@ h1{
 	color: #3990a3;
 	background-color: #fff;
 	font-weight:bold;
+	margin-right: 10px;
 }
 
 .btn-standard:HOVER{
@@ -151,11 +152,14 @@ tr{
 }
 
 .resultat{
-	
+	display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #chrono{
-	font-size: 65px;
+	font-size: 40px;
+	
 }
 
 .navigation{
@@ -189,4 +193,48 @@ tr{
 	display:flex;
 	flex-direction:row;
 	justify-content:flex-end;
+	    margin-bottom: 35px;
+}
+.synthese{
+	width: 250px;
+	border:none;
+}
+
+.synthese tr{
+	border:none;
+	height:30px;
+}
+
+.center{
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+}
+
+.btn-synthese{
+	max-width: 100px;
+	min-width: 100px;
+	border: 2px solid #3990a3;
+	color: #3990a3;
+	background-color: #fff;
+	font-weight:bold;
+	height: 30px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.btn-synthese:HOVER{
+	max-width: 100px;
+	min-width: 100px;
+	border: 2px solid #fff;
+	color: #fff;
+	font-weight:bold;
+	background-color: #3990a3;
+	height: 30px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.symbole{
+	width: 50px;
 }

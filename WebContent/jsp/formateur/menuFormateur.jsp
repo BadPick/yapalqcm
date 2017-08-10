@@ -4,9 +4,9 @@
 
 
 <!-- Menu du Formateur -->
-<div class="menu-formateur">
+<div class="navigation menu-formateur">
 <div class="btn-group">
-  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <button type="button" class="btn btn-standard dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Administrations <span class="caret"></span>
   </button>
   <ul class="dropdown-menu">
@@ -17,8 +17,9 @@
     <li class="dropdown-item" ><a href="<%=request.getContextPath()%>/Formateur/Administration/Utilisateurs">Administration des Utilisateur</a></li>
   </ul>
 </div>
+
 <div class="btn-group">
-  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <button type="button" class="btn btn-standard dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Inscriptions <span class="caret"></span>
   </button>
   <ul class="dropdown-menu">
@@ -27,7 +28,7 @@
   </ul>
 </div>
 <div class="btn-group">
-  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <button type="button" class="btn btn-standard dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Résultats <span class="caret"></span>
   </button>
   <ul class="dropdown-menu">

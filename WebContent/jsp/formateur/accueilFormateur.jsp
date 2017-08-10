@@ -18,7 +18,7 @@
 <div id="message" class="hidden">${message.message}</div>
 <div id="messageType" class="hidden">${message.type}</div>
 
-<div class="container">
+<div class="containeur">
 <h1>Espace Formateur: ${user.nom } ${user.prenom }</h1>
 <%@include file="/jsp/formateur/menuFormateur.jsp"%>
 

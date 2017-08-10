@@ -17,17 +17,19 @@
 <div id="message" class="hidden">${message.message}</div>
 <div id="messageType" class="hidden">${message.type}</div>
 
-<div class="container">
+<div class="containeur">
 
 <h1>Espace Formateur: ${user.nom } ${user.prenom }</h1>
 <%@include file="/jsp/formateur/menuFormateur.jsp"%>
+<div class="row">
+<div class="center">
 <h2>Administration des Sessions</h2>
 <c:set var="listeSessions" value="${requestScope['listeSessions'] }"/>
 <c:set var="listeTests" value="${requestScope['listeTests'] }"/>
 
 <!-- Bloc pour affichage de la liste des sessions -->
 	<div class="col-md-8" id="liste_session" style="display:block">
-		<button id="nouvelleSession" type="button" class="btn btn-success">Nouvelle Session</button>
+		<button id="nouvelleSession" type="button" class="btn btn-standard">Nouvelle Session</button>
 		<ul>
 			<c:forEach var="session" items="${listeSessions }">
 				<li>${session.date } - ${session.nbPlaces } places disponibles.	
@@ -55,10 +57,10 @@
 			</c:forEach>
 		</ul>
 	</div>
-	
+
 	<!-- Bloc pour édition d'un session -->
 	<div class="col-md-8" id="nouvelle_session" style="display:none">
-	<button type="button" class="btn btn-success" onclick="afficherListeSessions()">Retour</button>
+	<button type="button" class="btn btn-standard" onclick="afficherListeSessions()">Retour</button>
 		<h2>Nouvelle Session:</h2>
 		<form id="formNvSession" method="post" action="<%=request.getContextPath()%>/Formateur/Administration/Sessions">
 			<div id="divForm" class="form-group col-md-8">
@@ -72,11 +74,11 @@
 						<input type="checkbox" name="idTest" value="${test.id }"/>${test.nom }
 					</c:forEach>
 				</fieldset>
-				<button type="submit" id="formNvMod" name="typeAction" value="ajouter" class="form-control">Nouvelle Session</button>
+				<button type="submit" id="formNvMod" name="typeAction" value="ajouter" class="form-control btn-standard">Nouvelle Session</button>
 			</div>
 		</form>
 	</div>
-
+	</div>	</div>
 </div>
 <script type="text/javascript" src="/yapalQCM/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/yapalQCM/js/bootstrap.min.js"></script>
