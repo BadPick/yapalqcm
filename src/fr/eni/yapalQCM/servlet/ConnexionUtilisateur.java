@@ -53,21 +53,21 @@ public class ConnexionUtilisateur extends HttpServlet {
 	}
 	
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		System.out.println("entrï¿½e dans la Servlet ConnexionUtilisateur");
 		logger.entering("ConnexionUtilisateur", "processRequest");
 		HttpSession session = request.getSession();
 		RequestDispatcher dispatcher = null;
-		
-		switch (request.getParameter("typeAction")) {
+		String typeAction = null;
+		if (request.getParameter("typeAction")!=null) {
+			typeAction = request.getParameter("typeAction");
+		}		
+		switch (typeAction) {
 		case "connexion":
-			System.out.println("TypeAction => 'connexion'");
-			try {
-				
+			try {				
 				Utilisateur user = null;
 				String login = request.getParameter("login");
 				String password= request.getParameter("password");
 				String encryptPassword = ToolUtilisateur.encryptPassword(password);	
-				if (login!="" || password!="") {
+				if (login!=null || password!=null) {
 					ConnexionManager connexion = new ConnexionManager();
 					user=connexion.getConnexion(login,encryptPassword);
 					
@@ -76,15 +76,15 @@ public class ConnexionUtilisateur extends HttpServlet {
 						message = ErrorManager.getMessage("Mauvais login ou mot de passe.",MessageType.error);
 						dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 					}else if (user.getRole().getId()==1){
-						message = ErrorManager.getMessage("Connexion validÃ©e",MessageType.success);
+						message = ErrorManager.getMessage("Connexion validée",MessageType.success);
 						session.setAttribute("user", user);
 						dispatcher = getServletContext().getRequestDispatcher("/Candidat/Accueil");
 					}else if (user.getRole().getId()==2){
-						message = ErrorManager.getMessage("Connexion validÃ©e",MessageType.success);
+						message = ErrorManager.getMessage("Connexion validée",MessageType.success);
 						session.setAttribute("user", user);
 						dispatcher = getServletContext().getRequestDispatcher("/Formateur/Accueil");
 					}else if (user.getRole().getId()==3){
-						message = ErrorManager.getMessage("Connexion validÃ©e",MessageType.success);
+						message = ErrorManager.getMessage("Connexion validée",MessageType.success);
 						session.setAttribute("user", user);
 						dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 					}
@@ -102,12 +102,11 @@ public class ConnexionUtilisateur extends HttpServlet {
 			
 			break;
 		case "deconnexion":	
-			System.out.println("TypeAction => 'deconnexion'");
 			session.invalidate();
 			dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 			break;
 		default:
-			System.out.println("!!!Non Traitï¿½!!!");
+			System.out.println("!!!Non Traité!!!");
 			dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 			break;
 		}

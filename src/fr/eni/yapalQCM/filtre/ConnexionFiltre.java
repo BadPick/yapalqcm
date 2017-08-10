@@ -43,13 +43,11 @@ public class ConnexionFiltre implements Filter {
 		session = ((HttpServletRequest)request).getSession();
 		RequestDispatcher rd;
 
-		if (session.getAttribute("user")!=null) {			
-			System.out.println("Sortie filtre utilisateur non null: "+session.getAttribute("user").toString());			
+		if (session.getAttribute("user")!=null) {					
 			chain.doFilter(request, response);
 		} 
 		else{			
 			rd=((HttpServletRequest)request).getRequestDispatcher("/index.jsp");
-			System.out.println("Sortie filtre utilisateur null: ");
 			rd.forward(request, response);
 		}
 	}

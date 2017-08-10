@@ -188,7 +188,6 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 	 */
 	public Utilisateur getConnexion(String login,String password) throws SQLException {
 		logger.entering("UtilisateurDAL", "getConnexion");
-		System.out.println("Entrée dans le DAL Utilisateur");
 		Utilisateur user=null;			
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall(UtilisateurSQL.GET_CONNEXION);
@@ -203,7 +202,6 @@ public class UtilisateurDAL implements IDAL<Utilisateur> {
 			throw e;
 		}		
 		logger.exiting("UtilisateurDAL", "getConnexion");
-		System.out.println("Sortie de le DAL Utilisateur => user: "+user.toString());
 		return user;
 	}
 	

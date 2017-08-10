@@ -32,23 +32,23 @@
 			<th></th>
 		</tr>
 		<c:forEach var="test" items="${listeTests }">
-			<tr>
-				<td id="ligneTest-${test.id }">${test.nom }</td>
-				<td>Acquis:${test.seuilAcquis}</td>
-				<td>En cours d'acquisition:${test.seuilEnCoursDacquisition}</td>
+			<tr id="ligneTest-${test.id }">
+				<td id="nom-${test.id }">${test.nom }</td>
+				<td id="seuilAcquis-${test.id }">Acquis:${test.seuilAcquis}</td>
+				<td id="seuilEnCourDacquisition-${test.id }">En cours d'acquisition:${test.seuilEnCoursDacquisition}</td>
 				<td>
 					<form method="post" action="<%=request.getContextPath()%>/Formateur/Administration/Tests">
 						<input type="hidden" name="idTest" value="${test.id }"/>
 						<button type="submit" name="typeAction" value="supprimer" class="btn btn-danger">Supprimer</button>
 					</form>
 				</td>
-				<td><button type="button" class="btn btn-primary">Modifier</button></td>
+				<td><button id="modifier-${test.id}" type="button" class="btn btn-primary">Modifier</button></td>
 			</tr>		
 			<c:forEach var="section" items="${test.sections }">
 				<tr name="detail-${test.id }" style="display:none">
 					<td></td>
-					<td>${section.theme.nom}</td>
-					<td>nbQuestions :${section.nbQuestions}</td>
+					<td id="nomTheme-${section.theme.id }">${section.theme.nom}</td>
+					<td id="nomTheme-${section.theme.id }">nbQuestions :${section.nbQuestions}</td>
 					<td></td>
 					<td></td>
 				</tr>
@@ -63,6 +63,7 @@
 <div class="col-md-8" id="formTest" style="display:none">
 	<button id="masquerForm" type="button" class="btn btn-success" onclick="hideShowLine()">Retour</button>
 	<form method="post" action="<%=request.getContextPath()%>/Formateur/Administration/Tests" onsubmit="return validationFormualire();">
+		<input type="hidden" id="idTest" name="idTest"/>
 		<label for="nom">Nom du test</label><input type="text" id="nom" name="nom" class="form-control" required/>
 		<button type="button" id="ajouterTheme" class="btn">Ajouter un thème</button>
 		<ul id="listeThemes" style="list-style-type:square">
@@ -82,8 +83,14 @@
 <script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.1/packaged/jquery.noty.packaged.min.js"></script>
 <script type="text/javascript" src="/yapalQCM/js/gestionMessages.js"></script>
 <script type="text/javascript">
+/************************************************************/
+/******* Bloc D'ajout de thème dans le formualire ***********/
+/************************************************************/
 var numSection = 0;
 $('#ajouterTheme').click(function(){
+	nouvelleSection();						
+})
+function nouvelleSection(){
 	var idtheme = "'#theme-"+numSection+"'";
 	var theme=document.createElement("li");
 	theme.setAttribute("id", "theme-"+numSection);
@@ -95,24 +102,33 @@ $('#ajouterTheme').click(function(){
 					'<label>Nombre de questions: </label><input type="number" id="nbQuestions" name="nbQuestions"/>'+
 					'<button type="button" id="supprimerTheme-'+numSection+'" class="btn btn-danger" onclick="$('+idtheme+').remove()">Supprimer</button>'
 	$('#listeThemes').append(theme);
-	numSection++;						
-})
+	numSection++;
+}
+/************************************************************/
+/******* Bascule pour affichage du formulaire ***************/
+/************************************************************/
 $('#afficherForm').click(function(){
-	if($('#listeTest').is(":visible")){
-		$('#listeTest').hide("slow");
-		$('#formTest').show("slow");		
-	}else{
-		$('#listeTest').show("slow");
-		$('#formTest').hide("slow");
-	}
+	afficherForm();
 })
 $('#masquerForm').click(function(){
+	masquerForm();
+})
+function masquerForm(){
 	if($('#formTest').is(":visible")){
 		$('#formTest').hide("slow");		
 		$('#listeTest').show("slow");
 	}
-})
-$("td[id^='ligneTest-']").click(function(){
+}
+function afficherForm(){
+	if($('#listeTest').is(":visible")){
+		$('#listeTest').hide("slow");
+		$('#formTest').show("slow");		
+	}
+}
+/************************************************************/
+/********* Boutton pour suppression d'un test ***************/
+/************************************************************/
+$("tr[id^='ligneTest-']").click(function(){
 	var detail = $(this).prop('id').replace('ligneTest-','detail-');
 	if($("tr[name="+detail+"]").is(":hidden")){		
 		$("tr[name="+detail+"]").each(function(){
@@ -121,10 +137,21 @@ $("td[id^='ligneTest-']").click(function(){
 	}
 	else{
 		$("tr[name="+detail+"]").each(function(){
-			$(this).hide("slow");
+			$(this).hide();
 		})
 	}
 })
+/************************************************************/
+/********* Boutton pour suppression d'un test ***************/
+/************************************************************/
+$("button[id^='modifier-']").click(function(){
+	var detail = $(this).prop('id').replace
+})
+ 
+ 
+/************************************************************/
+/********* Validation de la saisie du formulaire ************/
+/************************************************************/
 function validationFormualire(){
 	var message="";
 	var nom=$('#nom');
