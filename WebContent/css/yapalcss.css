@@ -10,8 +10,8 @@ body{
 	width:800px;
 	margin:auto;
 	color:#535c63;
-	background-image: url("img/fond_ecran_yapal.jpg");
-	background-position: center; 
+	/*background-image: url("../img/fond_ecran_yapal.jpg");*/
+	/*background-position: center; */
 }
 
 h1{

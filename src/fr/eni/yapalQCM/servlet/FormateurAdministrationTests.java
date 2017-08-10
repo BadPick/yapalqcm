@@ -33,6 +33,7 @@ public class FormateurAdministrationTests extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	Logger logger = YapalLogger.getLogger(this.getClass().getName());
 	private Message message = null;
+	RequestDispatcher rd =null;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -59,17 +60,7 @@ public class FormateurAdministrationTests extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		message = null;
 		String typeAction=null;
-		// Chargement des éléments nécessaire à la vue.
-		try {
-			List<Test> listeTests = TestsManager.getTests();
-			List<Theme> listeThemes = ThemesManager.getThemes();
-			request.setAttribute("listeTests", listeTests);
-			request.setAttribute("listeThemes", listeThemes);
-		} catch (SQLException e) {
-			message=ErrorManager.getMessage("Impossibilité de récupérer la liste des Tests en base.", MessageType.error);
-			logger.severe("Impossibilité de récupérer la liste des Tests en base. "+e.getMessage());
-			e.printStackTrace();
-		}
+		
 		
 		// traitement des actions des différents formulaires de la vue.
 		if(request.getParameter("typeAction")!=null) typeAction=request.getParameter("typeAction");
@@ -116,6 +107,7 @@ public class FormateurAdministrationTests extends HttpServlet {
 				try {
 					TestsManager.ajouterTestEtSections(test);
 					message=ErrorManager.getMessage("Nouveau test inséré.", MessageType.information);
+					rd = request.getRequestDispatcher("/jsp/formateur/administrationTests.jsp");
 				} catch (SQLException e) {
 					message=ErrorManager.getMessage("Impossibilité d'ajouter un test en base de donnée", MessageType.error);
 					logger.severe("Impossibilité d'ajouter un test en base de donnée "+e.getMessage());
@@ -123,25 +115,46 @@ public class FormateurAdministrationTests extends HttpServlet {
 				}
 				break;
 			case "modifier":
-				
+				rd = request.getRequestDispatcher("/jsp/formateur/administrationTests.jsp");
 				break;
 			case "supprimer":
 				int idTest=0;
 				if(request.getParameter("idTest")!=null){
 					idTest=Integer.parseInt(request.getParameter("idTest"));
 				}
-				//TestsManager.supprimerTest(idTest);
+				try {
+					TestsManager.supprimerTest(idTest);
+					message=ErrorManager.getMessage("Test supprimée.", MessageType.information);
+					rd = request.getRequestDispatcher("/jsp/formateur/administrationTests.jsp");
+				} catch (SQLException e) {
+					message=ErrorManager.getMessage("Impossibilité de supprimer un test en base de donnée", MessageType.error);
+					logger.severe("Impossibilité de supprimer un test en base de donnée "+e.getMessage());
+					e.printStackTrace();
+				}
 				break;
 			default:
+				RequestDispatcher rd = request.getRequestDispatcher("/jsp/formateur/administrationTests.jsp");
 				break;
 			}
 		}
-		
+		// Chargement des éléments nécessaire à la vue.
+				try {
+					List<Test> listeTests = TestsManager.getTests();
+					List<Theme> listeThemes = ThemesManager.getThemes();
+					request.setAttribute("listeTests", listeTests);
+					request.setAttribute("listeThemes", listeThemes);
+				} catch (SQLException e) {
+					message=ErrorManager.getMessage("Impossibilité de récupérer la liste des Tests en base.", MessageType.error);
+					logger.severe("Impossibilité de récupérer la liste des Tests en base. "+e.getMessage());
+					e.printStackTrace();
+				}
 		if (message != null) {
 			request.setAttribute("message", message);
 		}
-			
-		RequestDispatcher rd = request.getRequestDispatcher("/jsp/formateur/administrationTests.jsp");
+		if (rd==null) {
+			rd = request.getRequestDispatcher("/jsp/formateur/administrationTests.jsp");
+		}	
+		
 		rd.forward(request, response);
 	}
 

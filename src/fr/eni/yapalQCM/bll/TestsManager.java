@@ -36,7 +36,6 @@ public class TestsManager {
 	public static void ajouterTestEtSections(Test test) throws SQLException {
 		TestDAL testDal = new TestDAL();
 		testDal.add(test);
-		testDal.addSections(test);
 	}
 
 	public static void supprimerTest(int idTest) throws SQLException {

@@ -126,24 +126,31 @@ public class TestDAL implements IDAL<Test> {
 	 */
 	@Override
 	public boolean add(Test t) throws SQLException {
-		logger.entering("TestDAL", "add");
-		
+		logger.entering("TestDAL", "add");		
 		boolean resultat = false;
 		try(Connection cnx = DBConnection.getConnection()) {
-			CallableStatement cmd = cnx.prepareCall(TestSQL.ADD);
+			PreparedStatement cmd = cnx.prepareStatement(TestSQL.ADD,new String[] {"PRODUCT_ID"});
 			cmd.setString(1, t.getNom());
 			cmd.setFloat(2, t.getSeuilAcquis());
 			cmd.setFloat(3, t.getSeuilEnCoursDacquisition());
 			cmd.setLong(4, t.getDuree());		
+			
 			resultat = (cmd.executeUpdate()>0);
+			ResultSet rs = cmd.getGeneratedKeys();
+			int idTest = 0;
+			if (rs.next()) {
+				idTest = rs.getInt(1);
+			}
+			t.setId(idTest);
+			resultat=(resultat && addSections(t));
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
 			throw e;
-		}
-		
+		}		
 		logger.exiting("TestDAL", "add");
 		return resultat;
 	}
+	
 	/**
 	 * Méthode utilisée pour l'ajout des sections associés à un test.
 	 * @param t
@@ -201,8 +208,11 @@ public class TestDAL implements IDAL<Test> {
 	@Override
 	public boolean delete(Test t) throws SQLException {
 		logger.entering("TestDAL", "delete");
-		
-		boolean resultat = false;
+		List<Section> sections = getSectionsByTest(t.getId());
+		boolean resultat = false;		
+		for (Section section : sections) {
+			deleteSection(t.getId(),section.getTheme().getId());
+		}		
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall(TestSQL.DELETE);
 			cmd.setInt(1, t.getId());
@@ -210,12 +220,47 @@ public class TestDAL implements IDAL<Test> {
 		} catch (SQLException e) {
 			logger.severe("Erreur : " + e.getMessage());
 			throw e;
-		}
-		
+		}		
 		logger.exiting("TestDAL", "delete");
 		return resultat;
 	}
-	
+	private List<Section> getSectionsByTest(int idTest) throws SQLException {
+		logger.entering("TestDAL", "getSectionsByTest");
+		List<Section> liste = new ArrayList<Section>();
+		
+		try(Connection cnx=DBConnection.getConnection()){
+			PreparedStatement cmd = cnx.prepareStatement(TestSQL.GET_SECTIONS_BY_IDTEST);
+			cmd.setInt(1, idTest);
+			ResultSet rs = cmd.executeQuery();
+			while(rs.next()){
+				Section section = new Section();
+				Theme theme = new Theme();
+				theme.setId(rs.getInt("idTheme"));
+				section.setNbQuestions(rs.getInt("nombreQuestions"));
+				section.setTheme(theme);
+				liste.add(section);
+			}
+		}		
+		logger.exiting("TestDAL", "getSectionsByTest");
+		return liste;	
+	}
+
+	public boolean deleteSection(int idTest,int idTheme) throws SQLException{
+		logger.entering("TestDAL", "deleteSection");
+		
+		boolean resultat = false;
+		try(Connection cnx = DBConnection.getConnection()) {
+			CallableStatement cmd = cnx.prepareCall(TestSQL.DELETESECTIONS);
+			cmd.setInt(1, idTest);
+			cmd.setInt(2, idTheme);
+			resultat = (cmd.executeUpdate()>0);
+		} catch (SQLException e) {
+			logger.severe("Erreur : " + e.getMessage());
+			throw e;
+		}		
+		logger.exiting("TestDAL", "deleteSection");
+		return resultat;
+	}
 	/* (non-Javadoc)
 	 * {@inheritDoc}
 	 * @see fr.eni.yapalQCM.dal.IDAL#itemBuilder(java.sql.ResultSet)
@@ -234,7 +279,6 @@ public class TestDAL implements IDAL<Test> {
 	public ArrayList<Test> getManyBy(int idCandidat) throws SQLException {
 		logger.entering("TestDAL", "getManyBy");
 		ArrayList<Test> tests = new ArrayList<Test>();	
-		Test test = null;
 		try(Connection cnx = DBConnection.getConnection()) {
 			CallableStatement cmd = cnx.prepareCall(TestSQL.GET_MANY_BY_UTILISATEUR);
 			cmd.setInt(1, idCandidat);

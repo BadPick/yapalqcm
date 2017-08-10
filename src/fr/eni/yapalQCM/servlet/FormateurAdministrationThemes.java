@@ -65,7 +65,7 @@ public class FormateurAdministrationThemes extends HttpServlet {
 				try {
 					ThemesManager.ajouterThemes(libelle);
 				} catch (SQLException e) {
-					message = ErrorManager.getMessage("Echec de l'ajout du thème: "+e.getMessage(),MessageType.error);
+					message = ErrorManager.getMessage("Echec de l'ajout du thÃ¨me: "+e.getMessage(),MessageType.error);
 					e.printStackTrace();
 				}
 				break;
@@ -73,7 +73,7 @@ public class FormateurAdministrationThemes extends HttpServlet {
 				try {
 					ThemesManager.modifierThemes(id,libelle);
 				} catch (SQLException e) {
-					message = ErrorManager.getMessage("Echec de la modification du thème: "+e.getMessage(),MessageType.error);
+					message = ErrorManager.getMessage("Echec de la modification du thÃ¨me: "+e.getMessage(),MessageType.error);
 					e.printStackTrace();
 				}
 				break;
@@ -84,30 +84,30 @@ public class FormateurAdministrationThemes extends HttpServlet {
 					quetionsTheme = ThemesManager.listeQuestions(id);
 					testsTheme = ThemesManager.listeSections(id);
 					if(quetionsTheme.size()>0){
-						message = ErrorManager.getMessage("Attention des questions sont associées à ce thème!",MessageType.warning);
+						message = ErrorManager.getMessage("Attention des questions sont associÃ©es Ã  ce thÃ¨me!",MessageType.warning);
 					}
 					else if(testsTheme.size()>0){
-						message = ErrorManager.getMessage("Attention des tests sont associés à ce thème!",MessageType.warning);
+						message = ErrorManager.getMessage("Attention des tests sont associÃ©s Ã  ce thÃ¨me!",MessageType.warning);
 					}
 					else{
 						ThemesManager.supprimerTheme(id);
 					}
 				} catch (SQLException e) {
-					message = ErrorManager.getMessage("Echec de la suppression du thème: "+e.getMessage(),MessageType.error);
+					message = ErrorManager.getMessage("Echec de la suppression du thÃ¨me: "+e.getMessage(),MessageType.error);
 					e.printStackTrace();
 				}								
 				break;
 				
 			default:
-				message = ErrorManager.getMessage("La demande n'a pas pu être prise en compte.",MessageType.warning);
+				message = ErrorManager.getMessage("La demande n'a pas pu Ãªtre prise en compte.",MessageType.warning);
 				break;
 			}					
 		}
-		// Récupération de la liste de thème en base de donnée.
+		// Rï¿½cupï¿½ration de la liste de thÃ¨me en base de donnÃ©e.
 		try {
 			List<Theme> themes = ThemesManager.getThemes();
 			if (themes==null) {
-				message = ErrorManager.getMessage("Pas de thèmes en base de donnée",MessageType.information);
+				message = ErrorManager.getMessage("Pas de thÃ¨mes en base de donnÃ©e",MessageType.information);
 			}
 			request.setAttribute("themes", themes);
 			

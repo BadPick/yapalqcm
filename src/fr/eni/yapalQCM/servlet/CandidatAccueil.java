@@ -54,27 +54,32 @@ public class CandidatAccueil extends HttpServlet {
 		message = null; 
 		
 		try {
-			//récupération du user en session
-			Utilisateur candidat = (Utilisateur) session.getAttribute("user");
-			
-			//récupération de la liste de tests dispo pour ce candidat
-			ArrayList<Test> tests = CandidatManager.getTests(candidat);
-			ArrayList<Resultat> resultats=new ArrayList<Resultat>();
-			request.setAttribute("testList", tests);
-			for (Test test : tests) {
-				//récupération de la liste de r�sultats dispo pour ce candidat	
-				Resultat resultat = null;
-				resultat = CandidatManager.getResultat(candidat,test);
-				if (resultat!=null) {
-					resultats.add(resultat);					
+			if(session.getAttribute("user")==null){
+				dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+			}else{
+				//récupération du user en session
+				Utilisateur candidat = (Utilisateur) session.getAttribute("user");
+				
+				//récupération de la liste de tests dispo pour ce candidat
+				ArrayList<Test> tests = CandidatManager.getTests(candidat);
+				ArrayList<Resultat> resultats=new ArrayList<Resultat>();
+				request.setAttribute("testList", tests);
+				for (Test test : tests) {
+					//récupération de la liste de r�sultats dispo pour ce candidat	
+					Resultat resultat = null;
+					resultat = CandidatManager.getResultat(candidat,test);
+					if (resultat!=null) {
+						resultats.add(resultat);					
+					}
 				}
-			}
-			request.setAttribute("resultList", resultats);			
-			
-			//besoin d'afficher un message
-			//message = ErrorManager.getMessage("le message",MessageType.success);	
-			dispatcher = getServletContext().getRequestDispatcher("/jsp/candidat/accueilCandidat.jsp");		
-		} catch (Exception e) {
+				request.setAttribute("resultList", resultats);			
+				
+				//besoin d'afficher un message
+				//message = ErrorManager.getMessage("le message",MessageType.success);	
+				dispatcher = getServletContext().getRequestDispatcher("/jsp/candidat/accueilCandidat.jsp");		
+				}
+			} catch (Exception e) {
+				
 			//gestion des messages d'erreurs
 			message = ErrorManager.getMessage(e);		
 		}

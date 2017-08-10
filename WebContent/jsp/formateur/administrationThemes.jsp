@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="ISO-8859-1"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
@@ -22,7 +22,7 @@
 
 <h1>Espace Formateur: ${user.nom } ${user.prenom }</h1>
 <%@include file="/jsp/formateur/menuFormateur.jsp"%>
-<h2>Administration des thèmes</h2>
+<h2>Administration des thÃ¨mes</h2>
 
 <c:set var="themes" value="${requestScope['themes'] }" scope="page"/>
 <c:set var="index" value="1" scope="page"/>
@@ -31,8 +31,8 @@
 <table class="table table-striped table-standard">
 	<thead>
 		<tr>
-			<th>Libellé</th>
-			<th> <button type="button" class="btn btn-default btn-standard" onclick="hideShowLine()">Ajouter un thème</button></th>
+			<th>LibellÃ©</th>
+			<th> <button type="button" class="btn btn-default btn-standard" onclick="hideShowLine()">Ajouter un thÃ¨me</button></th>
 			<th></th>
 		</tr>
 	</thead>

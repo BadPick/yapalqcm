@@ -32,27 +32,33 @@
 			<th></th>
 		</tr>
 		<c:forEach var="test" items="${listeTests }">
-			<tr id="ligneTest-${test.id }">
-				<td id="nom-${test.id }">${test.nom }</td>
-				<td id="seuilAcquis-${test.id }">Acquis:${test.seuilAcquis}</td>
-				<td id="seuilEnCourDacquisition-${test.id }">En cours d'acquisition:${test.seuilEnCoursDacquisition}</td>
-				<td>
-					<form method="post" action="<%=request.getContextPath()%>/Formateur/Administration/Tests">
-						<input type="hidden" name="idTest" value="${test.id }"/>
-						<button type="submit" name="typeAction" value="supprimer" class="btn btn-danger">Supprimer</button>
-					</form>
-				</td>
-				<td><button id="modifier-${test.id}" type="button" class="btn btn-primary">Modifier</button></td>
-			</tr>		
-			<c:forEach var="section" items="${test.sections }">
-				<tr name="detail-${test.id }" style="display:none">
-					<td></td>
-					<td id="nomTheme-${section.theme.id }">${section.theme.nom}</td>
-					<td id="nomTheme-${section.theme.id }">nbQuestions :${section.nbQuestions}</td>
-					<td></td>
-					<td></td>
-				</tr>
-			</c:forEach>	
+			<div id="${test.id}">
+				<tr id="ligneTest-${test.id }">
+					<td>${test.nom }
+						<input type="hidden" name="nomTest" value="${test.nom}"></td>
+					<td>Acquis:${test.seuilAcquis}
+						<input type="hidden" name="seuilAcquis" value="${test.seuilAcquis}"></td>
+					<td>En cours d'acquisition:${test.seuilEnCoursDacquisition}<input type="hidden" name="seuilEnCoursDacquisition" value="${test.seuilEnCoursDacquisition}"></td>
+					<td>
+						<form method="post" action="<%=request.getContextPath()%>/Formateur/Administration/Tests">
+							<input type="hidden" name="idTest" value="${test.id }"/>
+							<button type="submit" name="typeAction" value="supprimer" class="btn btn-danger">Supprimer</button>
+						</form>
+					</td>
+					<td><button id="modifier-${test.id}" type="button" class="btn btn-primary">Modifier</button></td>
+				</tr>		
+				<c:forEach var="section" items="${test.sections }">
+					<tr name="detail-${test.id }" style="display:none">
+						<td></td>
+						<td>${section.theme.nom}
+							<input type="hidden" name="nomTheme" value="${section.theme.nom}"></td>
+						<td>nbQuestions :${section.nbQuestions}
+							<input type="hidden" name="nbQuestions" value="${section.nbQuestions}"></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</c:forEach>
+			</div>	
 		</c:forEach>
 	</table>
 </div>
@@ -142,12 +148,41 @@ $("tr[id^='ligneTest-']").click(function(){
 	}
 })
 /************************************************************/
-/********* Boutton pour suppression d'un test ***************/
+/********* Boutton pour modifier d'un test ******************/
 /************************************************************/
 $("button[id^='modifier-']").click(function(){
-	var detail = $(this).prop('id').replace
+	var idTest=$(this).prop('id').replace('modifier-','');
+	var divTest=$('#'+idTest);
+	var nom;
+	var seuilAcquis;
+	var seuilEnCoursDacquisition;
+	var duree;
+	var sections;
+	//Récupération des informations du test sélectionné.
+	divTest.each(function(){
+		if($(this).prop('name')=='nomTest'){nom=$(this).prop('value')}
+		if($(this).prop('name')=='seuilAcquis'){seuilAcquis =$(this).prop('value')}
+		if($(this).prop('name')=='seuilEnCoursDacquisition'){seuilEnCoursDacquisition =$(this).prop('value')}
+		if($(this).prop('name')=='duree'){duree =$(this).prop('value')}
+		if($(this).prop('name')=='detail-'+idTest){
+			var idSections = 'detail-'+idTest;
+			var trSections = $("tr[name='"+idSections+"']");
+			sections.each(function(){
+				if($(this).prop('name')=='nomTheme'){var theme =$(this).prop('value')}
+				if($(this).prop('name')=='nbQuestions'){var nbQuestions =$(this).prop('value')}
+				var se = new section(theme,nbQuestions);
+				section.
+			})
+		}
+	})
+	// Remplissage du formulaire
+	//$('#idTest')=
+	
 })
- 
+function section(theme,nbQuestions){
+	this.theme=theme;
+	this.nbQuestions=nbQuestions;
+}
  
 /************************************************************/
 /********* Validation de la saisie du formulaire ************/

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="ISO-8859-1"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
@@ -49,7 +49,7 @@
 				</div>	
 					<c:forEach var="test" items="${session.tests }">
 						<ul>
-							<li id="idTest-${test.id }">Test: ${test.nom } - Durée: ${test.duree }</li>	
+							<li id="idTest-${test.id }">Test: ${test.nom } - DurÃ©e: ${test.duree }</li>	
 						</ul>
 					</c:forEach>	
 					<div id="idObject-${session.id }" style="display:none">
@@ -66,7 +66,7 @@
 		
 	</div>
 
-	<!-- Bloc pour édition d'un session -->
+	<!-- Bloc pour Ã©dition d'un session -->
 	<div class="col-md-8" id="nouvelle_session" style="display:none">
 	<button type="button" class="btn btn-standard" onclick="afficherListeSessions()">Retour</button>
 		<h2>Nouvelle Session:</h2>
@@ -77,7 +77,7 @@
 				<label class="label-std" for="heure">Heure de passage du test</label><input type="time" name="heure" class="form-control" value=""/>
 				<label class="label-std" for="nbPlaces">Nombre de places: </label><input type="number" min="5" max="30" name="nbPlaces" class="form-control" value=""/>
 				<fieldset class="label-std">
-				<legend>Sélection du test de la session:</legend>
+				<legend>SÃ©lection du test de la session:</legend>
 					<c:forEach items="${listeTests }" var="test">
 						<input type="checkbox" name="idTest" value="${test.id }"/>${test.nom }
 					</c:forEach>

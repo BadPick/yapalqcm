@@ -29,5 +29,6 @@ public abstract class TestSQL {
 													+"inner join  REPONSES r on q.idQuestion=r.idQuestion "
 													+"where t.idTest=?";
 	public static String ADDSECTIONS="INSERT INTO SECTIONS (idTest,idTheme,nombreQuestions) VALUES (?,?,?)";
-	public static String DELETESECTIONS="DELETE FROM TESTS WHERE idTest=?; AND idTheme=?";
+	public static String DELETESECTIONS="DELETE FROM SECTIONS WHERE idTest=? AND idTheme=?";
+	public static String GET_SECTIONS_BY_IDTEST="SELECT * FROM SECTIONS WHERE idTest=?";
 }
