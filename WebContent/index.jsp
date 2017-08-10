@@ -15,8 +15,9 @@
 <c:set var="message" value="${requestScope['message']}" scope="page" />
 <div id="message" class="hidden">${message.message}</div>
 <div id="messageType" class="hidden">${message.type}</div>
-<div class="container">
-	<h1>Bienvenue sur votre application Yapal QCM !</h1>
+<div class="containeur">
+	<h1 style="text-align:center">Bienvenue sur votre application Yapal QCM !</h1>
+	<h3 style="text-align:center">Connectez-vous pour passer nos tests <br>sur les langages informatiques du moment !</h3>
 </div>
 <script type="text/javascript" src="/yapalQCM/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.1/packaged/jquery.noty.packaged.min.js"></script>

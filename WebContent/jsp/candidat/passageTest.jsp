@@ -174,14 +174,13 @@
 		var btnRecapQuestion = document.getElementById("btnRecap" + numQuestion);
 		var inputRecapQuestion = document.getElementById("inputRecap" + numQuestion);
 		var btnMarquage = document.getElementById("marquageQuestion" + numQuestion);
-		EnvoiDonneesAjax();
 		
 		if (btnMarquage.textContent == "Enlever le marquage"){
 			btnRecapQuestion.style.background = "none";
 			btnMarquage.textContent = "Marquer";
 			inputRecapQuestion.value = "";
 		} else {
-			btnRecapQuestion.style.background = "orange";
+			btnRecapQuestion.style.background = "#f0e8d1";
 			btnMarquage.textContent = "Enlever le marquage";
 			inputRecapQuestion.value = "1";
 		}			
@@ -191,7 +190,7 @@
 	function ChangementPage(sens) {
 		var questionEnCours = document.getElementById("question" + numQuestion);
 		var btnRecapQuestionEnCours = document.getElementById("btnRecap" + numQuestion);
-		questionEnCours.style.display = "none";
+		$('#question' + numQuestion).hide("slow");
 		btnRecapQuestionEnCours.style.border = "1px solid grey";
 		EnvoiDonneesAjax();
 		
@@ -203,7 +202,7 @@
 		
 		var questionSuivante = document.getElementById("question" + numQuestion);
 		var btnRecapQuestionSuivante = document.getElementById("btnRecap" + numQuestion);
-		questionSuivante.style.display = "block";
+		$('#question' + numQuestion).show("slow");
 		btnRecapQuestionSuivante.style.border = "2px solid black";	
 	}
 
@@ -213,6 +212,7 @@
 		var btnRecapQuestionEnCours = document.getElementById("btnRecap" + numQuestion);
 		questionEnCours.style.display = "none";
 		btnRecapQuestionEnCours.style.border = "1px solid grey";
+		EnvoiDonneesAjax();
 		
 		numQuestion=questionClick;
 		
@@ -227,40 +227,13 @@
 
 		/* VALUES */
 	    var numeroQuestion = numQuestion;
-	    if($('#marquageQuestion'+numQuestion).textContent=="Marquer"){
+	    if($('#inputRecap'+numQuestion).val()==0){
 		    var marquageQuestion = false;
 	    } else {
 	    	var marquageQuestion = true;
 	    }
 	    var tempsEcoule = $('#tempsEcoule').val();
 
-// 		var dataString = '{';
-// 		dataString += 'numQuestion:';
-// 		dataString += numeroQuestion;
-// 		dataString += ',';
-// 		dataString += 'marquageQuestion:';
-// 		dataString += marquageQuestion;
-// 		dataString += ',';
-// 		dataString += 'tempsEcoule:';
-// 		dataString += tempsEcoule;
-// 		dataString += ',';
-// 		dataString += 'reponses:[';
-// 		//reponses					
-// 		var blockReponses = $('#blockReponses-'+numQuestion);
-// 	    var increment = 1;
-// 	    blockReponses.find("input[name^='reponseSelected-']").each(function(){
-// 			if (increment > 1) {
-// 				dataString += ',';
-// 			}	
-// 			dataString += '{';
-// 			dataString += 'numReponse:';
-// 			dataString += increment;
-// 			dataString += ',';
-// 			dataString += 'checked:';
-// 			dataString += this.checked;
-// 			dataString += '}';
-// 			increment++;
-// 		});
 		var blockReponses = $('#blockReponses-'+numQuestion);
 	    var increment = 1;
 	    var reponses = [];
@@ -271,7 +244,7 @@
 			increment++;
 	    });
 	    
-var dataString = {
+		var dataString = {
 		numQuestion:numeroQuestion,
 		marquageQuestion:marquageQuestion,
 		tempsEcoule:tempsEcoule,
@@ -279,7 +252,6 @@ var dataString = {
 		};
 		
 		var dataJson = JSON.stringify(dataString);
-		//alert(dataJson);	
 	 
 		$.ajax({
 		type: 'POST',
