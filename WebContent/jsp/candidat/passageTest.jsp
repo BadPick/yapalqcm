@@ -29,7 +29,7 @@
 
 
 		<!-- Formulaire d'envoi des données du test -->
-		<form method="get"
+		<form method="post"
 			action="<%=request.getContextPath()%>/Candidat/PasserUnTest"
 			onsubmit="envoyerChrono(${ tempsEcoule })">
 			<input type="hidden" name="idTestSynthese"
