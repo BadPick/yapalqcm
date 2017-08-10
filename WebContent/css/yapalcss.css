@@ -30,29 +30,43 @@ h1{
 }
 
 .header{
-	height: 80px;
+	height: 100px;
 	margin-bottom: 40px;
 	color: #fff;
     font-size: 16px;
    
 }
+
+.logo img{
+    height: 80px;
+    background: white;
+    border: 2px solid #ccc;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+
 .navbar{
 	background-color: #3990a3;
-	height: 80px;
+	height: 100px;
 	margin-bottom: 40px;
-	 padding-left: 50px;
+	padding-left: 50px;
     padding-right: 50px;
 }
 .navbar-inverse {
 	border-color: #3990a3;
 }
+
+.navbar-form{
+	margin-top:30px;
+}
+
 .header input {
     color: black;
     font-size: 16px;
 }
 .menu-formateur.dropdown{
 	float: left;
-	
 }
 
 .btn-standard{
@@ -124,3 +138,29 @@ tr{
 	font-size: 40px;
 }
 
+.navigation{
+	display:flex;
+	flex-direction:row;
+	justify-content:center;
+	margin-bottom: 60px;
+	margin-top: 20px;
+}
+
+.btnMarque{
+	margin-left:15px;
+	margin-right:15px;
+}
+
+.validation{
+	display:flex;
+	flex-direction:row;
+	justify-content:flex-end;
+}
+
+#validerTest{
+	margin-left:15px;
+}
+
+.italic{
+	font-style:italic;
+}
