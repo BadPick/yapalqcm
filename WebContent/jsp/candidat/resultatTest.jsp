@@ -22,6 +22,9 @@
 	<p>Score final du test : ${ score }/${ nbreQuestions }</p>
 	<p>Temps écoulé : ${ tempsEcoule } secondes</p>
 	<p>Résultat : ${ acquisition }</p>
+	<form action="<%=request.getContextPath()%>/index.jsp" method="post">
+      	<button href="<%=request.getContextPath()%>/Candidat/Accueil" type="submit" class="btn btn-standard-reverse" id="retour" style="margin: auto; display: block; visibility:hidden">Page d'accueil</button>
+	</form>
 	</div>
 </div>
 <script type="text/javascript" src="/yapalQCM/js/jquery-3.2.1.min.js"></script>

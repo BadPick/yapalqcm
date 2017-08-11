@@ -33,7 +33,7 @@
 				<c:forEach var="test" items="${testList}">
 					<c:set var="resultFound" value="false" scope="page" />
 					<tr class="test">
-						<td class="" colspan="2">${test.nom}(${test.duree})</td>
+						<td class="" colspan="2">${test.nom}</td>
 						<td>${test.nbQuestions } questions</td>
 						<td><button type="button" name="details" value="${test.id}"
 								class="form-control btn-standard">Détails</button></td>
